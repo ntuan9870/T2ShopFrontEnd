@@ -1,0 +1,173 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h6>Danh sách shipper của T2Shop</h6>
+            <button class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg"> <i class="fas fa-plus"></i> Thêm shipper</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Tên shipper</td>
+                            <td>SĐT</td>
+                            <td>Địa chỉ</td>
+                            <td>Chuẩn</td>
+                            <td>Xem đơn hàng</td>
+                            <td>Sửa</td>
+                            <td>Xóa</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of shipper|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{s.shipper_name}}</td>
+                            <td>{{s.shipper_phone}}</td>
+                            <td>{{s.shipper_address}}</td>
+                            <td>
+                                <span *ngIf="s.points<=10">Shipper mới</span>
+                                <span *ngIf="s.points <=50 && 11<=s.points ">Shipper bạc</span>
+                                <span *ngIf="s.points <=100 && 51<=s.points">Shipper vàng</span>
+                            </td>
+                            <td><button class="btn btn-success"><i class="fas fa-eye"  data-toggle="modal" data-target=".bd-example-modal-ml" (click)="getOrderShipper(s.shipper_phone)"></i></button></td>
+                            <td><button class="btn btn-warning"><i  class="fas fa-edit" data-toggle="modal" data-target=".bd-example-modal-sl" (click)=" getEditWH(s.shipper_phone)" ></i></button> </td>
+                            <td><button class="btn btn-danger"><i  class="fas fa-trash-alt" (click)="remove(s.shipper_phone)"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+        <div class="modal fade bd-example-modal-ml" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Thông tin  đơn hàng của shipper</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr id="tbl-first-row">
+                                    <td>STT</td>
+                                    <td>Mã đơn hàng</td>
+                                    <td>Tên người nhận</td>
+                                    <td>Tình trạng</td>
+                                    <td>Thanh toán</td>
+                                    <td>Địa chỉ giao</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of orders|paginate: config; trackBy: trackByFn;let i = index">
+                                    <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                                    <td>{{o.order_id}}</td>
+                                    <td>{{o.user_name}}</td>
+                                    <td>
+                                        <span *ngIf="o.status==1">Đã giao</span>
+                                        <span *ngIf="o.status==0">Chưa giao</span>
+                                    </td>
+                                    <td>{{o.form}}</td>
+                                    <td>{{o.address}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="modal fade bd-example-modal-sl" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Sửa thông tin shipper</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                       <form #editPromotionForm="ngForm" method="post">
+                           <div class="form-group">
+                                <label>SĐT<i style="color: red;">(*)</i></label>
+                                <input type="number" #txtkeyword class="form-control" name="sh_phone"  [(ngModel)]="sh_phone" disabled  >
+                           </div>
+                           <div class="form-group">
+                                <label>SĐT mới<i style="color: red;">(*)</i></label>
+                                <input type="number"  #txtkeyword class="form-control" name="newsh_phone"  [(ngModel)]="newsh_phone"   >
+                            </div>
+                            <div class="form-group">
+                                <label>Tên Shipper<i style="color: red;">(*)</i></label>
+                                <input type="text" class="form-control" name="sh_name"  [(ngModel)]="sh_name" required >
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ<i style="color: red;">(*)</i></label> 
+                                <input type="text" class="form-control" name="sh_address"[(ngModel)]="sh_address" required >
+                            </div>
+                            <input [disabled]="!editPromotionForm.valid" type="submit" value="Sửa" class="btn btn-success" (click)="editSH()">
+                       </form>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- The Modal -->
+        <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Thêm shipper mới</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="post" #addSupplierForm="ngForm" >
+                            <div class="form-group">
+                                <label>SĐT <i style="color: red;">(*)</i></label>
+                                <input type="number"  class="form-control"    placeholder="Nhập số điện thoại shipper" name="shipper_phone" [(ngModel)]="shipper_phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu <i style="color: red;">(*)</i></label>
+                                <input type="password"  class="form-control"    placeholder="Nhập mật khẩu shipper" name="shipper_password" [(ngModel)]="shipper_password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tên shipper <i style="color: red;">(*)</i></label>
+                                <input type="text"  class="form-control"   placeholder="Nhập tên shipper" name="shipper_name" [(ngModel)]="shipper_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ  <i style="color: red;">(*)</i></label>
+                                <input type="text"  class="form-control"   placeholder="Nhập địa chỉ của shipper " name="shipper_address" [(ngModel)]="shipper_address" required>
+                            </div>
+                            <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addShipper()">
+                        </form>
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+<form  method="post" class="form">
+    <!-- <input type="text"  name="orderWh_id" placeholder="Vui lòng nhập mã phiếu nhập hàng" [(ngModel)]="" >  -->
+    <input type="radio" checked value="3" name="status" [(ngModel)]="status" >Chấp nhận cấp hàng
+    <input type="radio"  value="2" name="status" [(ngModel)]="status"> Không cấp hàng
+    <button class="btn btn-default"  type="submit" (click)="submit()">Thực hiện</button>
+</form>

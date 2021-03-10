@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row">
+    <div class="form-group" *ngIf="orders.length==0">
+      <h3 style="color:red">Không có đơn hàng nào cả!</h3>
+    </div>
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="orders.length!=0">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th>Mã ND</th>
+              <th>Mã ĐH</th>
+              <th>Ngày đặt hàng</th>
+              <th>Tổng tiền</th>
+              <th>Sẵn sàng</th>
+              <th>Trạng thái</th>
+              <th>Tiến độ(tt)</th>
+              <th>Lựa chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let o of orders | paginate: config; let i = index'>
+              <th scope="row">{{1 + i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</th>
+              <th>{{o.user_id}}</th>
+              <th>{{o.order_id}}</th>
+              <th>{{o.created_at}}</th>
+              <th>{{o.total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+              <th>
+                <span *ngIf="o?.ready=='0'">Chưa sẵn sàng</span>
+                <span *ngIf="o?.ready=='1'">Đã sẵn sàng</span>
+              </th>
+              <th>
+                <span *ngIf="o?.status=='0'">Chưa giao</span>
+                <span *ngIf="o?.status=='1'">Đã giao</span>
+                <span *ngIf="o?.status=='2'">Đã hủy</span>
+              </th>
+              <th>
+                <div *ngIf="o?.status!='2'">
+                  <a *ngIf="o?.ready=='0'" [routerLink]="['#']" (click)="completeready(o.order_id)">Đóng gói</a>
+                  <a *ngIf="o?.ready=='1'&&o?.status=='0'" [routerLink]="['#']" (click)="completestatus(o.order_id)">Giao</a>
+                  <span *ngIf="o?.ready=='1'&&o?.status=='1'">Đã xong</span>
+                </div>
+              </th>
+              <th>
+                <a [routerLink]="['../detail/'+o.order_id+'/'+o.user_id]">Xem chi tiết</a>/
+                <a *ngIf="o?.status!='1'" (click)="removeOrder(o)" style="cursor: pointer;"> Hủy</a>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
+</div>

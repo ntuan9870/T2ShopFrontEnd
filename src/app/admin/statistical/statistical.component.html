@@ -1,0 +1,99 @@
+<div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h4>Chọn thông tin cần thống kê</h4>
+				<label for="">Ngày</label>
+			  <form #dateFrom="ngForm" method="post"  style="display:flex" >
+				  <input type="date" class="form-control"  name="date" [(ngModel)]="date" required >
+				  <input type="submit" class="btn btn-success" (click)="Clickdate()" [disabled]="!dateFrom.valid">
+			  </form>
+			  <!-- <label for="">Tháng</label>
+			  <form #monthFrom="ngForm" method="post"  style="display:flex" >
+				  <input type="month" class="form-control"  name="month" [(ngModel)]="month" required >
+				  <input type="submit" class="btn btn-success" (click)="Clickmonth()" [disabled]="!monthFrom.valid">
+			  </form> -->
+			  <label for="">Tháng</label>
+			  <select class="form-control" [(ngModel)]="currentMonth" (change)="getRevenueMonth()">
+				<option *ngFor = "let m of ms; let i = index" [value]="m"><p *ngIf="m!=dt.getMonth()+1">Số đơn hàng tháng {{m}} của cửa hàng</p><p *ngIf="m==dt.getMonth()+1">Số đơn hàng tháng này của cửa hàng</p></option>
+			  </select>
+			  <label for="">Năm </label>
+			  <form #yearFrom="ngForm" method="post" class="form-group" style="display:flex"  >
+				  <input type="number" class="form-control" min="2019" max="2020" step="1" name="year" [(ngModel)]="year" required >
+				  <input type="submit" class="btn btn-success" (click)="Clickyear()" style="margin-left:20px;"  [disabled]="!yearFrom.valid" >
+			  </form>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="current_orders.length==0" >
+				<h4>Doanh thu của ngày hôm nay không có</h4>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="current_orders.length>0">
+				<table class="table table-bordered "  >
+				  <thead> 
+					  <tr class="bg-infor" >
+						  <th scope="col">STT</th>
+						  <th width="20%">Mã đơn hàng</th>
+						  <th width="20%">Tổng tiền</th>
+						  <th width="30%">Ngày mua</th>
+					  </tr>
+				  </thead>
+				  <tbody>
+					  <tr *ngFor="let item of current_orders; trackBy: trackByFn;let i = index" >
+						  <th>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</th>
+						  <th>{{item.order_id}}</th>
+						  <th>{{item.total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+						  <th>{{item.created_at|date:'yyyy-MM-dd HH:mm:ss '}}</th>
+					  </tr>
+				  </tbody>
+			  </table>
+			  <h5>Tổng doanh thu ngày hôm nay:{{sumtotal| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </h5>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="tableorders" id="content" #content #TABLE #table  #document_editor  >
+				<div class="export">
+					<!-- <button class="btn btn-success" (click)="openPDF()">Open PDF</button>
+					<input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF()"> -->
+					<input type="button" value="ExportTOExcel" class="btn btn-success" (click)="ExportTOExcel()" style="margin-left:10px;">
+					<input type="button" value="ExportTOWord" class="btn btn-success" (click)="saveAsDocx()" style="margin-left:10px;">
+			   </div>
+				<!-- <ejs-documenteditor #document_editor  [isReadOnly]=false  [enableWordExport]=true> </ejs-documenteditor> -->
+				<table class="table table-bordered "  >
+					<thead> 
+						<tr class="bg-infor" >
+							<th scope="col">STT</th>
+							<th width="20%">Mã đơn hàng</th>
+							<th width="20%">Tổng tiền</th>
+							<th width="30%">Ngày mua</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of orders| paginate: config; trackBy: trackByFn;let i = index" >
+							<th>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</th>
+							<th>{{item.order_id}}</th>
+							<th>{{item.total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+							<th>{{item.created_at|date:'yyyy-MM-dd HH:mm:ss '}}</th>
+						</tr>
+					</tbody>
+				</table>
+				<h5>Tổng doanh thu {{selected}}:{{total_orders| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </h5>
+				<pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+				<div *ngIf="pipechart">
+					<canvas baseChart 
+					[data]="pieChartData" 
+					[labels]="pieChartLabels" 
+					[chartType]="pieChartType"
+					[options]="pieChartOptions"
+					[plugins]="pieChartPlugins"
+					[legend]="pieChartLegend">
+					</canvas>
+				</div>
+				<canvas id="myChart" width="400" height="400"></canvas>
+			</div>
+			<div class="col-md-12" >
+				<canvas id="chart"></canvas>
+				<h3 *ngIf="currentMonth==dt.getMonth()+1" style="text-align: center;">Số đơn hàng của tháng này của cửa hàng</h3>
+				<h3 *ngIf="currentMonth!=dt.getMonth()+1" style="text-align: center;">Số đơn hàng của tháng {{currentMonth}} của cửa hàng</h3>
+			</div>
+		</div>
+		
+	</div>
+</div>
+

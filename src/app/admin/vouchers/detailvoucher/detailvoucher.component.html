@@ -1,0 +1,132 @@
+<a data-toggle="modal" data-target="#addModal" data-whatever="@mdo" class="float">
+    <i class="fa fa-plus my-float"></i>
+  </a>
+  <a (click) = 'location.back()' class="floatback">
+    <i class="fas fa-arrow-left my-float"></i>
+  </a>
+  <div class="card card-body">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Mã KH</th>
+          <th>Tên KH</th>
+          <th>Email KH</th>
+          <th>Điểm voucher</th>
+          <th>Điểm tích lũy</th>
+          <th>SPT</th>
+          <th>Đã dùng</th>
+          <th>Lựa chọn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of user_vouchers | paginate: config; let i = index">
+          <td>{{i}}</td>
+          <td>{{u.user_id}}</td>
+          <td>{{u.user_name}}</td>
+          <td>{{u.user_email}}</td>
+          <td>{{u.voucher_user_score}}</td>
+          <td>{{u.voucher_accumulation}}</td>
+          <td>{{u.amount_voucher}}</td>
+          <td>{{u.voucher_used}}</td>
+          <th>
+            <a class="btn btn-warning" style="margin-right: 10px;" value="Sửa" data-toggle="modal" data-target="#editModal" data-whatever="@mdo" (click)="editvoucherforuser(u.user_id,i)">Sửa</a>
+            <i><input type="submit" class="btn btn-danger" value="Xóa" (click)='removeUserFromVoucher(u.user_voucher_id)'/></i>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="pp">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tặng Voucher cho khách hàng tiềm năng</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #addmemberform = "ngForm">
+              <div class="form-group list_member">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Mã KH</th>
+                      <th>Tên khách hàng</th>
+                      <th>Điểm HT</th>
+                      <th>Tích lũy</th>
+                      <th>Số lượng</th>
+                      <th>Chọn KH này</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let u of users; let i = index" >
+                      <td>{{u.user_id}}</td>
+                      <td>{{u.user_name}}</td>
+                      <td>{{u.voucher_user_score}}</td>
+                      <td>{{u.voucher_accumulation}}</td>
+                      <th>
+                        <input type="number" style="width:40px;" value="1" [disabled]="selecte[i]==false" name="amount[{{i}}]" [(ngModel)]='amount[i]' (keyup)='checkChangeNumber(i)' (change)="checkChangeNumber(i)"/>
+                      </th>
+                      <th><input class="checkboxsl" type="checkbox" name="selecte[{{i}}]" [(ngModel)]='selecte[i]' (change)='changeApply()'></th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" [disabled]="ok!='yes'" class="btn btn-primary" (click) = 'add()'>Thêm những KH này</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tặng Voucher cho khách hàng tiềm năng</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #addmemberform = "ngForm">
+              <span class="info">Khách hàng: {{userEdit.user_name}}</span><br>
+              <span class="info">Email: {{userEdit.user_email}}</span><br>
+              <span class="info" *ngIf="userEdit.user_phone!='null'">Điện thoại: {{userEdit.user_phone}}</span><br>
+              <span class="info">Điểm Voucher: {{userEdit.voucher_user_score}}</span><br>
+              <span class="info">Điểm tích luỹ: {{userEdit.voucher_accumulation}}</span><br><br>
+              <div class="form-group info">
+                <label for="recipient-name" class="col-form-label">Số phiếu tặng:</label>
+                <input type="number" class="form-control" id="recipient-name" name="numberofvoucher" [(ngModel)]='numberofvoucher' (keyup)="checkChangeNumberEdit()" (change)="checkChangeNumberEdit()">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click) = 'postEditVoucherForUser()'>Sửa</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

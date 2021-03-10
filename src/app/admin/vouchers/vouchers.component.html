@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+      <h1 class="page-header col-md-12 col-lg-8 col-xl-8">Voucher</h1>
+      <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../voucher/add']"><button class="btn-add-promotion btn btn-success"><i class="fas fa-plus"> Thêm Voucher</i></button></a>
+   </div><!--/.row-->
+    <div class="row">
+      <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="card-body">
+          <table class="table table-striped" style="font-size: 13px;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th width="10%">Mã Voucher</th>
+                <th width="10%">Tên Voucher</th>
+                <th>Điểm Voucher</th>
+                <th>Giá trị, chiết khấu</th>
+                <th>Mức giá áp dụng</th>
+                <th>Số lượng voucher</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Áp dụng Voucher</th>
+                <th>Danh sách khách hàng</th>
+                <th>Lựa chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let v of vouchers | paginate: config; let i = index">
+                  <th scope="row">{{i}}</th>
+                  <th>{{v.voucher_id}}</th>
+                  <th>{{v.voucher_name}}</th>
+                  <th>{{v.voucher_score}}</th>
+                  <th *ngIf="v.voucher_discount!=0">{{v.voucher_discount}}%</th>
+                  <th *ngIf="v.voucher_value!=0">{{v.voucher_value | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+                  <th>{{v.voucher_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+                  <th>{{v.voucher_total}} voucher</th>
+                  <th>{{v.voucher_start}}</th>
+                  <th>{{v.voucher_end}}</th>
+                  <th style="text-align: center;">
+                    <input *ngIf="v.voucher_apply=='true'" type="checkbox" checked (change)='changeAppply(v.voucher_id)'/>
+                    <input *ngIf="v.voucher_apply!='true'" type="checkbox" (change)='changeAppply(v.voucher_id)'/>
+                  </th>
+                  <th><a [routerLink]="['../detailvoucher/'+v.voucher_id]">Danh sách KH</a></th>
+                  <th>
+                    <a class="btn btn-warning" value="Sửa" [routerLink]="['edit/'+v.voucher_id]">Sửa</a>
+                    <!-- <i><input type="submit" class="btn btn-danger" value="Xóa" (click)="removeVoucher(v.voucher_id)"/></i> -->
+                  </th>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+      </div>
+    </div>
+  </div>

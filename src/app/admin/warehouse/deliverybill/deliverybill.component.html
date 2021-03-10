@@ -1,0 +1,166 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h5>Danh sách phiếu xuất hàng</h5>
+        <!-- <input type="search" name="" id="" placeholder="Tìm kiếm theo mã phiếu xuất" class="form-control"> -->
+        <!-- <button class="btn-add-admin btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-plus">Tạo phiếu xuất kho</i></button> -->
+        <button class="btn-add-admin btn btn-success"  data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-plus">Lấy hàng cần xuất</i></button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <tr id="tbl-first-row">
+                <td>STT</td>
+                <td>Mã phiếu xuất</td>
+                <td>Người xuất</td>
+                <td>Ngày xuất</td>
+                <td>Xem</td>
+            </tr>
+            <tr *ngFor="let d of deliveryBills|paginate: config; trackBy: trackByFn;let i = index">
+                <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                <td>{{d.deliverybill_id}}</td>
+                <td>{{users[i].user_name}}</td>
+                <td>{{d.date}}</td>
+                <td><button class="btn-add-admin btn btn-success" data-toggle="modal" data-target=".bd-example-modal-lg" (click)="getdetail(d.deliverybill_id)"><i class="fas fa-eye"></i></button></td>
+            </tr>
+        </table>
+        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+
+     <!-- The Modal -->
+     <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Chi tiết phiếu xuất hàng</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã SP</td>
+                            <td>Tên SP</td>
+                            <td>Mã PX</td>
+                            <td>Số lượng</td>
+                            <!-- <td>Đơn giá</td> -->
+                            <td>Giá bán</td>
+                        </tr>
+                        <tr *ngFor="let d of detail|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{d.productid}}</td>
+                            <td>{{nameproduct[i].prod_name}}</td>
+                            <td>{{d.deliverybillid }}</td>
+                            <td style="margin-top: 10px;">{{d.amount}}</td>
+                            <td>{{d.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                            <!-- <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td> -->
+                            <!-- <td>{{p.prod_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td> -->
+                            <!-- <td><i class="fas fa-plus" style="cursor: pointer;" (click)="getdetail(d)" ></i></td> -->
+                        </tr>
+                    </table>
+                    <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Lấy hàng từ trong kho ra</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <input type="search" #txtKeyword placeholder="Tìm kiếm theo tên hàng trong kho" class="form-control" (keyup)="timkiem(txtKeyword.value)" >
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã hàng</td>
+                            <td>Tên hàng</td>
+                            <td>ĐVT</td>
+                            <td>Số lượng</td>
+                            <!-- <td>Đơn giá</td> -->
+                            <td>Giá bán</td>
+                            <td>SL cần xuất</td>
+                            <td>Chọn</td>
+                        </tr>
+                        <tr *ngFor="let p of products|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{p.prod_id}}</td>
+                            <td>{{p.prod_name}}</td>
+                            <td>{{p.unit}}</td>
+                            <td>{{inventory[i].amount}}</td>
+                            <!-- <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td> -->
+                            <td>{{p.prod_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                            <td><input type="number" min="1" max="{{inventory[i].amount}}"  name="product_amount" [(ngModel)]="product_amount" ></td>
+                            <td><i class="fas fa-plus" style="cursor: pointer;" (click)="addproducts(p,product_amount)" ></i></td>
+                        </tr>
+                    </table>
+                    <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="openform()" ><i class="fas fa-plus"></i></button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="allproducts.length>0" >
+        <div class="row">
+            <table class="table table-striped">
+                <tr id="tbl-first-row">
+                    <td>STT</td>
+                    <td>Mã hàng</td>
+                    <td>Tên hàng</td>
+                    <td>ĐVT</td>
+                    <!-- <td>Số lượng</td> -->
+                    <td>Số lượng</td>
+                    <!-- <td>Đơn giá</td> -->
+                    <td>Đơn giá</td>
+                    <td>Xóa</td>
+                </tr>
+                <tr *ngFor="let p of allproducts|paginate: config; trackBy: trackByFn;let i = index">
+                    <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                    <td>{{p.prod_id}}</td>
+                    <td>{{p.prod_name}}</td>
+                    <td>{{p.unit}}</td>
+                    <!-- <td>{{p.prod_amount}}</td> -->
+                    <!-- <input type="number" min=1  value="{{allamount[i]}}" disabled > -->
+                    <td>{{allamount[i]}}</td>
+                    <!-- <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td> -->
+                    <td>{{p.prod_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                    <td><i class="far fa-trash-alt" (click)="remove(p,allamount[i])" style="cursor: pointer;"></i></td>
+                </tr>
+            </table>
+            <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+        <div class="row">
+            <form method="post" #addSupplierForm="ngForm" >
+                <p>Người lập phiếu: {{user_name}}</p>
+                <div class="form-group">
+                    <label>Ngày xuất <i style="color: red;">(*)</i></label>
+                    <input type="date"  class="form-control"   name="date" [(ngModel)]="date" required>
+                </div>
+                <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success" value="Xuất" (click)="addDeliverybill()">
+            </form>
+        </div>
+    </div>
+</div>

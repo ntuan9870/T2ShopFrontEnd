@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "shop-287709": {
+      "hosting": {
+        "frontend": [
+          "shop-287709"
+        ]
+      }
+    }
+  }
+}

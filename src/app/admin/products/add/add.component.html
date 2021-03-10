@@ -1,0 +1,127 @@
+<div class="spinner" *ngIf="loading==true">
+  <div class="blob blob-0"></div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header"><i class="fas fa-mobile-alt"></i> Thêm thông tin sản phẩm</h1>
+  </div>
+</div><!--/.row-->
+<i style="color: red;">(*) là trường bắt buộc! </i>
+<div class="row" style="padding: 10px;">
+  <div class="col-xs-12 col-md-12 col-lg-12">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <form #addForm="ngForm" method="post" enctype="multipart/form-data">
+          <div class="row" style="margin-bottom:40px">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+              <div class="form-group" >
+                <label>Tên sản phẩm <i style="color: red;">(*)</i></label>
+                <!-- <input required type="text" id="name" name="name" class="form-control" [(ngModel)]="form.ten" #name="ngModel">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                  <div *ngIf="name.errors.required">
+                    Tên đăng nhập là trường bắt buộc!
+                  </div>
+                </div> -->
+                <select  [(ngModel)]="selectedProduct"  name="selectedProduct" (change)="checkid(selectedProduct)">
+                  <option class="form-control" *ngFor="let p of productWH" [value]="p.prod_id">{{p.prod_name }}</option>
+                </select>
+              </div>
+
+              <!-- <div class="form-group" >
+                <label>Giá sản phẩm <i style="color: red;">(*)</i></label>
+                <input required type="number" id="price" name="price" class="form-control" [(ngModel)]="form.price" #price="ngModel"  (keyup)="checkprice($event)" (change)="checkprice($event)">
+                <div *ngIf="price.invalid && (price.dirty || price.touched)" class="alert alert-danger">
+                  <div *ngIf="price.errors.required">
+                    Giá sản phẩm là trường bắt buộc!
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-group" >
+                <label>Ảnh sản phẩm <i style="color: red;">(*)</i></label>
+                <input required id="img" type="file" #file2 name="img" class="form-control d-none" onchange="" (change) = "onSelect($event)" [(ngModel)]="form.img" #img="ngModel"><br>
+                          <img id="avatar" style="background-color: rgb(255, 255, 255);" class="thumbnail" width="300px" src="./assets/admin/img/new_seo-10-512.png" (click)="file2.click()">
+                  <div *ngIf="img.invalid && (img.dirty || img.touched)" class="alert alert-danger">
+                    <div *ngIf="img.errors.required">
+                      Hình ảnh là trường bắt buộc!
+                    </div>
+                  </div>
+              </div>
+              <div class="form-group" >
+                <label>Phụ kiện</label>
+                <input type="text" id="accessories" name="accessories" class="form-control" [(ngModel)]="form.accessories" #accessories="ngModel">
+                <!-- <div *ngIf="accessories.invalid && (accessories.dirty || accessories.touched)" class="alert alert-danger">
+                  <div *ngIf="accessories.errors.required">
+                    Phụ kiện là trường bắt buộc!
+                  </div>
+                </div> -->
+              </div>
+              <div class="form-group" >
+                <label>Bảo hành</label>
+                <input type="text" id="warranty" name="warranty" class="form-control" [(ngModel)]="form.warranty" #warranty="ngModel">
+                <!-- <div *ngIf="warranty.invalid && (warranty.dirty || warranty.touched)" class="alert alert-danger">
+                  <div *ngIf="warranty.errors.required">
+                    Bảo hành là trường bắt buộc!
+                  </div>
+                </div> -->
+              </div>
+              <div class="form-group" >
+                <label>Khuyến mãi</label>
+                <!-- <input type="number" id="promotion" name="promotion" class="form-control" [(ngModel)]="form.promotion" #promotion="ngModel"  (keyup)="checkpromotion($event)" (change)="checkpromotion($event)"> -->
+                <select  [(ngModel)]="selectedOption"  name="selectedOption"  >
+                  <option class="form-control" *ngFor="let p of promotion" [value]="p.promotion_id">{{p.promotion_name }} / {{ p.promotion_infor}} % </option>
+                </select>
+                <!-- <div *ngIf="promotion.invalid && (promotion.dirty || promotion.touched)" class="alert alert-danger">
+                  <div *ngIf="promotion.errors.required">
+                    Khuyến mãi là trường bắt buộc!
+                  </div>
+                </div> -->
+              </div>
+              <div class="form-group" >
+                <label>Tình trạng <i style="color: red;">(*)</i></label>
+                <input required type="text" id="condition" name="condition" class="form-control" [(ngModel)]="form.condition" #condition="ngModel">
+                <div *ngIf="condition.invalid && (condition.dirty || condition.touched)" class="alert alert-danger">
+                  <div *ngIf="condition.errors.required">
+                    Tình trạng là trường bắt buộc!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" >
+                <label>Miêu tả <i style="color: red;">(*)</i></label>
+                <ckeditor [editor]="Editor" id="description"  required name="description" data="" [(ngModel)]="form.description" #description="ngModel" (change)="textindescription($event)"></ckeditor>
+                <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
+                  <div *ngIf="description.errors.required">
+                    Miêu tả là trường bắt buộc!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" >
+                <label>Số lượng <i style="color: red;">(*)</i></label>
+                <input required type="number" id="amount" name="amount" class="form-control" [(ngModel)]="form.amount" #amount="ngModel" (keyup)="checkamount($event)" (change)="checkamount($event)">
+                <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="alert alert-danger">
+                  <div *ngIf="amount.errors.required">
+                    Số lượng là trường bắt buộc!
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group" >
+                <label>Danh mục</label>
+                <select required name="cate" id="cate" class="form-control" [(ngModel)]="form.cate" #cate="ngModel">
+                  <option *ngFor="let c of allCategory" value="{{c.category_id}}">{{c.category_name}}</option>
+                  </select>
+
+              </div> -->
+              <div class="form-group" >
+                <label>Sản phẩm nổi bật <i style="color: red;">(*)</i></label><br>
+                Có: <input type="radio" name="featured" id="featured" value="1" [(ngModel)]="form.featured">
+                Không: <input type="radio" name="featured" value="0" [(ngModel)]="form.featured" checked>
+              </div>
+              <input type="submit" (click)="add()" [disabled]="!addForm.valid" name="submit" value="Thêm" class="btn btn-primary">
+              <a (click)="back()" class="btn btn-danger">Hủy bỏ</a>
+            </div>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div><!--/.row-->

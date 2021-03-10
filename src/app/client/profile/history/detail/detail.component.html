@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <ul class="list-group col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+      <li class="list-group-item"><a [routerLink]="['../../../']"><i class="far fa-edit"></i> Thông tin cá nhân</a></li>
+      <li class="list-group-item"><a [routerLink]="['../../../history']"><i class="far fa-eye"></i> Lịch sử mua hàng</a></li>
+      <li class="list-group-item"><a [routerLink]="['../../../changepass']"><i class="far fa-edit"></i> Đổi mật khẩu</a></li>
+    </ul>
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th>Tên sản phẩm</th>
+              <th>Hình đại diện</th>
+              <th>Giá</th>
+              <th>KM</th>
+              <th>Số lượng</th>
+              <th>Thành tiền</th>
+              <!-- <th>Lựa chọn</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let o of orderitems; let i = index'>
+              <th scope="row">{{i}}</th>
+              <th>{{o.product_name}}</th>
+              <th><img src="{{o.product_img}}" width="100px" alt=""></th>
+              <th>{{o.product_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+              <th>{{o.product_promotion}}%</th>
+              <th>{{o.product_amount}}</th>
+              <th>{{o.product_price*(100-o.product_promotion)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+              <!-- <th><a [routerLink]="['detail']">Xem chi tiết</a>/<a [routerLink]="['']"> Xóa</a></th> -->
+            </tr>
+          </tbody>
+        </table>
+        <h4>Tổng tiền của đơn hàng này là: {{order.total | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
+        <h5 *ngIf="order.ready==0 && order.status==0">Đơn hàng này đã được tiếp nhận trong quá trình xử lý</h5>
+        <div class="ship" *ngIf="ship!=null">
+          <h6 *ngIf="ship.status==0">Đơn hàng đang giao</h6>
+          <h6 *ngIf="ship.status==1">Đơn hàng đã giao</h6>
+          <h6>Người giao hàng: {{shipper.shipper_name}}</h6>
+          <h6>SĐT: +84{{shipper.shipper_phone}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

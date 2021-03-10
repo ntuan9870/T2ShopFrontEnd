@@ -1,0 +1,14 @@
+.navbar{
+  width: 100%;
+  background-color: orange;
+  height:50px;
+  position: fixed;
+  z-index: 1000;
+}
+.dropdown-menu a{
+  color: black;
+}
+.dropdown-menu a svg{
+  width: 15px;
+  height:15px;
+}

@@ -1,0 +1,106 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+  </div>
+<div class="row">
+    <div class="col-lg-12">
+      <h3 class="page-header">Thêm hàng hóa</h3>
+      <a [routerLink]="['../../warehouse/order']" type="button" class="btn btn-success"  style="float: right;  margin-bottom: 10px;"> <i class="fas fa-plus"></i>Đặt nhập hàng</a>
+      <input type="button" class="btn btn-success"  style="float: right; margin-right: 10px; margin-bottom: 10px;" value="Nhập hàng mới" (click)="ClickButton()" data-toggle="modal" data-target="#myModal">
+      <div class="col-md-4">
+        <input type="search" #txtKeyword class="form-control" (keyup)="timkiem(txtKeyword.value)" placeholder="Tìm kiếm theo tên sản phẩm">
+      </div>
+    </div>
+</div><!--/.row-->
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-striped">
+            <tr id="tbl-first-row">
+                <td>STT</td>
+                <td>Mã SP</td>
+                <td>Tên SP</td>
+                <td>ĐVT</td>
+                <td>Số lượng</td>
+                <td>Giá nhập</td>
+                <td>Thành tiền</td>
+                <td>Tăng SL</td>
+                <td>Update SL</td>
+                <td>Update tiền</td>
+                <!-- <td>Cập nhật</td> -->
+            </tr>
+            <tr *ngFor="let p of products|paginate: config; trackBy: trackByFn;let i = index">
+                <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                <td>{{p.prod_id}}</td>
+                <td>{{p.prod_name}}</td>
+                <td>Cái</td>
+                <td>{{inventory[i].amount}}</td>
+                <td>{{p.price}}</td>
+                <td><input type="number" value="{{p.prod_price}}" name="p.prod_price" [(ngModel)] = "p.prod_price" ></td>
+                <td><input type="number" min="{{inventory[i].amount}}" name="inventory[i].amount" [(ngModel)] = "inventory[i].amount" ></td>
+                <td><i class="far fa-edit" style="cursor: pointer;" (click)="updateamount(inventory[i].amount,inventory[i].id)"></i></td>
+                <td><i class="far fa-edit" style="cursor: pointer;" (click)="updateprice(p.prod_price,p.prod_id)"></i></td>
+            </tr>
+        </table>
+        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+   
+     <!-- The Modal -->
+    <div class="modal fade" id="myModal" >
+        <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Thêm sản phẩm mới vào kho</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="post" #addSupplierForm="ngForm" >
+                    <!-- <div class="form-group">
+                        <label>Mã sản phẩm <i style="color: red;">(*)</i></label>
+                        <input type="text"  class="form-control"    placeholder="Nhập mã sản phẩm" name="prod_id" [(ngModel)]="prod_id" required>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Tên sản phẩm <i style="color: red;">(*)</i></label>
+                        <input type="text"  class="form-control"   placeholder="Nhập tên sản phẩm" name="prod_name" [(ngModel)]="prod_name" required (keyup)="check_name(prod_name)">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá nhập sản phẩm <i style="color: red;">(*)</i></label>
+                        <input type="number"  class="form-control"   placeholder="Nhập giá nhập sản phẩm" name="price" [(ngModel)]="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>SL sản phẩm <i style="color: red;">(*)</i></label>
+                        <input type="number"  class="form-control"   placeholder="Nhập số lượng sản phẩm" name="prod_amount" [(ngModel)]="prod_amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại sản phẩm <i style="color: red;">(*)</i></label>
+                        <select  [(ngModel)]="selectedOption"  name="selectedOption" required >
+                            <option class="form-control" *ngFor="let c of categorys" [value]="c.category_id" >{{c.category_name }}</option>
+                          </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Kho <i style="color: red;">(*)</i></label>
+                        <select  [(ngModel)]="selectedWH"  name="selectedWH" (change)="checkcapcity(selectedWH)" required >
+                            <option class="form-control" *ngFor="let w of warehouses" [value]="w.warehouse_id" >{{w.warehouse_name }}</option>
+                          </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá bán sản phẩm <i style="color: red;">(*)</i></label>
+                        <input type="number" class="form-control"   placeholder="Nhập giá sản phẩm" name="prod_price" [(ngModel)]="prod_price" required>
+                    </div>
+                    <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addProductWareHouse()">
+                </form>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+        
+</div>

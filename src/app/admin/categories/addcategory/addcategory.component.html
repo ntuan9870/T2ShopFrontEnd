@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Danh mục sản phẩm</h1>
+  </div>
+</div><!--/.row-->
+
+<div class="row">
+  <div class="col-xs-12 col-md-5 col-lg-5">
+      <div class="panel panel-primary">
+        <h3>Thêm danh mục</h3>
+        <i style="color: red;">(*) là trường bắt buộc! </i>
+        <form #addCategory="ngForm">
+          <div class="card-header bg-success"*ngIf="resultadd=='success'">Thêm danh mục thành công!</div>
+          <div class="card-header bg-danger"*ngIf="resultadd!='success'&&resultadd!=''">Thêm danh mục thất bại!</div>
+          <div class="form-group">
+            <label>Tên danh mục <i style="color: red;">(*)</i></label>
+              <input type="text" #txtCategoryname (keyup) = "checkname(txtCategoryname.value)" name="category_name" class="form-control" placeholder="Tên danh mục..." autocomplete="off" required [(ngModel)]="category_name" #category_namecheck = "ngModel">
+              <div *ngIf="ch==false&&category_namecheck.invalid && (category_namecheck.dirty || category_namecheck.touched)" class="alert alert-danger">
+                <div *ngIf="category_namecheck.errors.required">
+                  Tên danh mục là trường bắt buộc!
+                </div>
+              </div>
+              <div *ngIf ="resultcheckname=='error' && ch==false" class="alert alert-danger">
+                  Tên danh mục đã bị trùng!
+              </div>
+          </div>
+          <div class="form-group">
+              <input type="submit" [disabled]="(!addCategory.valid)||resultcheckname=='error'" name="name" class="form-control btn btn-primary" placeholder="Tên danh mục..." value="Thực hiện" (click)="add()">
+          </div>
+        </form>
+      </div>
+  </div>
+  <div class="col-xs-12 col-md-7 col-lg-7">
+    <div class="panel panel-primary">
+      <h3>Danh sách danh mục</h3>
+      <div class="panel-body">
+        <div class="bootstrap-table">
+          <table class="table table-bordered">
+                    <thead>
+                      <tr class="bg-primary">
+                        <th>Tên danh mục</th>
+                        <th style="width:40%">Tùy chọn</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+            <tr *ngFor = 'let c of allCategory'>
+              <td>{{c.category_name}}</td>
+              <td>
+                  <a [routerLink]="['../../products/show/'+c.category_id]" class="btn btn-success"><i class="far fa-edit"></i> Xem</a>
+                  <a [routerLink]="['edit/'+c.category_id]" class="btn btn-warning"><i class="far fa-edit"></i> Sửa</a>
+                  <a [routerLink]="['#']"  class="btn btn-danger" (click)="removeCategory(c)"><i class="far fa-trash-alt"></i> Xóa</a>
+              </td>
+              </tr>
+                    </tbody>
+                </table>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div><!--/.row-->

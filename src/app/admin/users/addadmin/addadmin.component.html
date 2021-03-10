@@ -1,0 +1,63 @@
+<div class="spinner" *ngIf="loading==true">
+  <div class="blob blob-0"></div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Thêm thành viên</h1>
+  </div>
+</div><!--/.row-->
+<i style="color: red;">(*) là trường bắt buộc! </i>
+<div class="row">
+  <div class="col-sm-6">
+      <form #addAdminForm="ngForm" method="post">
+          <div class="form-group">
+            <label>Tên hiển thị <i style="color: red;">(*)</i></label>
+            <input type="text" name="user_name" class="form-control" placeholder="Tên hiển thị.." required minlength="4" [(ngModel)]="user_name" #usernamecheck='ngModel' autocomplete="off" (keyup)="checksamename()"/>
+            <div class="check-error" *ngIf="usernamecheck.invalid&&(usernamecheck.touched||usernamecheck.dirty)">
+              <span *ngIf="usernamecheck.errors.required">Tên hiển thị là trường bắt buộc!</span>
+              <span *ngIf="usernamecheck.errors.minlength">Tên hiển thị phải có ít nhất 4 ký tự!</span>
+            </div>
+            <span class="check-error" *ngIf="checksameu=='same'">Tên hiển thị đã bị trùng</span>
+          </div>
+          <div class="form-group">
+            <label>Email <i style="color: red;">(*)</i></label>
+              <input type="text" name="user_mail" class="form-control" placeholder="Email.." required email [(ngModel)]="user_email" #useremailcheck='ngModel' autocomplete="off" (keyup)="checksameemail()"/>
+              <div class="check-error" *ngIf="useremailcheck.invalid&&(useremailcheck.touched||useremailcheck.dirty)">
+                <span *ngIf="useremailcheck.errors.required">Email là trường bắt buộc!</span>
+                <span *ngIf="useremailcheck.errors.email">Vui lòng nhập đúng định dạng email!</span>
+              </div>
+              <span class="check-error" *ngIf="checksamee=='same'">Email đã được sử dụng!</span>
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu <i style="color: red;">(*)</i></label>
+            <input type="password" name="user_password" class="form-control" placeholder="Mật khẩu mới.." required minlength="8" [(ngModel)]="user_password" #userpasscheck='ngModel' autocomplete="off" (keyup)='checksamepass()'/>
+            <div class="check-error" *ngIf="userpasscheck.invalid&&(userpasscheck.touched||userpasscheck.dirty)">
+              <span *ngIf="userpasscheck.errors.required">Mật khẩu mới là trường bắt buộc!</span>
+              <span *ngIf="userpasscheck.errors.minlength">Mật khẩu mới phải có ít nhất 8 ký tự!</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nhập lại mật khẩu <i style="color: red;">(*)</i></label>
+            <input type="password" name="user_repassword" class="form-control" placeholder="Mật khẩu mới.." required minlength="8" [(ngModel)]="user_repassword" #userrepasscheck='ngModel' autocomplete="off" (keyup)='checksamepass()'/>
+            <div class="check-error" *ngIf="userrepasscheck.invalid&&(userrepasscheck.touched||userrepasscheck.dirty)">
+              <span *ngIf="userrepasscheck.errors.required">Nhập lại mật khẩu mới là trường bắt buộc!</span>
+            </div>
+            <span class="check-error" *ngIf="user_repassword!=''&&checksamep=='notsame'">Mật khẩu nhập lại không trùng khớp!</span>
+          </div>
+          <div class="form-group">
+            <label>Điện thoại</label>
+              <input type="text" name="user_phone" class="form-control" placeholder="Số điện thoại.." [(ngModel)]="user_phone" #userphonecheck='ngModel' (keyup)='checkphone()'/>
+              <span class="check-error" *ngIf="user_phone!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span>
+          </div>
+          <div class="form-group">
+            <label>Chức vụ <i style="color: red;">(*)</i></label>
+              <select name="user_level" class="form-control" [(ngModel)]="user_level">
+                <option value="1">Admin</option>
+                <option value="2">Nhân viên bán hàng</option>
+                <option value="3">Người dùng</option>
+              </select>
+          </div>
+          <input [disabled]="!addAdminForm.valid||checksameu=='same'||checksamee=='same'||checkerrorp==true" type="submit" name="submit" value="Sửa" class="btn btn-primary" (click)="addAdmin()"/>
+      </form>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<app-sidebar></app-sidebar>
+<div class="spinner" *ngIf="loading==true">
+  <div class="blob blob-0"></div>
+</div>
+<div class="card container">
+  <h3 style="margin-top:20px;color: chocolate;">Xác nhận đặt hàng</h3>
+  <form action="" #thanhtoamForm="ngForm">
+    <!-- <div class="row">
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <label for="usr">Họ và tên:</label>
+        <input type="text" class="form-control" id="usr" name="username" required [(ngModel)]='username' #checkusername='ngModel'>
+        <div *ngIf="checkusername.invalid&&(checkusername.dirty||checkusername.touched)">
+          <div *ngIf="checkusername.errors.required" style="color:red">
+            Vui lòng nhập họ và tên!
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <label for="pwd">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required email [(ngModel)]='useremail' #checkuseremail='ngModel'>
+        <div *ngIf="checkuseremail.invalid&&(checkuseremail.dirty||checkuseremail.touched)">
+          <div *ngIf="checkuseremail.errors.required" style="color:red">
+            Vui lòng nhập email!
+          </div>
+          <div *ngIf="checkuseremail.errors.email" style="color:red">
+            Vui lòng nhập email đúng định dạng!
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <label for="usr">Tên người nhận hàng:</label>
+        <input type="text" class="form-control" name="usernamereceive" required [(ngModel)]='form.user_name_receive' #checkusernamereceive='ngModel'>
+        <div *ngIf="checkusernamereceive.invalid&&(checkusernamereceive.dirty||checkusernamereceive.touched)">
+          <div *ngIf="checkusernamereceive.errors.required" style="color:red">
+            Vui lòng nhập tên người nhận hàng!
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <label for="usr">Số điện thoại người nhận hàng:</label>
+        <input type="text" class="form-control" id="usr" name="userphone" required [(ngModel)]='form.user_phone' #checkuserphone='ngModel' (keyup)="checkphonemin()" (change)="checkphonemin()">
+        <div *ngIf="checkuserphone.invalid&&(checkuserphone.dirty||checkuserphone.touched)">
+          <div *ngIf="checkuserphone.errors.required" style="color:red">
+            Vui lòng nhập số điện thoại!
+          </div>
+        </div>
+        <div style='color:red'>
+          <span *ngIf="form.user_phone!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span>
+        </div>
+      </div>
+      <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <label class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" for="pwd">Địa chỉ nhận hàng:</label>
+        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <input type="text" class="form-control" id="address" name="address" required [(ngModel)]='form.user_address' #checkuseraddress='ngModel'>
+          <div *ngIf="checkuseraddress.invalid&&(checkuseraddress.dirty||checkuseraddress.touched)">
+            <div *ngIf="checkuseraddress.errors.required" style="color:red">
+              Vui lòng nhập địa chỉ!
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <div class="row">
+            <select  class="form-control col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" name="sl_ward" id="sl_ward" [(ngModel)]="px">
+              <option *ngFor = "let w of ws; let i = index">{{w.Title}}</option>
+            </select>
+            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+              <select class="form-control" name="sl_district" id="sl_district" [(ngModel)]="qh" (change)="selectDistrict()">
+                <option *ngFor = "let d of districts">{{d.Title}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <label for="usr">Lời nhắn:</label>
+        <textarea rows="3" type="text" class="form-control" name="usermessage" [(ngModel)]='form.user_message'></textarea>
+      </div>
+      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <label for="usr">Sử dụng Voucher:</label>
+        <select name="select_voucher" id="select_voucher" class="form-control" [(ngModel)]="form.select_voucher" (change)="getVoucher()">
+          <option value="null">Không sử dụng Voucher</option>
+          <option *ngFor="let v of vouchers" value="{{v.voucher_id}}">{{v.voucher_name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <h4>Tổng tiền cần thanh toán: {{form.total | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
+    </div>
+    <button type="submit" class="form-group btn btn-primary" [disabled]="!thanhtoamForm.valid||loading==true||checkerrorp==true" (click)="addorder()">Thanh toán trực tiếp</button>
+  </form>
+  <hr>
+  <div style="margin-left: -15px;" class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="form-group">
+      <span style="text-align: center;">Hoặc thanh toán bằng</span>
+    </div>
+    <div #paypalRef></div>
+    <button [disabled]="!thanhtoamForm.valid||loading==true||checkerrorp==true" class="vnpay" (click)="thanhtoanvnpay()"></button>
+  </div>
+</div>

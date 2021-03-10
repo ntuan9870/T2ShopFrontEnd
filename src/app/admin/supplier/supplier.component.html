@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <h3 class="page-header col-md-12 col-lg-8 col-xl-8">Danh sách các nhà cung cấp</h3>
+        <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../supplier/add']" ><button class="btn-add-admin btn btn-success"><i class="fas fa-plus">Nhà cung cấp</i></button></a>
+     </div><!--/.row-->
+     <div class="row">
+        <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã nhà cung cấp</td>
+                            <td>Tên nhà cung cấp</td>
+                            <td>Điện thoại</td>
+                            <td>Địa chỉ</td>
+                            <td>Email</td>
+                            <td>Xem</td>
+                            <td>Sửa</td>
+                            <td>Xóa</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of supplier|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{s.supplier_id}}</td>
+                            <td>{{s.supplier_name}}</td>
+                            <td>{{s.supplier_phone}}</td>
+                            <td>{{s.supplier_address}}</td>
+                            <td>{{s.supplier_email}}</td>
+                            <td><a class="btn btn-success" [routerLink]="['../detail/'+s.supplier_id]"><i class="far fa-eye"></i></a></td>
+                            <td><a class="btn btn-warning" [routerLink]="['../edit/'+s.supplier_id]"><i class="far fa-edit"></i></a></td>
+                            <td><a class="btn btn-danger" (click)="deleteSuppiler(s)" style="cursor: pointer;"><i class="far fa-trash-alt"></i></a></td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

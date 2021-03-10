@@ -1,0 +1,43 @@
+<app-sidebar></app-sidebar>
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-striped" *ngIf="!empty">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Hình</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Khuyến mãi</th>
+            <th>Thành tiền</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of cartProductList | paginate: configcart; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{p.product.product_name}}</td>
+            <td><img src={{p.product.product_img}} width="100px" alt=""></td>
+            <td><input type="number" value={{p.num[i]}} name = "prod_num[{{i}}]" [(ngModel)] = "prod_num[i]" (change)='tinhthanhtien(i,p.product)'></td>
+            <td>{{p.product.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+            <td>{{promotion_infors[i]}}%</td>
+            <td>{{thanhtien[i]| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+            <td><a [routerLink]="['#']" (click)='removeProduct(i)'>Xóa</a></td>
+          </tr>
+          <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChangedCart($event)"></pagination-controls>
+        </tbody>
+      </table>
+      <h2 *ngIf = "empty" style="color:red">Giỏ hàng rỗng...</h2>
+      <a  *ngIf = "empty" style="margin-left:30px; float:right; font-size:20px"  [routerLink]="['']">Mua tiếp</a>
+      <div class="card-text" *ngIf = "!empty">
+        <h3 style="display: inline;">Tổng thanh toán: {{tongthanhtoan | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h3>
+        <a style="margin-left:30px; float:right; font-size:20px"  [routerLink]="['']">Mua tiếp</a>
+        <a style="margin-left:30px; float:right; font-size:20px" [routerLink]="['#']" (click) = "xoagiohang()">Xóa giỏ hàng</a>
+      </div>
+      <a [routerLink]="['/cart/thanhtoan/null']"><button *ngIf="cartProductList!=null" class="add-cart" (click)="xacnhan()"><i class="fas fa-cart-plus"></i>Xác nhận đặt hàng</button></a>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

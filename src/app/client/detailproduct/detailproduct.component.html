@@ -1,0 +1,132 @@
+<app-sidebar></app-sidebar>
+<div class="spinner" *ngIf="loading==true">
+  <div class="blob blob-0"></div>
+</div>
+<div class="card container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <div class="card-body">
+        <h3 class="card-title" style="text-align: center;">{{product.product_name}}</h3>
+        <div style="margin:10px auto;"><img class="container" id="avatar" src="" alt=""></div>
+        <div style="margin: 0px 20px 0px 20px;">
+          <h4 class="card-title" style="float:left">Giá: {{product.product_price*(100-promotion.promotion_infor)/100| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
+          <div style="float:right" *ngIf="ratingproduct!=0">
+            <h4 class="card-title" style="float:left">Đánh giá: </h4>
+            <span *ngIf="ratingproduct>0" class="fa fa-star checked"></span><span *ngIf="ratingproduct<1" class="fa fa-star"></span>
+            <span *ngIf="ratingproduct>1" class="fa fa-star checked"></span><span *ngIf="ratingproduct<2" class="fa fa-star"></span>
+            <span *ngIf="ratingproduct>2" class="fa fa-star checked"></span><span *ngIf="ratingproduct<3" class="fa fa-star"></span>
+            <span *ngIf="ratingproduct>3" class="fa fa-star checked"></span><span *ngIf="ratingproduct<4" class="fa fa-star"></span>
+            <span *ngIf="ratingproduct>4" class="fa fa-star checked"></span><span *ngIf="ratingproduct<5" class="fa fa-star"></span>
+          </div>
+        </div>
+        <div style="float:right" *ngIf="ratingproduct==0">
+          <h4 class="card-title" style="float:left">Đánh giá: Chưa có</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ctsp">
+      <h3 style="margin-top:20px;color: chocolate;">Chi tiết sản phẩm</h3>
+      <div><b>Tên sản phẩm: </b>{{product.product_name}}</div>
+      <div><b>Giá bán: </b> {{product.product_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</div>
+      <div *ngIf="promotion.promotion_status!=2" ><b>Giá khuyến mãi: </b> {{product.product_price*(100-promotion.promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</div>
+      <div><b>Phụ kiện: </b> {{product.product_accessories}}</div>
+      <div><b>Bảo hành: </b> {{product.product_warranty}}</div>
+      <div><b>Tình trạng: </b>{{product.product_condition}}</div>
+      <div><b>Miêu tả: </b><span [innerHTML]="product.product_description"></span></div>
+      <div><b>Khuyến mãi: </b>{{promotion.promotion_infor}}%</div>
+      <div><b>Khuyến mãi từ ngày: </b>{{promotion.start_date}}  đến {{promotion.end_date}}</div>
+      <div *ngIf="promotion.promotion_status==2"><b>Khuyến mãi đã hết hạn</b></div>
+      <button *ngIf="promotion.promotion_status!=2" class="add-cart" (click)="addtocart()"><i class="fas fa-cart-plus"></i> Đặt hàng online</button>
+      <button *ngIf="promotion.promotion_status==2" class="add-cart" (click)="addtocart1()"><i class="fas fa-cart-plus"></i> Đặt hàng online</button>
+    </div>
+  </div>
+</div>
+<div class="card container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngIf="user_id!=''">
+      <h3 style="margin-top:20px;color: chocolate;" *ngIf="user_id!=''">Đánh giá của bạn</h3>
+      <span *ngIf="rating==0">Vui lòng để lại đánh giá, chúng tôi sẽ cải thiện chất lượng sản phẩm trong tương lai!</span>
+      <form>
+          <div class="rate" *ngIf="user_id!=''">
+              <input type="radio" id="star5" name="rate" [value]="5" [(ngModel)]="rating"/>
+              <label for="star5" title="5 stars"></label>
+              <input type="radio" id="star4" name="rate" [value]="4" [(ngModel)]="rating"/>
+              <label for="star4" title="4 stars"></label>
+              <input type="radio" id="star3" name="rate" [value]="3" [(ngModel)]="rating"/>
+              <label for="star3" title="3 stars"></label>
+              <input type="radio" id="star2" name="rate" [value]="2" [(ngModel)]="rating"/>
+              <label for="star2" title="2 stars"></label>
+              <input type="radio" id="star1" name="rate" [value]="1" [(ngModel)]="rating"/>
+              <label for="star1" title="1 star"></label>
+          </div>
+          <b *ngIf="rating==1" style="color: red;">Chất lượng rất kém!</b>
+          <b *ngIf="rating==2" style="color: red;">Chất lượng kém!</b>
+          <b *ngIf="rating==3" style="color: orangered;">Chất lượng tạm ổn!</b>
+          <b *ngIf="rating==4" style="color: rgb(0, 194, 0);">Chất lượng ổn!</b>
+          <b *ngIf="rating==5" style="color: rgb(68, 255, 61);">Chất lượng tuyệt vời!</b><br><br>
+          <button  *ngIf="user_id!=''" type="submit" class="btn btn-primary" (click)="danhgia()">Gửi</button>
+      </form>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <h3 style="margin-top:20px;color: chocolate;">Đánh giá của mọi người</h3>
+      <span *ngIf="ratingproduct>0" class="fa fa-star checked"></span><span *ngIf="ratingproduct<1" class="fa fa-star"></span>
+      <span *ngIf="ratingproduct>1" class="fa fa-star checked"></span><span *ngIf="ratingproduct<2" class="fa fa-star"></span>
+      <span *ngIf="ratingproduct>2" class="fa fa-star checked"></span><span *ngIf="ratingproduct<3" class="fa fa-star"></span>
+      <span *ngIf="ratingproduct>3" class="fa fa-star checked"></span><span *ngIf="ratingproduct<4" class="fa fa-star"></span>
+      <span *ngIf="ratingproduct>4" class="fa fa-star checked"></span><span *ngIf="ratingproduct<5" class="fa fa-star"></span>
+      <p>{{ratingproduct}} sao là kết quả trung bình trên {{arrcount[0]}} đánh giá. </p>
+      <hr style="border:3px solid #f1f1f1">
+      <div class="row">
+        <div class="col-lg-10 col-xl-10">
+          <div class="progress">
+            <div class="progress-bar bg-success" [style.width.%]="arrcount[5]"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" [style.width.%]="arrcount[4]"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-info" [style.width.%]="arrcount[3]"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-warning" [style.width.%]="arrcount[2]"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-danger" [style.width.%]="arrcount[1]"></div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-xl-2">
+          <div style="margin-top: -2px;"><span>5 sao</span></div>
+          <div style="margin-top: -2px;"><span>4 sao</span></div>
+          <div style="margin-top: -2px;"><span>3 sao</span></div>
+          <div style="margin-top: -2px;"><span>2 sao</span></div>
+          <div style="margin-top: -2px;"><span>1 sao</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h3 style="margin-top:20px;color: chocolate;">Bình luận</h3>
+  <form #commentForm="ngForm">
+    <div class="form-group" *ngIf="user_id==''">Vui lòng <a [routerLink]="['/auth/login']">đăng nhập</a> để được bình luận!</div>
+    <div class="form-group" *ngIf="user_id!=''">
+      <label for="exampleFormControlTextarea1">Nội dung bình luận:</label>
+      <textarea class="form-control" name="comment_content" required [(ngModel)] = "comment_content" id="exampleFormControlTextarea1" rows="3" #checkcomment_content="ngModel"></textarea>
+      <div *ngIf="checkcomment_content.invalid&&(checkcomment_content.dirty||checkcomment_content.touched)">
+        <div *ngIf="checkcomment_content.errors.required">
+          <span style="color: red;">Nội dung bình luận không được trống!</span>
+        </div>
+      </div>
+    </div>
+    <input [disabled]="!commentForm.valid" *ngIf="user_id!=''" type="submit" class="btn btn-primary" (click)="addComment(commentForm)" value="Đăng bình luận"/>
+  </form>
+
+  <div class="list-group" style="margin-top:20px">
+    <button type="button" class="list-group-item list-group-item-light" *ngIf="comments!=null">Có {{comments.length}} bình luận cho sản phẩm này
+    </button>
+    <div *ngFor = "let c of comments" class="list-group-item">
+      <b>{{c.user_name}}</b>
+      <i> {{c.created_at}}</i>
+      <b class="btnremove" *ngIf="c.user_name==user_name" (click)='removeComment(c.comment_id)'>Xóa</b>
+      <p>{{c.comment_content}}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <ul class="list-group col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+      <li class="list-group-item"><a [routerLink]="['profile']"><i class="far fa-edit"></i> Thông tin cá nhân</a></li>
+      <li class="list-group-item"><a [routerLink]="['history']"><i class="far fa-eye"></i> Lịch sử mua hàng</a></li>
+      <li class="list-group-item"><a [routerLink]="['changepass']"><i class="far fa-edit"></i> Đổi mật khẩu</a></li>
+    </ul>
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+        <div class="card-body">
+          <form #editUserForm="ngForm" method="post">
+            <div class="form-group">
+              <label>Tên hiển thị</label>
+              <input type="text" name="user_name" class="form-control" placeholder="Tên hiển thị.." required minlength="4" [(ngModel)]="user_name" #usernamecheck='ngModel' autocomplete="off" (keyup)="checksamename()"/>
+              <div class="check-error" *ngIf="usernamecheck.invalid&&(usernamecheck.touched||usernamecheck.dirty)">
+                <span *ngIf="usernamecheck.errors.required">Tên hiển thị là trường bắt buộc!</span>
+                <span *ngIf="usernamecheck.errors.minlength">Tên hiển thị phải có ít nhất 4 ký tự!</span>
+              </div>
+              <span class="check-error" *ngIf="checksameu=='same'">Tên hiển thị đã bị trùng</span>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+                <input type="text" name="user_mail" class="form-control" placeholder="Email.." required email [(ngModel)]="user_email" #useremailcheck='ngModel' autocomplete="off" (keyup)="checksameemail()"/>
+                <div class="check-error" *ngIf="useremailcheck.invalid&&(useremailcheck.touched||useremailcheck.dirty)">
+                  <span *ngIf="useremailcheck.errors.required">Email là trường bắt buộc!</span>
+                  <span *ngIf="useremailcheck.errors.email">Vui lòng nhập đúng định dạng email!</span>
+                </div>
+                <span class="check-error" *ngIf="checksamee=='same'">Email đã được sử dụng!</span>
+            </div>
+            <div class="form-group">
+              <label>Điện thoại</label>
+                <input type="text" name="user_phone" class="form-control" placeholder="Số điện thoại.." [(ngModel)]="user_phone" #userphonecheck='ngModel' (keyup)="checkphone()"/>
+                <span class="check-error" *ngIf="user_phone!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span>
+            </div>
+            <input [disabled]="!editUserForm.valid||checksameu=='same'||checksamee=='same'||checkerrorp==true" type="submit" name="submit" value="Sửa" class="btn btn-primary" (click)="postEditUser()"/>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>

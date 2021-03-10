@@ -1,0 +1,39 @@
+<div style="width: 100%; display: block; height:50px; background-color:orange;">
+    <nav class="navbar navbar-expand-lg navbar-light col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1 col-xl-10 offset-xl-1" style="position: relative;">
+      <!-- <a class="navbar-brand" [routerLink]="['/shipper']">T2SHOP-Shipper</a> -->
+      <a class="navbar-brand" [routerLink]="['/shipper']"> <img src="./assets/t2shopshipper.png" style="width:200px; height:50px; margin-top: 10px;"> </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" style=" margin-left: 80%;">
+        <!-- <form class="form-inline mr-auto">
+          <input style="width:300px;" class="form-control mr-sm-4" type="search" placeholder="Tìm kiếm theo tên sản phẩm" aria-label="Search" name="key" (keyup)='search()' [(ngModel)]="key">
+          <a [routerLink]="['search/'+key]"><button class="btn btn-secondary my-2 my-sm-0">Search</button></a>
+        </form>
+        <div class="btn-group" *ngIf='checklogin'>
+          <a style="width: 50px; margin-right: -5px;" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-gift"><span>{{this.vouchers.length}}</span></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right voucher-dropdown">
+            <div class="arrow"></div>
+            <h5 style="margin-left: 20px;">Ưu đãi cho bạn</h5>
+            <a  *ngFor="let v of vouchers; let i = index" class="dropdown-item" type="button" (click)="select_voucher(v.voucher_id)"><i class="fas fa-gift"></i> {{v.voucher_name}}</a>
+          </div>
+        </div> -->
+        <!-- <a [routerLink]="['/filter']" style="width: 50px; margin-right: -5px;"><div><i class="fas fa-filter"></i></div></a> -->
+        <!-- <a [routerLink]="['/cart']" style="width: 50px; margin-right: 10px;"><div><i class="fas fa-shopping-cart"><span>{{totalamount}}</span></i></div></a> -->
+        <div class="btn-group my-2 my-lg-0" *ngIf='checklogin'>
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{shipper_name}}
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item btn-info" [routerLink]="['shipperinfor']"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg> Thông tin</a>
+            <a class="dropdown-item btn-info" (click)="logout()"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+  

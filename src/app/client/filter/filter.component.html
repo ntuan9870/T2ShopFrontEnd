@@ -1,0 +1,56 @@
+<app-sidebar></app-sidebar>
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <form #filterForm="ngForm">
+          <div class="form-group">
+            <label for="my-input">Text</label>
+            <select class="form-control" name="sl_price" id="sl_price" [(ngModel)]="sl_price" (change)="filter()">
+              <option value="0">Giảm dần</option>
+              <option value="1">Tăng dần</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="sl_time" id="sl_time" [(ngModel)]="sl_time" (change)="filter()">
+              <option value="1">Mới nhất</option>
+              <option value="0">Cũ nhất</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="sl_featured" id="sl_featured" [(ngModel)]="sl_featured" (change)="filter()">
+              <option value="1">Có</option>
+              <option value="0">Không</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="submit" value="Lọc" [disabled]="!filterForm.valid">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Sản phẩm phù hợp với kết quả lọc này!</h5>
+        <ul class="list-row-sp">
+          <li *ngFor="let p of products|paginate: config" class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+            <div class="card product-item">
+              <div class="card-header">{{p.product_name}}</div>
+              <div class="card-body">
+                <div class="promotion" *ngIf="p.product_promotion!=0">
+                  <div style="background-color: red; height:25px; line-height: 25px; text-align: center;" *ngIf="p.product_promotion!=0">{{p.product_promotion}}%</div>
+                  <div class="trai"></div>
+                  <div class="phai"></div>
+                </div>
+                <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
+              </div>
+              <div class="card-footer">
+                <i class="fas fa-dollar-sign"> <span> {{p.product_price*(100-p.product_promotion)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+               <i class="fas fa-cart-plus" style="float:right" (click)="addtocart(p,p.product_promotion)"></i>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </div>
+    <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+</div>

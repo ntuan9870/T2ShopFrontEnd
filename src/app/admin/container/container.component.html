@@ -1,0 +1,45 @@
+<marquee>Chào mừng đến với trang quản trị của cửa hàng T2Shop, mọi thông tin vui lòng liên hệ 0366424164!</marquee>
+<ul>
+  <li>
+    <a [routerLink]="['categories/add']">
+      <h2>Loại sản phẩm #1</h2>
+      <p>Có tất cả: {{countcate}} loại sản phẩm</p>
+    </a>
+  </li>
+  <li>
+    <a [routerLink]="['users/show']">
+      <h2>Người dùng #2</h2>
+      <p>Có tất cả: {{countuser}} người dùng</p>
+      <p>Admin: {{countsuperadmin}} người</p>
+      <p>Nhân viên bán hàng: {{countadmin}} người</p>
+      <p>Khách hàng: {{countmember}} người</p>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <h2>Sản phẩm #3</h2>
+      <p>Có tất cả: {{countproduct}} sản phẩm</p>
+      <p>Nổi bật: {{countfeaturedproduct}} sản phẩm</p>
+    </a>
+  </li>
+  <li>
+    <a [routerLink]="['orders/show']">
+      <h2>Đơn hàng #4</h2>
+      <p>Có tất cả: {{countorder}} đơn hàng</p>
+      <p>Giao: {{countstatustorder1}} đơn hàng</p>
+      <p>Chưa hàng: {{countstatustorder0}} đơn hàng</p>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <h2>Bình luận #5</h2>
+      <p>Có tất cả: {{countcomment}} bình luận</p>
+    </a>
+  </li>
+  <li>
+    <a href="#">
+      <h2>Đánh giá #6</h2>
+      <p>Có tất cả: {{countrating}} đánh giá</p>
+    </a>
+  </li>
+</ul>

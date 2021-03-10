@@ -1,0 +1,61 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+  </div>
+<div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Thêm nhà cung cấp</h1>
+    </div>
+</div><!--/.row-->
+<div class="row">
+    <div class="col-sm-6">
+        <form #addSupplierForm="ngForm" method="post">
+            <div class="form-group">
+                <label>Tên nhà cung cấp <i style="color: red;">(*)</i></label>
+                <input type="text"   #name="ngModel" class="form-control" placeholder="Nhập tên nhà cung cấp" name="supplier_name" [(ngModel)]="supplier_name" required >
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                    <div *ngIf="name.errors.required">
+                       Tên nhà cung cấp là bắt buộc
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email <i style="color: red;">(*)</i></label>
+                <input type="email" id="email" #email="ngModel" [email]="true" placeholder="Nhập email nhà cung cấp" class="form-control" name="supplier_email"[(ngModel)]="supplier_email" required>
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                    <div *ngIf="email.errors.required">
+                       Email bắt buộc
+                    </div>
+                    <div *ngIf="email.errors.email">
+                        Email chưa đúng định dạng
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Phone <i style="color: red;">(*)</i></label>
+                <input type="number" id="phone"  #phone="ngModel"  minlength="10"   maxlength="11"  placeholder="Nhập SĐT nhà cung cấp" class="form-control" name="supplier_phone"[(ngModel)]="supplier_phone" required >
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+                    <div *ngIf="phone.errors.required">
+                       Số điện thoại bắt buộc
+                    </div>
+                </div>
+                <!-- <div *ngIf="supplier_phone!='' && supplier_phone.length<10">
+                    Ít nhất 10 số
+                </div>
+                <div *ngIf="supplier_phone!='' && supplier_phone.length>11">
+                    Nhiều nhất 11 số
+                </div> -->
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ <i style="color: red;">(*)</i></label>
+                <input type="text"  #address="ngModel" placeholder="Nhập địa chỉ nhà cung cấp" class="form-control" name="supplier_address"[(ngModel)]="supplier_address" required>
+                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="alert alert-danger">
+                    <div *ngIf="address.errors.required">
+                       Địa chỉ nhà cung cấp là bắt buộc
+                    </div>
+                </div>
+            </div>
+            <input [disabled]="!addSupplierForm.valid" type="submit" name="submit" value="Thêm NCC" class="btn btn-primary" (click)="addSupplier()" />
+        </form>
+    </div>
+</div>

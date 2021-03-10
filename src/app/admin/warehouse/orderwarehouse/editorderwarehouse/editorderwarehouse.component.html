@@ -1,0 +1,41 @@
+<!-- <div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Cập nhật phiếu đặt hàng</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form #addwarehouseForm="ngForm" method="post">
+            <div class="form-group">
+                <label>Tên người tạo<i style="color: red;">(*)</i></label>
+                <input type="number" class="form-control"  name="supplier_name" [(ngModel)]="cost" required disabled >
+            </div>
+            <div class="form-group">
+                <label>Tên nhà cung câp<i style="color: red;">(*)</i></label>
+                <input type="number" class="form-control"  name="supplier_name" [(ngModel)]="cost" required disabled >
+            </div>
+            <div class="form-group">
+                <label>Tổng tiền hàng<i style="color: red;">(*)</i></label>
+                <input type="number" class="form-control" placeholder="Tổng tiền " name="cost" [(ngModel)]="cost" required disabled >
+            </div>
+            <div class="form-group">
+                <label>Cần trả  được cho NCC <i style="color: red;">(*)</i></label>
+                <input type="number" placeholder="Tiền phải trả" class="form-control" name="money" [(ngModel)]="money" required (keyup)="inputmoney()">
+                <div id="money_error"  style="color: red;"></div>
+            </div>
+            <div class="form-group">
+                <label>Số tiền nợ NCC <i style="color: red;">(*)</i></label>
+                <input type="number" placeholder="Tiền phải trả" class="form-control" name="debt" [(ngModel)]="debt" required disabled>
+            </div>
+            <div class="form-group">
+                <label>Dự kiến ngày có thể nhập hàng <i style="color: red;">(*)</i></label>
+                <input type="date"  class="form-control" name="prod_promotion" name="time"  [(ngModel)]="time" >
+            </div>
+            <button [disabled]="!addwarehouseForm.valid" class="btn btn-primary" type="submit" name="submit" (click)="editOrderWarehouse()" ><i class="far fa-paper-plane"></i>Đặt và gửi email</button>
+        </form>
+    </div>
+</div> -->

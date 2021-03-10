@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <h5>Danh sách các đơn hàng chưa được giao</h5>
+    </div>
+    <div class="row">
+        <h6 *ngIf="orders.length==0" >Không có đơn hàng nào cần giao</h6>
+        <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã đơn hàng</td>
+                            <td>Người nhận</td>
+                            <td>Ngày đặt hàng</td>
+                            <td>Tổng tiền</td>
+                            <td>HT thanh toán</td>
+                            <td>Địa chỉ giao</td>
+                            <td>Nhận</td>
+                            <!-- <td>Hủy</td> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of orders|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{o.order_id}}</td>
+                            <td>{{o.user_name}}</td>
+                            <td>{{o.created_at|date:'yyyy-MM-dd HH:mm:ss '}}</td>
+                            <td>{{o.total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                            <td>{{o.form}}</td>
+                            <td>
+                                {{o.address}}
+                            </td>
+                            <td><i class="fas fa-thumbs-up" style="cursor: pointer; color: rgb(163, 119, 37);" (click)="take(o)" ></i></td>
+                            <!-- <td *ngIf="o?.status=='0'"><i class="fas fa-window-close" style="cursor: pointer;"></i></td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+.container{
+  margin-top: 20px;
+}
+.add-cart{
+  width: 500px;
+  height: 100px;
+  /* bottom: 20px; */
+  background-image: linear-gradient(red, rgb(190, 6, 0));
+  /* outline: none; */
+  margin-top: 20px;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+}

@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a [routerLink]="['../admin']"><img src="./assets/t2shop.png" style="width:80px; height:50px; margin-top: 10px;"></a>
+  <!-- <a class="navbar-brand" [routerLink]="['']">T2ADMIN</a> -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <form class="form-inline mr-auto">
+      <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+    </form>
+    <div class="btn-group my-2 my-lg-0">
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{user_name}}
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" [routerLink]="['users/edit/'+user_id]"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg> Thông tin</a>
+        <a (click)="logout()" class="dropdown-item" href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a>
+      </div>
+    </div>
+  </div>
+</nav>

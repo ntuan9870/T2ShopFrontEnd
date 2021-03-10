@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-md-6"><h3>Chỉnh sửa khuyến mãi</h3></div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <form #editPromotionForm="ngForm" method="post" >
+            <div class="form-group">
+                <label>Tên chương trình <i style="color: red;">(*)</i></label>
+                <input type="text" class="form-control" placeholder="Tên chương trình....." name="promotion_name" [(ngModel)]="promotion_name" required  >
+            </div>
+            <div class="form-group">
+                <label>Trạng thái <i style="color: red;">(*)</i></label>
+                <label for="">Kích hoạt</label>
+                <input type="radio" name="promotion_status" value="1" [(ngModel)]="promotion_status" selected>
+                <!-- <label for="">Chưa áp dụng</label>
+                <input type="radio"  name="promotion_status" value="0" [(ngModel)]="promotion_status"> -->
+                <label for="">Hết hạn</label>
+                <input type="radio"  name="promotion_status" value="2" [(ngModel)]="promotion_status">
+            </div>
+            <div class="form-group">
+                <label>Thời gian <i style="color: red;">(*)</i></label>
+                <input type="date"  class="form-control" name="start_date"  [(ngModel)]="start_date"> đến <input type="date"  class="form-control" name="end_date" [(ngModel)]="end_date" required >
+            </div>
+            <div class="form-group">
+                <label>Giá trị <i style="color: red;">(*)</i></label>
+                <input type="number" placeholder="Nhập phần trăm khuyến mãi" class="form-control" name="promotion_infor"[(ngModel)]="promotion_infor" required>
+            </div>
+            <input [disabled]="!editPromotionForm.valid" type="submit" name="submit" value="Sửa KM" class="btn btn-primary" (click)="editPromotion()" />
+        </form>
+    </div>
+</div>

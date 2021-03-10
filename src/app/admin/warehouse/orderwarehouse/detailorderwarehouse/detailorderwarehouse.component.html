@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row" >
+            <h4>Chi tiết phiếu đặt hàng nhập</h4>
+        </div>
+        <!-- <button class="btn btn-success">Xuất file excel</button> -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <ul *ngFor="let item of orderWh">
+            <!-- <li *ngFor="let item of orderWh">{{item.type}} : {{item.value}}</li> -->
+            <li>Người tạo:{{user['user_name']}}</li>
+            <li>Công ty cung cấp: {{supplier['supplier_name']}}</li>
+            <li>Đơn giá:{{item['cost']| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+            <li>Thành tiền:{{item['money']| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+            <li>Nợ:{{item['debt']| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+            <li *ngIf="item['status']=='0'">Trạng thái: Phiếu tạm</li>
+            <li *ngIf="item['status']=='1'">Trạng thái: Hoàn thành</li>
+            <li>Ngày tạo:{{item.created_at|date:'yyyy-MM-dd HH:mm:ss '}}</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered " >
+            <thead> 
+                <tr class="bg-infor" >
+                    <th>STT</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>ĐVT</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of detail| paginate: config; trackBy: trackByFn;let i = index" >
+                    <th>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</th>
+                    <th>{{item.product_id}}</th>
+                    <th>{{item.name_item}}</th>
+                    <th>{{item.unit_item}}</th>
+                    <th>{{item.amount_item}}</th>
+                    <th>{{item.cost_item| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+                    <th>{{item.price_item| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+                </tr>
+            </tbody>
+        </table>
+        <a  style="cursor: pointer;" (click)="quayve()" routerLinkActive="router-link-active" >Quay về</a>
+    </div>
+</div>

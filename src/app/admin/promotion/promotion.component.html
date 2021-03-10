@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <h3 class="page-header col-md-12 col-lg-8 col-xl-8">Danh sách các chương trình khuyễn mãi</h3>
+        <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../promotion/add']" ><button class="btn-add-admin btn btn-success"><i class="fas fa-plus"> Chương trình khuyến mãi</i></button></a>
+     </div><!--/.row-->
+     <div class="row">
+         <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã KM</td>
+                            <td>Tên chương trình</td>
+                            <td>Từ ngày</td>
+                            <td>Đến ngày</td>
+                            <td>Hạn</td>
+                            <td>Khuyến mãi</td>
+                            <td>Trạng thái</td>
+                            <td>Hành động</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of promotion|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{p.promotion_id}}</td>
+                            <td>{{p.promotion_name}}</td>
+                            <td>{{p.start_date}}</td>
+                            <td>{{p.end_date}}</td>
+                            <td>
+                                <span *ngIf="end[i+(this.config['currentPage']-1)*this.config['itemsPerPage']]=='cl' && p?.promotion_status=='2'">Đã hết hạn</span>
+                                <span *ngIf=" end[i+(this.config['currentPage']-1)*this.config['itemsPerPage']]!='cl' ">
+                                    {{end[i+(this.config['currentPage']-1)*this.config['itemsPerPage']]}} ngày 
+                                    <i *ngIf=" end[i+(this.config['currentPage']-1)*this.config['itemsPerPage']]<5 "class="fas fa-exclamation-triangle" style="color: red;"></i>
+                                    <i *ngIf=" end[i+(this.config['currentPage']-1)*this.config['itemsPerPage']]>=5 " class="fas fa-check-circle" style="color: green;"></i>
+                                </span>
+                            </td>
+                            <td>{{p.promotion_infor}} %</td>
+                            <td>
+                                <span *ngIf="p?.promotion_status=='1'">Đã kích hoạt</span>
+                                <!-- <span *ngIf="p?.promotion_status=='0'">Chưa kích hoạt</span> -->
+                                <span *ngIf="p?.promotion_status=='2'">Hết hạn</span>
+                            </td>
+                            <td><a *ngIf="p?.promotion_status=='0'" (click)="editstatus(p)" >Kích hoạt</a>/ 
+                                <!-- <a (click)="removePromotion(p)">Xóa</a>  -->
+                                <a [routerLink]="['../edit/'+p.promotion_id]" >Sửa</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+         </div>
+     </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="row wrapper container">
+  <nav id="sidebar" class="sidebar d-none d-sm-none d-md-block col-md-4 col-lg-3 col-xl-2">
+    <div class="card">
+      <a class="card-header" [routerLink]="['/admin']"><span class="icon"><i class="fas fa-home"></i></span>Home</a>
+      <a href="#categorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
+      <span class="icon"><i class="fas fa-mobile-alt"></i></span>Loại sản phẩm</a>
+      <ul class="collapse list-unstyled" id="categorySubmenu">
+          <li><a [routerLink]="['categories/add']"><i class="fas fa-eye"></i> Xem</a></li>
+          <li><a [routerLink]="['categories/add']"><i class="fas fa-plus"></i> Thêm</a></li>
+      </ul>
+      <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
+        <span class="icon"><i class="fas fa-file"></i></span>Tài khoản</a>
+
+      <ul class="collapse list-unstyled" id="userSubmenu">
+          <li><a [routerLink]="['users/show']"><i class="fas fa-eye"></i> Xem</a></li>
+          <li *ngIf="user_level==1"><a [routerLink]="['users/add']"><i class="fas fa-plus"></i> Thêm User</a></li>
+      </ul>
+      <a class="card-header" [routerLink]="['orders/show']"><span class="icon"><i class="fas fa-shopping-cart"></i></span>Đơn hàng</a>
+      <a class="card-header" [routerLink]="['statistical']"><span class="icon"><i class="fas fa-chart-pie"></i>
+      </span>Thống kê</a>
+      <a class="card-header" [routerLink]="['promotion']"><span class="icon"><i class="fas fa-percent"></i>
+      </span>Khuyến mãi</a>
+      <a href="#warehouse" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
+      <span class="icon"><i class="fas fa-warehouse"></i></span>Kho</a>
+      <ul class="collapse list-unstyled" id="warehouse">
+        <li><a [routerLink]="['warehouse']"><i class="fas fa-eye"></i> Xem</a></li>
+        <li><a [routerLink]="['warehouse/add']"><i class="fas fa-plus"></i> Nhập hàng</a></li>
+        <li><a [routerLink]="['warehouse/deliverybill']"><i class="fas fa-minus"></i> Xuất hàng</a></li>
+        <!-- <li><a [routerLink]="['users/add']"><i class="fas fa-dolly-flatbed"></i> Tồn hàng</a></li> -->
+        <!-- <li><a [routerLink]="['warehouse/order']"><i class="fas fa-file-import"></i> Đặt hàng nhập</a></li> -->
+      </ul>
+      <a href="#partner" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
+        <span class="icon"><i class="fas fa-handshake"></i></span>Đối tác</a>
+        <ul class="collapse list-unstyled" id="partner">
+          <li><a  [routerLink]="['supplier']"><span class="icon"><i class="fas fa-truck"></i>
+          </span>Nhà cung cấp</a></li>
+          <li><a  [routerLink]="['shipper']"><span class="icon"><i class="fas fa-biking"></i></span>Shipper</a></li>
+        </ul>
+      <a class="card-header" [routerLink]="['voucher']"><span class="icon"><i class="fas fa-gifts"></i></span>Voucher</a>
+      <a class="card-header" [routerLink]="['accessories']"><span class="icon"><i class="fas fa-headphones"></i></span>Phụ kiện</a>
+    </div>
+  </nav>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-8 offset-md-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2" style="background-color: rgb(241, 241, 241); padding-top: 55px; min-height: 100vh;">
+  <router-outlet></router-outlet>
+</div>

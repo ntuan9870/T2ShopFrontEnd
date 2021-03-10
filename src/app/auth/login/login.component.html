@@ -1,0 +1,73 @@
+<div class="bodythu2">
+  <div class="container">
+    <div class="d-flex justify-content-center h-100">
+      <div class="card">
+        <div class="card-header">
+          <h3>Đăng nhập</h3>
+          <div class="d-flex justify-content-end social_icon">
+            <span><i class="fab fa-facebook-square" (click)="facebookLogin()"></i></span>
+            <span><i class="fab fa-google-plus-square" (click)="googleLogin()"></i></span>
+            <span><i class="fab fa-twitter-square"></i></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group" *ngIf="wrongacc!=''">
+            <span style="color: red;">{{wrongacc}}</span>
+          </div>
+          <form #loginForm="ngForm">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="email" name="email" class="form-control" placeholder="Email.." required email [(ngModel)] = "email" #checkemail="ngModel" autocomplete="off">
+              </div>
+              <div *ngIf="checkemail.invalid&&(checkemail.dirty||checkemail.touched)">
+                <div *ngIf="checkemail.errors.required" class="checkerror">
+                    Email là trường bắt buộc!
+                </div>
+                <div *ngIf="checkemail.errors.email" class="checkerror">
+                  Vui lòng nhập email đúng định dạng!
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="password" name="password" [(ngModel)]="password" #checkpassword="ngModel" minlength="8" required>
+              </div>
+              <div *ngIf="checkpassword.invalid&&(checkpassword.dirty||checkpassword.touched)">
+                <div *ngIf="checkpassword.errors.required" class="checkerror">
+                  Mật khẩu là trường bắt buộc!
+                </div>
+                <div *ngIf="checkpassword.errors.minlength" class="checkerror">
+                  Mật khẩu phải có ít nhất 8 ký tự!
+                </div>
+              </div>
+            </div>
+
+            <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (success)="handleSuccess($event)"></ngx-recaptcha2>
+
+            <div class="row align-items-center remember">
+              <input type="checkbox" name = "check" [(ngModel)]="check">Nhớ tài khoản
+            </div>
+            <div class="form-group">
+              <input [disabled]="!loginForm.valid||captcha==false" type="submit" value="Đăng nhập" (click)="login()" class="btn float-right login_btn">
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-center links">
+            Bạn chưa có tài khoản?<a [routerLink]="['/auth/register']">Đăng ký</a>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a [routerLink]="['../forgotpassword/sendemail']">Quên mật khẩu?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

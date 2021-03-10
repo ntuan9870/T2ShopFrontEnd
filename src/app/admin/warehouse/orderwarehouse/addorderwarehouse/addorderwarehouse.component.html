@@ -1,0 +1,132 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>Đặt hàng nhập</h5>
+        <button class="btn btn-success" (click)="openexcel()">Import Excel</button>
+        <button class="btn btn-success" style="margin-left:10px;"data-toggle="modal" data-target=".bd-example-modal-sm" >Cách 2</button>
+        <table class="table table-bordered ">
+            <thead> 
+                <tr class="bg-infor" >
+                    <th *ngFor="let key of keys">{{key}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of dataSheet | async">
+                    <td *ngFor="let key of keys">
+                      {{item[key]}}
+                    </td>
+                </tr> 
+            </tbody>
+        </table>
+        <!-- <button class="btn btn-success import" (change)="onChange($event)">Chọn file dữ liệu</button> -->
+        <div class="excel" *ngIf="excel==true">
+            <input type="file" (change)="onChange($event)" #inputFile value="Chọn file dữ liệu"> 
+            <button class="btn btn-success import" (click)="removeData()">Remove Data</button>
+            <div *ngIf="isExcelFile === false">
+            This is not an Excel file
+            </div>
+        </div>
+        <div class="table" >
+            <table class="table table-striped">
+                <tr id="tbl-first-row">
+                    <td>STT</td>
+                    <td>Mã hàng</td>
+                    <td>Tên hàng</td>
+                    <td>ĐVT</td>
+                    <td>Số lượng</td>
+                    <td>Đơn giá</td>
+                    <td>Thành tiền</td>
+                    <td>Hủy</td>
+                </tr>
+                <tr *ngFor="let p of allproducts|paginate: config; trackBy: trackByFn;let i = index">
+                    <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                    <td>{{p.prod_id}}</td>
+                    <td>{{p.prod_name}}</td>
+                    <td>{{p.unit}}</td>
+                    <td>{{product_amount[i]}}</td>
+                    <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
+                    <td>{{product_price[i]| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                    <td><i class="fas fa-window-close" style="cursor: pointer;" (click)="remove(p)"></i></td>
+            </table>
+            <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <form #addwarehouseForm="ngForm" method="post">
+            <div class="form-group">
+                <label>Người lập phiếu: {{user_name}}<i style="color: red;">(*)</i></label>
+            </div>
+            <div class="form-group">
+                <label>Tên nhà cung câp<i style="color: red;">(*)</i></label>
+                <select [(ngModel)]="selectedOption" name="selectedOption" required>
+                    <option *ngFor="let s of supplier" [value]="s.supplier_id"  >{{s.supplier_name}}</option> 
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tổng tiền hàng<i style="color: red;">(*)</i></label>
+                <input type="number" class="form-control" placeholder="Tổng tiền " name="cost" [(ngModel)]="cost" required disabled >
+            </div>
+            <div class="form-group">
+                <label>Cần trả  được cho NCC <i style="color: red;">(*)</i></label>
+                <input type="number" placeholder="Tiền phải trả" class="form-control" name="money" [(ngModel)]="money" required (keyup)="inputmoney()">
+                <div id="money_error"  style="color: red;"></div>
+            </div>
+            <div class="form-group">
+                <label>Số tiền nợ NCC <i style="color: red;">(*)</i></label>
+                <input type="number" placeholder="Tiền phải trả" class="form-control" name="debt" [(ngModel)]="debt" required disabled>
+            </div>
+            <div class="form-group">
+                <label>Dự kiến ngày có thể nhập hàng <i style="color: red;">(*)</i></label>
+                <input type="date"  class="form-control" name="prod_promotion" name="time"  [(ngModel)]="time" required>
+            </div>
+            <button *ngIf="excel==true" [disabled]="!addwarehouseForm.valid" class="btn btn-primary" type="submit" name="submit" (click)="addOrderWarehouse()" ><i class="far fa-paper-plane"></i>Đặt và gửi email</button>
+            <button [disabled]="!addwarehouseForm.valid" class="btn btn-primary" type="submit" name="submit" (click)="addOrderWarehouse1()" ><i class="far fa-paper-plane"></i>Đặt </button>
+        </form>
+    </div>
+    <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Tìm hàng trong kho</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <input type="search" #keyword (keyup)="search(keyword.value)" placeholder="Tìm theo tên sản phẩm">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã hàng</td>
+                            <td>Tên hàng</td>
+                            <td>ĐVT</td>
+                            <td>Đơn giá</td>
+                            <td>Số lượng</td>
+                            <td>Thành tiền</td>
+                            <td>Thêm</td>
+                        </tr>
+                        <tr *ngFor="let p of products|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{p.prod_id}}</td>
+                            <td>{{p.prod_name}}</td>
+                            <td>{{p.unit}}</td>
+                            <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
+                            <td><input type="number" min="1" name="product_amount[i]" [(ngModel)]="product_amount[i]"></td>
+                            <td><input type="number" name="product_price[i]" [(ngModel)]="product_amount[i]*p.price"  disabled ></td>
+                            <td><i class="fas fa-plus" style="cursor: pointer;" (click)="add(p,product_amount[i],product_amount[i]*p.price)"></i></td>
+                        </tr>
+                    </table>
+                    <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

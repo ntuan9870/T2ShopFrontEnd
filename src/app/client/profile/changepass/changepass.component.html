@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <ul class="list-group col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+      <li class="list-group-item"><a [routerLink]="['/profile']"><i class="far fa-edit"></i> Thông tin cá nhân</a></li>
+      <li class="list-group-item"><a [routerLink]="['/profile/history']"><i class="far fa-eye"></i> Lịch sử mua hàng</a></li>
+      <li class="list-group-item"><a [routerLink]="['#']"><i class="far fa-edit"></i> Đổi mật khẩu</a></li>
+    </ul>
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+        <div class="card-body">
+          <form #editUserForm="ngForm" method="post">
+            <div class="form-group">
+              <label>Mật khẩu mới</label>
+              <input type="password" name="user_password" class="form-control" placeholder="Mật khẩu mới.." required minlength="8" [(ngModel)]="user_password" #userpasscheck='ngModel' autocomplete="off" (keyup)='checksamepass()'/>
+              <div class="check-error" *ngIf="userpasscheck.invalid&&(userpasscheck.touched||userpasscheck.dirty)">
+                <span *ngIf="userpasscheck.errors.required">Mật khẩu mới là trường bắt buộc!</span>
+                <span *ngIf="userpasscheck.errors.minlength">Mật khẩu mới phải có ít nhất 8 ký tự!</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nhập lại mật khẩu mới</label>
+              <input type="password" name="user_repassword" class="form-control" placeholder="Mật khẩu mới.." required minlength="8" [(ngModel)]="user_repassword" #userrepasscheck='ngModel' autocomplete="off" (keyup)='checksamepass()'/>
+              <div class="check-error" *ngIf="userrepasscheck.invalid&&(userrepasscheck.touched||userrepasscheck.dirty)">
+                <span *ngIf="userrepasscheck.errors.required">Nhập lại mật khẩu mới là trường bắt buộc!</span>
+              </div>
+              <span class="check-error" *ngIf="user_repassword!=''&&checksamep=='notsame'">Mật khẩu nhập lại không trùng khớp!</span>
+            </div>
+            <input [disabled]="!editUserForm.valid||checksamep=='notsame'" type="submit" name="submit" value="Sửa" class="btn btn-primary" (click)="postChangePass()"/>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>

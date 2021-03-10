@@ -1,0 +1,42 @@
+<div class="row">
+   <h1 class="page-header col-md-12 col-lg-8 col-xl-8">Danh sách User</h1>
+   <a class="col-md-12 col-lg-4 col-xl-4" *ngIf="user_level==1" [routerLink]="['../../users/add']"><button class="btn-add-admin btn btn-success"><i class="fas fa-plus"> Thêm Admin</i></button></a>
+</div><!--/.row-->
+<div class="row">
+  <div class="col-sm-12">
+      <table class="table table-striped">
+          <thead>
+            <tr id="tbl-first-row">
+                <td>STT</td>
+                <td>User_ID</td>
+                <td>Tên hiển thị</td>
+                <td>Email</td>
+                <td>Số điện thoại</td>
+                <td>Chức vụ</td>
+                <td>Sửa</td>
+                <td>Xóa</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users | paginate: config ; let i = index">
+                <td>{{1 + i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                <td>{{u.user_id}}</td>
+                <td>{{u.user_name}}</td>
+                <td>{{u.user_email}}</td>
+                <td *ngIf="u.user_phone=='null'">Ko có số điện thoại</td>
+                <td *ngIf="u.user_phone!='null'">{{u.user_phone}}</td>
+                <td><span *ngIf="u.user_level==1">Quản lý</span>
+                    <span *ngIf="u.user_level==2">Nhân viên bán hàng</span>
+                    <span *ngIf="u.user_level==3">Khách hàng</span>
+                </td>
+                <td><a [routerLink]="['../edit/'+u.user_id]" *ngIf="user_level<u.user_level||user_id==u.user_id"><i class="far fa-edit"></i></a></td>
+                <td><a style="cursor: pointer;" (click)="removeUser(u)" *ngIf="user_level<u.user_level||user_id==u.user_id"><i class="far fa-trash-alt"></i></a></td>
+            </tr>
+          </tbody>
+  </table>
+
+  <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+
+    </div>
+</div>
+<span style="color:red">Bạn không thể sửa hoặc xóa thành viên lớn hơn hoặc cùng cấp!</span>

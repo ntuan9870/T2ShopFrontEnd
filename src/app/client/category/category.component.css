@@ -1,0 +1,53 @@
+.container{
+  margin-top: 10px;
+}
+.card{
+  padding:0;
+  margin: 0;
+}
+.list-row-sp{
+  margin: 0;
+  padding: 0;
+}
+.list-row-sp li{
+  margin:0;
+  padding:0;
+  list-style-type: none;
+  float: left;
+}
+.product-item{
+  margin: 3px 3px 3px 3px;
+  height: 300px;
+}
+.card-body{
+  padding:25px;
+}
+.fa-cart-plus:hover{
+  cursor: pointer;
+}
+.promotion{
+  margin-right: -22px;
+  margin-top: -26px;
+  display: inline;
+  float: right;
+  color:white;
+  font-weight: bold;
+  padding:3px;
+  font-size: 8px;
+}
+.trai{
+  border-top: 10px solid red;
+  border-right: 10px solid transparent;
+  float: left;
+  width: 25%;
+}
+.phai{
+  border-top: 10px solid red;
+  border-left: 10px solid transparent;
+  float: left;
+  width: 25%;
+}
+.row label{
+  padding-top: 8px;
+  margin-right: -20px;
+}

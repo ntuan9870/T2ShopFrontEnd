@@ -1,0 +1,15 @@
+p{
+    cursor: pointer;
+    /* margin-top: 5px; */
+}
+.option{
+   margin-left: 30px;
+}
+ul{
+    list-style: none;
+    margin-top:40px;
+}
+li{
+    border-bottom: 1px solid darkolivegreen;
+    height: 40px;
+}

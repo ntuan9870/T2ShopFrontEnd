@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-12" style="display:flex; background: darkgray;">
+        <p (click)="infor()">Thông tin</p>
+        <p (click)="infororder()"class="option" >Lịch sử đặt hàng nhập</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="infor col-md-6" *ngIf="table_infor==true">
+            <ul *ngFor="let s of supplier;trackBy: trackByFn" >
+                <li>Mã nhà cung cấp: {{s.supplier_id}}</li>
+                <li>Tên nhà cung cấp: {{s.supplier_name}}</li> 
+                <li>Địa chỉ nhà cung cấp: {{s.supplier_address}}</li> 
+                <li>SĐT nhà cung cấp: +84 {{s.supplier_phone}}</li>
+                <li>Email nhà cung cấp: {{s.supplier_email}}</li>
+                <li>Tổng tiền mua từ nhà cung cấp: {{cost| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+                <li>Tổng tiền đã trả cho nhà cung cấp: {{money | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>  
+                <li>Tổng tiền nợ nhà cung cấp: {{debt | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>  
+                <!-- <li *ngFor="let s of supplier;trackBy: trackByFn"> {{s.supplier_name}}</li> -->
+            </ul>
+            <a (click)="quaylai()" style="cursor: pointer;" >Quay lại</a>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-striped" *ngIf="table_order==true">
+                <tr id="tbl-first-row">
+                    <td>STT</td>
+                    <td>Mã phiếu nhập</td>
+                    <td>Người lập phiếu</td>
+                    <td>Trạng thái</td>
+                    <td>Tổng tiền</td>
+                    <td>Đã trả</td>
+                    <td>Nợ</td>
+                    <td>Thời gian nhận hàng</td>
+                </tr>
+                <tr *ngFor="let o of order|paginate: config; trackBy: trackByFn;let i = index">
+                    <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                    <td>{{o.orderWh_id}}</td>
+                    <td>{{o.user}}</td>
+                    <td> 
+                        <span *ngIf="o?.status=='0'">Phiếu tạm</span>
+                        <span *ngIf="o?.status=='1'">Hoàn thành</span>
+                        <span *ngIf="o?.status=='2'">Đã hủy</span>
+                        <span *ngIf="o?.status=='3'">Đã chấp nhận hàng</span>
+                        <span *ngIf="o?.status=='4'">Trả hàng</span>
+                    </td>
+                    <td>{{o.cost| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                    <td>{{o.money| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                    <td>{{o.debt| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                    <td>{{o.time}}</td>
+                </tr>
+            </table>
+            <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+    <ul class="list-group col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+      <li class="list-group-item"><a [routerLink]="['../']"><i class="far fa-edit"></i> Thông tin cá nhân</a></li>
+      <li class="list-group-item"><a [routerLink]="['../history']"><i class="far fa-eye"></i> Lịch sử mua hàng</a></li>
+      <li class="list-group-item"><a [routerLink]="['../changepass']"><i class="far fa-edit"></i> Đổi mật khẩu</a></li>
+    </ul>
+    <div class="form-group" *ngIf="orders.length==0">
+      <h3 style="color:red">Không có đơn hàng nào cả!</h3>
+    </div>
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" *ngIf="orders.length!=0">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th>Ngày đặt hàng</th>
+              <th>Tổng tiền</th>
+              <th>Sẵn sàng</th>
+              <th>Trạng thái</th>
+              <th>Thanh toán</th>
+              <th>Lựa chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let o of orders | paginate: config; let i = index'>
+              <th scope="row">{{i}}</th>
+              <th>{{o.created_at}}</th>
+              <th>{{o.total | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
+              <th>
+                <span *ngIf="o?.ready=='0'">Chưa sẵn sàng</span>
+                <span *ngIf="o?.ready=='1'">Đã sẵn sàng</span>
+              </th>
+              <th>
+                <span *ngIf="o?.status=='0'">Chưa giao</span>
+                <span *ngIf="o?.status=='1'">Đã giao</span>
+                <span *ngIf="o?.status=='2'">Đã hủy</span>
+              </th>
+              <th>{{o.form}}</th>
+              <th><a [routerLink]="['detail/'+o.order_id]">Chi tiết</a>/<a *ngIf="o?.status!='1'" [routerLink]="['#']" (click)="removeOrder(o)"> Hủy</a></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
+</div>

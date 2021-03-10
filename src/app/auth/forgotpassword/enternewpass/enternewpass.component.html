@@ -1,0 +1,40 @@
+<div class="bodythu2">
+  <div class="container">
+    <div class="d-flex justify-content-center h-100">
+      <div class="card">
+        <div class="card-header">
+          <h3>Quên mật khẩu</h3>
+        </div>
+        <div class="card-body">
+          <form #forgotPassForm="ngForm">
+            <span style="color:white">Nhập mật khẩu mới:</span><hr>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="password" name="pass" class="form-control" minlength="8" placeholder="Mật khẩu mới.." required [(ngModel)] = "pass" #checkpass="ngModel" autocomplete="off">
+                <div *ngIf="checkpass.invalid&&(checkpass.dirty||checkpass.touched)">
+                  <div *ngIf="checkpass.errors.required" class="checkerror">
+                      Mật khẩu mới là trường bắt buộc!
+                  </div>
+                  <div *ngIf="checkpass.errors.minlength" class="checkerror">
+                    Mật khẩu mới phải có ít nhất 8 kí tự!
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input [disabled]="!forgotPassForm.valid" type="submit" value="Xác nhận" (click)="xacNhan()" class="btn float-right login_btn">
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-center links">
+            <a href="../login">Quay lại đăng nhập</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

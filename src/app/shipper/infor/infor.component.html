@@ -1,0 +1,88 @@
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <button class="btn btn-success" data-toggle="modal" data-target=".bd-example-modal-sl"><i class="fas fa-edit">Thay đổi mật khẩu</i></button>
+            <!-- <div class="col-md-3">
+                <ul>
+                    <li data-toggle="modal" data-target=".bd-example-modal-sl" >Thay đổi mật khẩu</li>
+                    <li>Lịch sử đơn hàng</li>
+                </ul>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>STT</td>
+                            <td>Mã đơn hàng</td>
+                            <td>Người nhận</td>
+                            <td>Ngày đặt hàng</td>
+                            <td>Tổng tiền</td>
+                            <td>Thanh toán</td>
+                            <td>Địa chỉ giao</td>
+                            <td>Trạng thái</td>
+                            <td>Giao</td>
+                            <td>Hủy</td> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of ships|paginate: config; trackBy: trackByFn;let i = index">
+                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                            <td>{{s.order_id}}</td>
+                            <td>{{orders[i].user_name}}</td>
+                            <td>{{orders[i].created_at|date:'yyyy-MM-dd HH:mm:ss '}}</td>
+                            <td>{{orders[i].total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                            <td>{{orders[i].form}}</td>
+                            <td>
+                                {{orders[i].address}}
+                            </td>
+                            <td>
+                                <!-- <span *ngIf="s.status==0" >Chưa xong</span> -->
+                                <i *ngIf="s.status==0" class="fas fa-exclamation-triangle" style="color: red;"></i>
+                                <!-- <span *ngIf="s.status==1" >Xong</span> -->
+                                <i *ngIf="s.status==1" class="fas fa-check-circle" style="color: green;"></i>
+                            </td>
+                            <td>
+                                <i *ngIf="s.status!=1" style="cursor: pointer; color: rgb(185, 54, 185);" class="fas fa-hand-holding-heart" (click)="updateShip(s)"></i>
+                            </td>
+                            <td *ngIf="s?.status=='0'">
+                                <i class="fas fa-window-close" style="cursor: pointer; color: red;" (click)="destroyShip(s)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-sl"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Sửa mật khẩu</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                   <form #editPromotionForm="ngForm" method="post">
+                       <div class="form-group">
+                            <label>Nhập mật khẩu mới<i style="color: red;">(*)</i></label>
+                            <input type="password" minlength="8" placeholder="Nhập mật khẩu mới" class="form-control" name="shipper_password"  [(ngModel)]="shipper_password" required  >
+                       </div>
+                        <div class="form-group">
+                            <label>Nhập lại mật khẩu<i style="color: red;">(*)</i></label>
+                            <input type="password" minlength="8" placeholder="Xác nhận lại mật khẩu" class="form-control" name="shipper_password_cf"  [(ngModel)]="shipper_password_cf" required >
+                        </div>
+                        <input [disabled]="!editPromotionForm.valid" type="submit" value="Sửa" class="btn btn-success" (click)="editPW()">
+                   </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

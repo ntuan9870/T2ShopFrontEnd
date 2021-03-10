@@ -1,0 +1,219 @@
+.container{
+  margin-top:20px;
+}
+.ctsp div{
+  margin: 10px 0px 10px 0px;
+}
+.ctsp div b{
+  color: blue;
+  font-size: 18px;
+}
+.add-cart{
+  width: 500px;
+  height: 100px;
+  position: absolute;
+  /* bottom: 20px; */
+  background-image: linear-gradient(red, rgb(190, 6, 0));
+  /* outline: none; */
+  margin-top: 20px;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+}
+.add-cart:hover{
+  cursor: pointer;
+}
+#avatar{
+  max-width: 500px;
+}
+.btnremove{
+  color:red;
+  float: right;
+  font-weight: bold;
+}
+.btnremove:hover{
+  cursor: pointer;
+}
+.checked {
+  color: orange;
+}
+.fa-star{
+  line-height: 30px;
+}
+.dg{
+  font-size:30px
+}
+.rate {
+  margin-left: -18px;
+  height: 46px;
+  padding: 0 10px;
+}
+.rate:not(:checked) > input {
+  position:absolute;
+}
+.rate:not(:checked) > label {
+  float: left;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate{
+  width:170px;
+}
+.rate:not(:checked) > label:hover,s
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate input{
+  visibility: hidden;
+}
+.rate label:before{
+  float: right;
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate > label:hover ~ label {
+  color: #deb217;
+}
+.rate > input:checked + label:hover
+{
+  color: #c59b08;
+}
+.heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.fa {
+  font-size: 25px;
+}
+
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+}
+
+.middle {
+  float: left;
+  width: 70%;
+  margin-top: 10px;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 18px; background-color: #4CAF50;}
+.bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+.bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+.bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+.bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  /* Hide the right column on small screens */
+  .right {
+    display: none;
+  }
+}
+.progress{
+  margin-top: 5px;
+}
+.textstar{
+  float: left;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  background: #000000;
+  opacity: 40%;
+  overflow: hidden;
+}
+.spinner div:first-child {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  box-shadow: 0 3px 3px 0 rgba(255, 56, 106, 1);
+  transform: translate3d(0, 0, 0);
+  animation: spin 2s linear infinite;
+}
+.spinner div:first-child:after,
+.spinner div:first-child:before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.spinner div:first-child:before {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  box-shadow: 0 3px 3px 0 rgb(255, 228, 32);
+  -webkit-animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
+}
+.spinner div:first-child:after {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
+  animation: spin 1.5s linear infinite;
+}

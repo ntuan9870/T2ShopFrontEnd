@@ -1,0 +1,14 @@
+ul{
+    list-style: none;
+    /* border: 1px solid; */
+    margin-top: 20px;
+    background-color: rgb(151, 101, 72);
+}
+li{
+    cursor: pointer;
+    height: 40px;
+    border-bottom: 1px solid;
+}
+#myModal{
+    margin-top: 25px;
+}

@@ -1,0 +1,91 @@
+<div class="bodythu2">
+    <div class="container">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-header">
+            <h3 style="z-index: 999;">Đăng nhập Shipper</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group" *ngIf="wrongacc!=''">
+              <span style="color: red;">{{wrongacc}}</span>
+            </div>
+            <form #loginForm="ngForm">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  </div>
+                  <input type="number" name="phone" class="form-control" placeholder="Phone.." minlength="9" maxlength="10" required phone [(ngModel)] = "phone" #checkemail="ngModel" autocomplete="off">
+                </div>
+                <div *ngIf="checkemail.invalid&&(checkemail.dirty||checkemail.touched)">
+                  <div *ngIf="checkemail.errors.required" class="checkerror">
+                      SĐT là trường bắt buộc!
+                  </div>
+                  <div *ngIf="checkemail.errors.email" class="checkerror">
+                    Vui lòng nhập SĐT đúng định dạng!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                  </div>
+                  <input type="password" class="form-control" placeholder="password" name="password" [(ngModel)]="password" #checkpassword="ngModel" minlength="8" required>
+                </div>
+                <div *ngIf="checkpassword.invalid&&(checkpassword.dirty||checkpassword.touched)">
+                  <div *ngIf="checkpassword.errors.required" class="checkerror">
+                    Mật khẩu là trường bắt buộc!
+                  </div>
+                  <div *ngIf="checkpassword.errors.minlength" class="checkerror">
+                    Mật khẩu phải có ít nhất 8 ký tự!
+                  </div>
+                </div>
+              </div>
+  
+              <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (success)="handleSuccess($event)"></ngx-recaptcha2>
+  
+              <div class="row align-items-center remember">
+                <input type="checkbox" name = "check" [(ngModel)]="check">Nhớ tài khoản
+              </div>
+              <div class="form-group">
+                <input [disabled]="!loginForm.valid||captcha==false" type="submit" value="Đăng nhập" (click)="login()" class="btn float-right login_btn">
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-center">
+              <a data-toggle="modal" data-target=".bd-example-modal-sl" style="cursor: pointer; color: white;">Quên mật khẩu?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade bd-example-modal-sl"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Gửi mã xác nhận</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                   <form #editPromotionForm="ngForm" method="post">
+                      <div class="form-group">
+                        <label>Nhập số điện thoại<i style="color: red;">(*)</i></label>
+                        <input type="number" minlength="10" placeholder="Nhập số điên thoại" class="form-control" name="phone_forgot"  [(ngModel)]="phone_forgot" required  >
+                      </div>
+                      <input [disabled]="!editPromotionForm.valid" type="submit" value="Gửi mã" class="btn btn-success" (click)="SendPhone()">
+                   </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

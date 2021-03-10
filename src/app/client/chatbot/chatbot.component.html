@@ -1,0 +1,18 @@
+<a data-toggle="modal" data-target="#addModal" data-whatever="@mdo" class="float" (click)="showchatbox()">
+    <i class="fas fa-comment-dots"></i>
+</a>
+<div #chatbox id="chatbox" class="col-sm-3 col-md-3 col-lg-3">
+    <div id="chatbox-topbar">
+      <i class="fas fa-comment-dots" style="margin-right: 5px;"></i>
+      Chat với trợ lý ảo T2Shop
+      <a data-toggle="modal" data-target="#addModal" data-whatever="@mdo" (click)="showchatbox2()"><i class="fas fa-minus" style="position: absolute; right: 10px; line-height: 50px;"></i></a>
+    </div>
+    <div id="chatbox-content" #scrollMe>
+      <div *ngFor="let m of arrMessages">
+          <div *ngIf="m.customer_chatbot=='chatbot'" class="chatbox-t2shop"><div>{{m.message_content}}</div></div>
+          <div *ngIf="m.customer_chatbot=='customer'" class="chatbox-customer"><div>{{m.message_content}}</div></div>
+    </div>
+    <div id="chat-input">
+        <input type="text" placeholder="Nội dung chat.." name="chatbotmessage" id="message" [(ngModel)]="chatbotmessage" (keyup)="submitMessage($event)" autocomplete="off">
+    </div>
+</div>
