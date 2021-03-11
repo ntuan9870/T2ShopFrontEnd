@@ -105,3 +105,19 @@
   box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
   animation: spin 1.5s linear infinite;
 }
+
+@media only screen and (min-width: 767px) and (max-width: 991px) {
+  .product-item{
+    height: 350px;
+  }
+}
+@media only screen and (min-width: 575px) and (max-width: 765px) {
+  .product-item{
+    height: 380px;
+  }
+}
+@media only screen and (min-width: 0px) and (max-width: 574px) {
+  .product-item{
+    height: 600px;
+  }
+}
