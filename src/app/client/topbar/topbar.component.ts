@@ -5,6 +5,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { ShareService } from 'src/app/services/share.service';
 import { VoucherService } from 'src/app/services/voucher.service';
 import { BehaviorSubject } from 'rxjs';
+import { RecommenedService } from 'src/app/services/recommened.service';
 declare function showSwal(type,message):any;
 
 @Component({
@@ -25,7 +26,7 @@ export class TopbarComponent implements OnInit {
   public totalamount = '';
   public allVouchers = new BehaviorSubject<Voucher[]>(null);
   public vouchers:Voucher[];
-  constructor(private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
+  constructor(private recommendservice:RecommenedService , private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
     shareService.changeEmitted$.subscribe(
       text=>{
         this.totalamount = text;
@@ -77,6 +78,21 @@ export class TopbarComponent implements OnInit {
   search(){
     this.key = this.key.replace(/[^a-zA-Z0-9' ']/g, '');
     this.router.navigate(['search/'+this.key]);
+  }
+  timkiem(){
+    if(this.user_id != ''){
+        const fd = new FormData();
+      fd.append('product_id',this.key);
+      fd.append('user_id',this.user_id);
+      this.recommendservice.add(fd).subscribe(
+        res=>{
+         console.log(res['message']);
+        },error=>{
+          alert('Có lỗi trong quá trình xử lý dữ liệu!');
+        }
+      );
+    }
+    
   }
   shownotification(){
     this.shown = !this.shown;

@@ -23,7 +23,10 @@ export class LoginadminComponent implements OnInit {
   constructor(private authService:AuthService,private router:Router,private location:Location) { }
 
   ngOnInit(): void {
-    this.siteKey = '6LfA2NkZAAAAAEL3YAclo_5tv58ouFCkrsitmE9z';
+    this.siteKey = '6Leua30aAAAAAPcbBAScg5pPnWyMRk__PxLGISXg';
+    // this.siteKey = '6LfA2NkZAAAAAEL3YAclo_5tv58ouFCkrsitmE9z';
+    // this.siteKey = 'AIzaSyAx6e4rYQePrNJG_M26NoMAEE2XR1ycB8U';
+    
     if(localStorage.getItem('user_level')||sessionStorage.getItem('user_level')){
       this.router.navigate(['../']);
     }

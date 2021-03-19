@@ -90,7 +90,8 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.siteKey = '6LfA2NkZAAAAAEL3YAclo_5tv58ouFCkrsitmE9z';
+    this.siteKey = '6Leua30aAAAAAPcbBAScg5pPnWyMRk__PxLGISXg';
+    // this.siteKey = '6LfA2NkZAAAAAEL3YAclo_5tv58ouFCkrsitmE9z';
     if(localStorage.getItem('user_level')||sessionStorage.getItem('user_level')){
       this.router.navigate(['../']);
     }
