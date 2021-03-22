@@ -5,6 +5,7 @@ import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
+import { RecommenedService } from 'src/app/services/recommened.service';
 declare function showSwal(type,message):any;
 @Component({
   selector: 'app-home',
@@ -13,18 +14,35 @@ declare function showSwal(type,message):any;
 })
 export class HomeComponent implements OnInit {
 
+  user_id='';
   allProduct = new BehaviorSubject<Product[]>(null);
   products:Product[];
   allPromotion = new BehaviorSubject<Promotion[]>(null);
   promotions:Promotion[];
   allProductFeatured = new BehaviorSubject<Product[]>(null);
+  allProductRecommend = new BehaviorSubject<Product[]>(null);
   productsFeatured:Product[];
+  productsrecommend:Product[];
   public loading = true;
-  constructor(private productService:ProductService,private cartService:CartService) { }
+  constructor(private recommendservice:RecommenedService,private productService:ProductService,private cartService:CartService) { }
 
   ngOnInit(): void {
+    if(sessionStorage.getItem('user_name')){
+      // this.user_name = sessionStorage.getItem('user_name');
+      this.user_id = sessionStorage.getItem('user_id');
+      // this.checklogin = true;
+    }else{
+      if(localStorage.getItem('user_name')){
+        // this.user_name = localStorage.getItem('user_name');
+        this.user_id = sessionStorage.getItem('user_id');
+        // this.checklogin = true;
+      }else{
+        // this.checklogin = false;
+      }
+    }
     this.getNewProduct();
     this.getFeaturedProduct();
+    this.getRecommendProduct();
   }
 
   getNewProduct(){
@@ -76,7 +94,32 @@ export class HomeComponent implements OnInit {
         console.log( this.promotions);
       });
   }
-
+  getRecommendProduct(){
+    console.log(this.user_id);
+    this.recommendservice.getRecommend(this.user_id).subscribe(
+      res=>{
+        var r:any = res;
+        this.allProductRecommend.next(r.products);
+        this.allPromotion.next(r.promotions);
+        this.productsrecommend=res['products'];
+        this.promotions=res['promotions'];
+      },
+      error=>{
+        alert('Có lỗi trong quá trình xử lý thông tin!');
+      }
+    );
+    // this.allProductRecommend.subscribe(
+    //   res=>{
+    //     this.productsrecommend = res;
+    //   },
+    //   error=>{
+    //     alert('Có lỗi trong quá trình xử lý thông tin!');
+    //   }
+    // );
+    // this.allPromotion.subscribe(res=>{
+    //   this.promotions=res;
+    // });
+  }
   addtocart(p:Product,promotion:number){
     this.cartService.addtocart(p,promotion);
     showSwal('auto-close','Thêm sản phẩm vào giỏ hàng thành công!');
