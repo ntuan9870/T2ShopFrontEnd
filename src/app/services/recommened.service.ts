@@ -13,8 +13,8 @@ export class RecommenedService {
   public add(form){
     return this.http.post(this.baseUrl+'add',form);
   }
-  public getRecommend(id){
-    return this.http.get(this.baseUrl+'get?id='+id,null);
+  public getRecommend(user_id){
+    return this.http.post(this.baseUrl+'getrecommened?user_id='+user_id,null);
   }
 
 }

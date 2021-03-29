@@ -15,6 +15,7 @@ declare function showSwal(type,message):any;
 export class HomeComponent implements OnInit {
 
   user_id='';
+  user_name='';
   allProduct = new BehaviorSubject<Product[]>(null);
   products:Product[];
   allPromotion = new BehaviorSubject<Promotion[]>(null);
@@ -28,12 +29,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if(sessionStorage.getItem('user_name')){
-      // this.user_name = sessionStorage.getItem('user_name');
+      this.user_name = sessionStorage.getItem('user_name');
       this.user_id = sessionStorage.getItem('user_id');
       // this.checklogin = true;
     }else{
       if(localStorage.getItem('user_name')){
-        // this.user_name = localStorage.getItem('user_name');
+        this.user_name = localStorage.getItem('user_name');
         this.user_id = sessionStorage.getItem('user_id');
         // this.checklogin = true;
       }else{
@@ -84,6 +85,7 @@ export class HomeComponent implements OnInit {
       this.allProductFeatured.subscribe(
         res=>{
           this.productsFeatured = res;
+          console.log(this.productsFeatured);
         },
         error=>{
           alert('Có lỗi trong quá trình xử lý dữ liệu!');
@@ -95,30 +97,36 @@ export class HomeComponent implements OnInit {
       });
   }
   getRecommendProduct(){
-    console.log(this.user_id);
-    this.recommendservice.getRecommend(this.user_id).subscribe(
-      res=>{
-        var r:any = res;
-        this.allProductRecommend.next(r.products);
-        this.allPromotion.next(r.promotions);
-        this.productsrecommend=res['products'];
-        this.promotions=res['promotions'];
-      },
-      error=>{
-        alert('Có lỗi trong quá trình xử lý thông tin!');
-      }
-    );
-    // this.allProductRecommend.subscribe(
-    //   res=>{
-    //     this.productsrecommend = res;
-    //   },
-    //   error=>{
-    //     alert('Có lỗi trong quá trình xử lý thông tin!');
-    //   }
-    // );
-    // this.allPromotion.subscribe(res=>{
-    //   this.promotions=res;
-    // });
+    // console.log(this.user_id);
+    // this.loading = true;
+    if(this.user_id!=''){
+      console.log(this.user_id);
+      this.recommendservice.getRecommend(this.user_id).subscribe(
+        res=>{
+          var r:any = res;
+          this.allProductRecommend.next(r.products);
+          this.allPromotion.next(r.promotions);
+          // this.productsrecommend=res['products'];
+          // this.promotions=res['promotions'];
+          this.loading = false;
+        },
+        error=>{
+          this.loading = false;
+          alert('Có lỗi trong quá trình xử lý thông tin!');
+        }
+      );
+      this.allProductRecommend.subscribe(
+        res=>{
+          this.productsrecommend = res;
+        },
+        error=>{
+          alert('Có lỗi trong quá trình xử lý thông tin!');
+        }
+      );
+      this.allPromotion.subscribe(res=>{
+        this.promotions=res;
+      });
+    }
   }
   addtocart(p:Product,promotion:number){
     this.cartService.addtocart(p,promotion);

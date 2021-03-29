@@ -77,7 +77,6 @@
               <div class="card-footer">
                 <i class="fas fa-money-bill" *ngIf="promotions[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotions[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
                 <i class="fas fa-money-bill" *ngIf="promotions[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <!-- <i class="fas fa-dollar-sign" style="font-size: 9px; font-weight: normal; position: absolute;"> <s> {{p.product_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</s></i> -->
                 <i class="fas fa-cart-plus" *ngIf="promotions[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotions[i].promotion_infor)"></i>
                 <i class="fas fa-cart-plus" *ngIf="promotions[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
               </div>
