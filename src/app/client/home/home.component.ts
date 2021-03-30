@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     }else{
       if(localStorage.getItem('user_name')){
         this.user_name = localStorage.getItem('user_name');
-        this.user_id = sessionStorage.getItem('user_id');
+        this.user_id = localStorage.getItem('user_id');
         // this.checklogin = true;
       }else{
         // this.checklogin = false;

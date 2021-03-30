@@ -8,6 +8,7 @@ import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
+import { RecommenedService } from 'src/app/services/recommened.service';
 declare function showSwal(type,message):any;
 declare var $;
 
@@ -31,7 +32,7 @@ export class DetailproductComponent implements OnInit {
   public arrcount:number[]=new Array;
   promotion:Promotion;
 
-  constructor(private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
+  constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
   ngOnInit(): void {
     this.user_id = '';
     if(localStorage.getItem('user_id')){
@@ -60,11 +61,31 @@ export class DetailproductComponent implements OnInit {
         this.product = res['product'];
         this.promotion=res['promotion'];
         $("#avatar").fadeIn("fast").attr('src',this.product.product_img);
+        setTimeout(()=>{
+          if(this.user_id!=''){
+            this.add();
+          }                           
+        }, 10000);
       },
       error=>{
         alert('Có lỗi trong quá trình xử lý dữ liệu!');
       }
     );
+  }
+  add(){
+    if(this.user_id != ''){
+        const fd = new FormData();
+      fd.append('product_id',this.product.category_name);
+      fd.append('user_id',this.user_id);
+      this.recommendservice.add(fd).subscribe(
+        res=>{
+         console.log(res['message']);
+        },error=>{
+          alert('Có lỗi trong quá trình xử lý dữ liệu!');
+        }
+      );
+    }
+    
   }
 
   addtocart(){
