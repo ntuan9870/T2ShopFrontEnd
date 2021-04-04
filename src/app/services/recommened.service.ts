@@ -16,5 +16,9 @@ export class RecommenedService {
   public getRecommend(user_id){
     return this.http.post(this.baseUrl+'getrecommened?user_id='+user_id,null);
   }
-
+  
+  public getCategory(form){
+    return this.http.post(this.baseUrl+"showCate",form);
+  }
+ 
 }

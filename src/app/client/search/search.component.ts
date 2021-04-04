@@ -5,6 +5,7 @@ import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
+import { RecommenedService } from 'src/app/services/recommened.service';
 declare function showSwal(type,message):any;
 @Component({
   selector: 'app-search',
@@ -22,12 +23,14 @@ export class SearchComponent implements OnInit {
   amount:number = 0;
   labelnext = 'Sau';
   labelprevious = 'Trước';
+  public productCate:Product[];
 
-  constructor(private productService:ProductService, private routeActivated:ActivatedRoute,private cartService:CartService) {}
+  constructor(private recommendservice:RecommenedService,private productService:ProductService, private routeActivated:ActivatedRoute,private cartService:CartService) {}
 
   ngOnInit(): void {
     this.routeActivated.params.subscribe(routeParams => {
       this.getAll(routeParams.key);
+      this.getCategory(routeParams.key);
     });
     this.config = {
       itemsPerPage: 12,
@@ -63,6 +66,7 @@ export class SearchComponent implements OnInit {
     this.allproducts.subscribe(
       res=>{
         this.products = res;
+        
       },
       error=>{
         alert('Error');
@@ -77,5 +81,25 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-
+  getCategory(key){
+    this.key = this.routeActivated.snapshot.params['key'];
+    const fd = new FormData();
+    fd.append('key',key);
+    // fd.append('id','');
+    this.recommendservice.getCategory(fd).subscribe(
+      res=>{
+       this.productCate=res['productCate'];
+      },
+      error=>{
+        alert('Error');
+      }
+    );
+  }
+  check(){
+    if(this.productCate.length>0){
+      for(var i=0; i<=this.productCate.length;i++){
+        console.log(this.productCate[i].category_name);
+      }
+    }
+  }
 }

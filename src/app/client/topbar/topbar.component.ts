@@ -6,6 +6,8 @@ import { ShareService } from 'src/app/services/share.service';
 import { VoucherService } from 'src/app/services/voucher.service';
 import { BehaviorSubject } from 'rxjs';
 import { RecommenedService } from 'src/app/services/recommened.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category } from 'src/app/models/category.model';
 declare function showSwal(type,message):any;
 
 @Component({
@@ -15,6 +17,8 @@ declare function showSwal(type,message):any;
 })
 export class TopbarComponent implements OnInit {
   
+  categories:Category[];
+  category:Category[];
   public user_id='';
   public user_name = '';
   public user_email = '';
@@ -26,7 +30,7 @@ export class TopbarComponent implements OnInit {
   public totalamount = '';
   public allVouchers = new BehaviorSubject<Voucher[]>(null);
   public vouchers:Voucher[];
-  constructor(private recommendservice:RecommenedService , private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
+  constructor(private categoryService:CategoryService, private recommendservice:RecommenedService , private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
     shareService.changeEmitted$.subscribe(
       text=>{
         this.totalamount = text;
@@ -35,6 +39,7 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllCategory();
     if(sessionStorage.getItem('user_name')){
       this.user_name = sessionStorage.getItem('user_name');
       this.user_id = sessionStorage.getItem('user_id');
@@ -75,9 +80,29 @@ export class TopbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  getAllCategory(){
+    this.categoryService.show();
+    this.categoryService.allCategory.subscribe(
+      res=>{
+        this.categories = res;
+      },
+      error=>{
+        alert('Có lỗi trong quá trình xử lý thông tin!');
+      }
+    );
+  }
+
+  
   search(){
     this.key = this.key.replace(/[^a-zA-Z0-9' ']/g, '');
     this.router.navigate(['search/'+this.key]);
+    for(var i=0; i<=this.categories.length;i++){
+      console.log(this.categories[i].category_name);
+      if(this.key==this.categories[i].category_name){
+        alert("bang nhau");
+      }
+    }
+   
   }
   timkiem(){
     if(this.user_id != ''){

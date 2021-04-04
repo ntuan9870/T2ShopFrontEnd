@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     }
     this.getNewProduct();
     this.getFeaturedProduct();
-    this.getRecommendProduct();
+    // this.getRecommendProduct();
   }
 
   getNewProduct(){
