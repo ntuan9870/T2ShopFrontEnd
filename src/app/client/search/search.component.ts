@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
       currentPage: 1,
       totalItems: this.amount
     };
-    this.check();
+    // this.check();
   }
 
   addtocart(p:Product,promotion:Number){
