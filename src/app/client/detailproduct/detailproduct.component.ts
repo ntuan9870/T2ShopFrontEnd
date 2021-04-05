@@ -30,7 +30,7 @@ export class DetailproductComponent implements OnInit {
   public comments:Comment[] = new Array();
   public ratingproduct:number = 0;
   public arrcount:number[]=new Array;
-  promotion:Promotion;
+  public promotion:Promotion = new Promotion;
 
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
   ngOnInit(): void {
@@ -59,7 +59,7 @@ export class DetailproductComponent implements OnInit {
         // r = res['product'];
         
         this.product = res['product'];
-        this.promotion=res['promotion'];
+        this.promotion = res['promotion'];
         $("#avatar").fadeIn("fast").attr('src',this.product.product_img);
         setTimeout(()=>{
           if(this.user_id!=''){

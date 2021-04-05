@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     }
     this.getNewProduct();
     this.getFeaturedProduct();
-    // this.getRecommendProduct();
+    this.getRecommendProduct();
   }
 
   getNewProduct(){
@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
       this.allProductFeatured.subscribe(
         res=>{
           this.productsFeatured = res;
-          console.log(this.productsFeatured);
         },
         error=>{
           alert('Có lỗi trong quá trình xử lý dữ liệu!');
@@ -93,14 +92,12 @@ export class HomeComponent implements OnInit {
       );
       this.allPromotion.subscribe(res=>{
         this.promotions=res;
-        console.log( this.promotions);
       });
   }
   getRecommendProduct(){
     // console.log(this.user_id);
     // this.loading = true;
     if(this.user_id!=''){
-      console.log(this.user_id);
       this.recommendservice.getRecommend(this.user_id).subscribe(
         res=>{
           var r:any = res;
@@ -109,6 +106,7 @@ export class HomeComponent implements OnInit {
           // this.productsrecommend=res['products'];
           // this.promotions=res['promotions'];
           this.loading = false;
+          console.log(this.productsrecommend);
         },
         error=>{
           this.loading = false;
