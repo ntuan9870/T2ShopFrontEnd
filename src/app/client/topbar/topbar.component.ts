@@ -95,12 +95,12 @@ export class TopbarComponent implements OnInit {
   search(){
     this.key = this.key.replace(/[^a-zA-Z0-9' ']/g, '');
     this.router.navigate(['search/'+this.key]);
-    for(var i=0; i<=this.categories.length;i++){
-      console.log(this.categories[i].category_name);
-      if(this.key==this.categories[i].category_name){
-        alert("bang nhau");
-      }
-    }
+    // for(var i=0; i<=this.categories.length;i++){
+    //   console.log(this.categories[i].category_name);
+    //   if(this.key==this.categories[i].category_name){
+    //     alert("bang nhau");
+    //   }
+    // }
    
   }
   timkiem(){
