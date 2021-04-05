@@ -30,7 +30,7 @@ export class DetailproductComponent implements OnInit {
   public comments:Comment[] = new Array();
   public ratingproduct:number = 0;
   public arrcount:number[]=new Array;
-  promotion:Promotion;
+  promotion=new Promotion;
 
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
   ngOnInit(): void {
