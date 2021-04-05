@@ -89,7 +89,6 @@ export class HomeComponent implements OnInit {
       this.allProductFeatured.subscribe(
         res=>{
           this.productsFeatured = res;
-          console.log(this.productsFeatured);
         },
         error=>{
           alert('Có lỗi trong quá trình xử lý dữ liệu!');
@@ -102,13 +101,13 @@ export class HomeComponent implements OnInit {
   }
   getRecommendProduct(){
     if(this.user_id!=''){
-      console.log(this.user_id);
       this.recommendservice.getRecommend(this.user_id).subscribe(
         res=>{
           var r:any = res;
           this.allProductRecommend.next(r.products);
           this.allPromotionR.next(r.promotions);
           this.loading = false;
+          console.log(this.productsrecommend);
         },
         error=>{
           this.loading = false;

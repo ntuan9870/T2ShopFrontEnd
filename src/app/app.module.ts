@@ -61,7 +61,6 @@ registerLocaleData(localeVi,'vi-VN')
     NgxCaptchaModule,
     SocialLoginModule,
     DocumentEditorAllModule
-    
   ],
   providers: [AuthGuard,{provide:AuthServiceConfig,useFactory:provideConfig}],
   bootstrap: [AppComponent]

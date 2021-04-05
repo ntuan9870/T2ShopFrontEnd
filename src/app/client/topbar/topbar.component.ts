@@ -64,7 +64,6 @@ export class TopbarComponent implements OnInit {
       this.allVouchers.subscribe(
         res=>{
           this.vouchers = res;
-          console.log(this.vouchers);
         }
       );
     }

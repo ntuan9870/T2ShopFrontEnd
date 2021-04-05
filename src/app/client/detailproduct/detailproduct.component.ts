@@ -59,7 +59,7 @@ export class DetailproductComponent implements OnInit {
         // r = res['product'];
         
         this.product = res['product'];
-        this.promotion=res['promotion'];
+        this.promotion = res['promotion'];
         $("#avatar").fadeIn("fast").attr('src',this.product.product_img);
         setTimeout(()=>{
           if(this.user_id!=''){
