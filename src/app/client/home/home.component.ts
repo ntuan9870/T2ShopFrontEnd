@@ -19,7 +19,11 @@ export class HomeComponent implements OnInit {
   allProduct = new BehaviorSubject<Product[]>(null);
   products:Product[];
   allPromotion = new BehaviorSubject<Promotion[]>(null);
+  allPromotionF = new BehaviorSubject<Promotion[]>(null);
+  allPromotionR = new BehaviorSubject<Promotion[]>(null);
   promotions:Promotion[];
+  promotionsF:Promotion[];
+  promotionsR:Promotion[];
   allProductFeatured = new BehaviorSubject<Product[]>(null);
   allProductRecommend = new BehaviorSubject<Product[]>(null);
   productsFeatured:Product[];
@@ -74,7 +78,7 @@ export class HomeComponent implements OnInit {
         res=>{
           var r:any = res;
           this.allProductFeatured.next(r.products);
-          this.allPromotion.next(r.promotions);
+          this.allPromotionF.next(r.promotions);
           this.loading = false;
         },
         error=>{
@@ -90,8 +94,8 @@ export class HomeComponent implements OnInit {
           alert('Có lỗi trong quá trình xử lý dữ liệu!');
         }
       );
-      this.allPromotion.subscribe(res=>{
-        this.promotions=res;
+      this.allPromotionF.subscribe(res=>{
+        this.promotionsF=res;
       });
   }
   getRecommendProduct(){
@@ -102,7 +106,7 @@ export class HomeComponent implements OnInit {
         res=>{
           var r:any = res;
           this.allProductRecommend.next(r.products);
-          this.allPromotion.next(r.promotions);
+          this.allPromotionR.next(r.promotions);
           // this.productsrecommend=res['products'];
           // this.promotions=res['promotions'];
           this.loading = false;
@@ -121,8 +125,8 @@ export class HomeComponent implements OnInit {
           alert('Có lỗi trong quá trình xử lý thông tin!');
         }
       );
-      this.allPromotion.subscribe(res=>{
-        this.promotions=res;
+      this.allPromotionR.subscribe(res=>{
+        this.promotionsR=res;
       });
     }
   }
