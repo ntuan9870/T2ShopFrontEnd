@@ -24,4 +24,7 @@ export class PromotionService {
   public postedit(form){
     return this.http.post(this.baseUrl+'postedit',form);
   }
+  public getproduct(){
+    return this.http.get(this.baseUrl+'getproduct');
+  }
 }

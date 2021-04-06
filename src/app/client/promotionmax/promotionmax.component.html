@@ -1,0 +1,14 @@
+<div class="lucky_box">
+    <img src="./assets/box-empty-icon.png" alt="" (click)="open()">
+</div>
+<div class="promotion" *ngIf="table==true">
+    <ul >
+        <li>Các sản phẩm được khuyến mãi lớn</li><i class="fas fa-window-close"(click)="close()"></i>
+        <li *ngFor="let p of products; let i=index">
+            <div class="infor">
+                <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
+                Sản phẩm:{{p.product_name}}/Khuyến mãi:{{p.promotion_infor}} %
+            </div>
+        </li>
+    </ul>
+</div>

@@ -26,9 +26,10 @@ import { FilterComponent } from './filter/filter.component';
 import {NgxPayPalModule } from 'ngx-paypal';
 import { SupplierComponent } from './supplier/supplier.component';
 import { ChatbotComponent } from './chatbot/chatbot.component';
+import { PromotionmaxComponent } from './promotionmax/promotionmax.component';
 
 @NgModule({
-  declarations: [ClientComponent, ProductsComponent, TopbarComponent, SidebarComponent, FooterComponent, HomeComponent, DetailproductComponent, CategoryComponent, CompleteComponent, CartComponent, ThanhtoanComponent, SearchComponent, ProfileComponent, HistoryComponent, ChangepassComponent, DetailComponent, FilterComponent, SupplierComponent, ChatbotComponent],
+  declarations: [ClientComponent, ProductsComponent, TopbarComponent, SidebarComponent, FooterComponent, HomeComponent, DetailproductComponent, CategoryComponent, CompleteComponent, CartComponent, ThanhtoanComponent, SearchComponent, ProfileComponent, HistoryComponent, ChangepassComponent, DetailComponent, FilterComponent, SupplierComponent, ChatbotComponent, PromotionmaxComponent],
   imports: [
     CommonModule,
     ClientRoutingModule,

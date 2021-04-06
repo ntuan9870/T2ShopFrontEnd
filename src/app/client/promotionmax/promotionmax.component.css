@@ -1,0 +1,38 @@
+.lucky_box{
+    position: fixed;
+    bottom: 25px;
+    left: 50px;
+}
+.lucky_box img{
+    height: 70px;
+    cursor: pointer;
+}
+.promotion{
+    position: fixed;
+    /* border: 2px solid rgb(121, 114, 114); */
+    bottom: 25px;
+    left: 130px;
+    background: aliceblue;
+    border-radius: 10px;
+}
+ul{
+    list-style: none;
+}
+ul i{
+    position: absolute;
+    color: red;
+    float: right;
+    margin-left: 80%;
+    /* margin-bottom: 10px; */
+    top: 2px;
+    /* height: 70px; */
+    cursor: pointer;
+}
+.infor{
+    /* height: 30px; */
+    border-bottom: 2px solid gray;
+}
+.infor img{
+    height: 70px;
+    width: 60px;
+}
