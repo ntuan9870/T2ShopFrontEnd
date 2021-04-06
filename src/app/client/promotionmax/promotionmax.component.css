@@ -1,7 +1,17 @@
+@keyframes example {
+    0%{left:50px; bottom:25px;}
+    25% { left:60px; bottom:25px;}
+    50% { right:65px; bottom:25px;}
+    75% { left:55px; bottom:25px;}
+    100% { left:55px; bottom:25px;}
+  }
 .lucky_box{
     position: fixed;
     bottom: 25px;
     left: 50px;
+    animation-name: example;
+    animation-duration: 1s;
+    animation-iteration-count:infinite;
 }
 .lucky_box img{
     height: 70px;
