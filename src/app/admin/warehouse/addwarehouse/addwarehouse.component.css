@@ -59,7 +59,14 @@
      color: green;
   }
   #myModal{
-    margin-top:10px;
+    margin-top: 10px;
     width: 500px;
     margin-left:35%;
+    overflow: hidden;
+  }
+  #myModal>div{
+    margin-top: 0px;
+  }
+  .form-group{
+    margin-bottom: 0.5rem;
   }
