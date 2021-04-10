@@ -6,8 +6,9 @@ import { Product } from 'src/app/models/product.model';
 import { Category } from 'src/app/models/category.model';
 import { HttpClient } from '@angular/common/http';
 import { ProductService } from 'src/app/services/product.service';
-import { Ballotimport } from 'src/app/models/ballotimport.model';
+import { Detailballotimport } from 'src/app/models/detailballotimport.model';
 import { threadId } from 'worker_threads';
+import { Ballotimport } from 'src/app/models/ballotimport.model';
 // import {Popup} from 'ng2-opd-popup';
 declare function showSwal(type,message):any;
 declare var $;
@@ -35,7 +36,7 @@ export class AddwarehouseComponent implements OnInit {
   public prod_price;
   public selectedOption;
   public price;
-  public warehouses;
+  public warehouses = [];
   categorys:Category[];
   public selectedWH;
   public inventory=[];
@@ -44,7 +45,7 @@ export class AddwarehouseComponent implements OnInit {
   public selected_entries = 0;
   public ip_s = "";
   public show_option_product = false;
-  public product_selected : Ballotimport[] = [];
+  public product_selected : Detailballotimport[] = [];
   public price_element = "";
   public amount_element = "";
   public pr_sl:Product = new Product; 
@@ -53,11 +54,17 @@ export class AddwarehouseComponent implements OnInit {
   public am = 0;
   public user_name = "";
   public user_id = "";
+  public allBI = new BehaviorSubject<Ballotimport[]>(null);
+  public ballotImports:Ballotimport[] = [];
+  public allDBI = new BehaviorSubject<Detailballotimport[]>(null);
+  public detailBallotImports:Detailballotimport[] = [];
+
   constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient, private productService:ProductService, private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getCate();
     this.getwarehouse();
+    this.getAllBI();
     this.config = {
       itemsPerPage: 10,
       currentPage: 1,
@@ -143,6 +150,17 @@ export class AddwarehouseComponent implements OnInit {
     fd.append('user_id', this.user_id.toString());
     fd.append('wh_id', this.selectedWH.toString());
     fd.append('sum_amount', this.am.toString());
+    var s1 = 0;
+    for(var i = 0; i < this.product_selected.length; i++){
+      s1+=this.product_selected[i].amount;
+    }
+    for(var i = 0; i < this.warehouses.length; i++){
+      if(this.warehouses[i].empty < s1){
+        showSwal('auto-close','Kho đầy rồi!');
+        return;
+      }
+    }
+    fd.append('sum_product', s1.toString());
     this.warehouseservies.importProductWH(fd).subscribe(
       res=>{
         if(res['message']=="success"){
@@ -250,9 +268,6 @@ export class AddwarehouseComponent implements OnInit {
   pageChanged(event){
     this.config.currentPage = event;
   }
-  ClickButton(){
-    // this.popup.show();
-  }
   search(event, txtKeyword){
     if(event.key=='ArrowDown' || event.key=='ArrowUp'){
       return;
@@ -304,7 +319,7 @@ export class AddwarehouseComponent implements OnInit {
     if(!this.validateAddElement()){
       return;
     }else{
-      var b:Ballotimport = new Ballotimport;
+      var b:Detailballotimport = new Detailballotimport;
       b.product = this.pr_sl;
       b.price = this.price_element;
       b.amount = this.amount_element;
@@ -314,6 +329,7 @@ export class AddwarehouseComponent implements OnInit {
       this.amount_element = "";
       this.price_element = "";
       this.changeSumAmount();
+      this.txtKeyword.nativeElement.focus();
     }
   }
   findIndexToUpdate(newItem) { 
@@ -404,5 +420,23 @@ export class AddwarehouseComponent implements OnInit {
       default:
         return y + '-' + m + '-'+d;
     }
+  }
+  getAllBI(){
+    this.warehouseservies.getAllBI().subscribe(res=>{
+      var r:any = res;
+      this.allBI.next(r.bis);
+    });
+    this.allBI.subscribe(res=>{
+      this.ballotImports=res;
+    });
+  }
+  getAllBDIByBIID(bi_id_dt){
+    this.warehouseservies.getAllBDIByBIID(bi_id_dt).subscribe(res=>{
+      var r:any = res;
+      this.allDBI.next(r.dbis);
+    });
+    this.allDBI.subscribe(res=>{
+      this.detailBallotImports=res;
+    });
   }
 }
