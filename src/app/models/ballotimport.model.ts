@@ -1,7 +1,9 @@
-import { Product } from "./product.model";
-
 export class Ballotimport {
-    public product:Product=new Product;
-    public amount:any="";
-    public price:any="";
+    public bi_id:any="";
+    public user_id:any="";
+    public warehouse_id:any="";
+    public sum_amount:any="";
+    public sum_product:any="";
+    public exported:any="";
+    public created_at:any="";
 }

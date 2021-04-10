@@ -92,4 +92,11 @@ export class WarehouseService {
     return this.http.post(this.baseUrl+'importProductWH',form);
   }
 
+  public getAllBI(){
+     return this.http.post(this.baseUrl+'getAllBI',null);
+  }
+  public getAllBDIByBIID(bi_id){
+    return this.http.post(this.baseUrl+'getAllBDIByBIID?bi_id='+bi_id,null);
+ }
+
 }
