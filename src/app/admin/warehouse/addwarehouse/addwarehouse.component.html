@@ -47,52 +47,94 @@
      <!-- Thêm sản phẩm mới -->
     <div class="modal fade" id="myModal" >
         <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h4 class="modal-title">Thêm sản phẩm mới vào kho</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm sản phẩm mới vào kho</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div id="list_product" class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" style="padding: 0px;">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;">
+                                <div id="search_product" class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8" style="display: inline-block; vertical-align: top; padding:0px">
+                                    <input #txtKeyword2 [(ngModel)]="ip_s" type="search" (keyup)="search($event, txtKeyword2.value)" (keyup)="validateName()" (keyup.arrowdown)="moveDown()" (keyup.arrowup)="moveUp()" class="form-control" id="search_input" placeholder="Tìm sản phẩm trong kho" autocomplete="off">
+                                    <p *ngIf="same_product" style="color: red;">Bạn đã nhập sản phẩm này rồi!</p>
+                                </div>
+                                <div id="add_new_product" class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" style="display: inline-block; padding-left: 5px; padding-right: 5px;">
+                                    <a href="../../../admin/categories/add" target="_blank"><i id="btn-add-product" class="fas fa-plus"></i></a>
+                                </div>
+                                <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" style="display: inline-block; padding-left: 5px; padding-right: 5px;">
+                                    <input #numberProductElement [(ngModel)]="amount_element" type="number" (keyup)="validateAmount()" class="form-control" placeholder="Sl.."  style="text-align:center;" (keyup.enter)="enterNumber()">
+                                </div>
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="display: inline-block; padding: 0px;">
+                                    <input #priceProductElement [(ngModel)]="price_element" type="number" (keyup)="validatePrice()" class="form-control" placeholder="Giá.."  style="text-align:center;" (keyup.enter)="enterPrice()">
+                                </div>
+                            </div>
+                            <div id="l-p" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;" *ngIf="show_option_product">
+                                <table class="table table-image">
+                                    <tr *ngFor = "let p of searched_products; let i = index" [style.background-color]="(selected_entries == i) ? 'gray' : 'white'" style="padding: 0px;">
+                                        <th scope="row" width="3%">{{i+1}}</th>
+                                        <td width="6%" style="padding: 2px;">
+                                            <img src={{p.product_img}} class="img-fluid img-thumbnail">
+                                        </td>
+                                        <td>{{p.product_name}}</td>
+                                      </tr>
+                                </table> 
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top:15px; padding: 0px;height: 26rem; overflow-y: scroll;">
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Mã</th>
+                                        <th scope="col">Hình</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">SL</th>
+                                        <th scope="col">Đơn giá nhập</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let p of product_selected; let i=index;">
+                                        <th scope="row" width="5%">{{i+1}}</th>
+                                        <td width="5%">{{p.product.product_id}}</td>
+                                        <td width="6%"><img src={{p.product.product_img}} class="img-fluid img-thumbnail"></td>
+                                        <td width="44%">{{p.product.product_name}}</td>
+                                        <td width="10%"><input [(ngModel)]="product_selected[i].amount" name = "product_selected[{{i}}].amount" type="number" value="{{p.amount}}" (change)="changeAmount(p.product.product_id)"></td>
+                                        <td width="30%">{{p.price}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                        </div>
+                        <div id="infor" class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                            <form method="post" #addSupplierForm="ngForm" >
+                                <div class="form-group">
+                                    <label>Người lập phiếu <i style="color: red;">(*)</i></label>
+                                    <input type="text" disabled class="form-control" name="user_name" [(ngModel)]="user_name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Kho <i style="color: red;">(*)</i></label>
+                                    <select class="form-control form-control-sm" [(ngModel)]="selectedWH"  name="selectedWH" (change)="checkcapcity(selectedWH)" required >
+                                        <option class="form-control" *ngFor="let w of warehouses" [value]="w.warehouse_id" >{{w.warehouse_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ngày lập<i style="color: red;">(*)</i></label>
+                                    <input type="text" disabled class="form-control" name="ngaylapphieu" [(ngModel)]="ngaylapphieu" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tổng tiền<i style="color: red;">(*)</i></label>
+                                    <input type="text" disabled class="form-control" value="{{am | currency:'VND':'symbol':'1.0-0':'vi-VN'}}" name="am" [(ngModel)]="am" required>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addProductWareHouse()">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <form method="post" #addSupplierForm="ngForm" >
-                    <!-- <div class="form-group">
-                        <label>Mã sản phẩm <i style="color: red;">(*)</i></label>
-                        <input type="text"  class="form-control"    placeholder="Nhập mã sản phẩm" name="prod_id" [(ngModel)]="prod_id" required>
-                    </div> -->
-                    <div class="form-group">
-                        <label>Tên sản phẩm <i style="color: red;">(*)</i></label>
-                        <input type="text"  class="form-control"   placeholder="Nhập tên sản phẩm" name="prod_name" [(ngModel)]="prod_name" required (keyup)="check_name(prod_name)">
-                    </div>
-                    <div class="form-group">
-                        <label>Giá nhập sản phẩm <i style="color: red;">(*)</i></label>
-                        <input type="number"  class="form-control"   placeholder="Nhập giá nhập sản phẩm" name="price" [(ngModel)]="price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>SL sản phẩm <i style="color: red;">(*)</i></label>
-                        <input type="number"  class="form-control"   placeholder="Nhập số lượng sản phẩm" name="prod_amount" [(ngModel)]="prod_amount" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Loại sản phẩm <i style="color: red;">(*)</i></label>
-                        <select class="form-control form-control-sm" [(ngModel)]="selectedOption"  name="selectedOption" required >
-                            <option class="form-control" *ngFor="let c of categorys" [value]="c.category_id" >{{c.category_name }}</option>
-                          </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Kho <i style="color: red;">(*)</i></label>
-                        <select class="form-control form-control-sm" [(ngModel)]="selectedWH"  name="selectedWH" (change)="checkcapcity(selectedWH)" required >
-                            <option class="form-control" *ngFor="let w of warehouses" [value]="w.warehouse_id" >{{w.warehouse_name }}</option>
-                          </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Giá bán sản phẩm <i style="color: red;">(*)</i></label>
-                        <input type="number" class="form-control"   placeholder="Nhập giá sản phẩm" name="prod_price" [(ngModel)]="prod_price" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addProductWareHouse()">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
         </div>
     </div>
         

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { from } from 'rxjs';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, from } from 'rxjs';
 import {WarehouseService} from 'src/app/services/warehouse.service';
 import { Location } from '@angular/common';
 import { Product } from 'src/app/models/product.model';
 import { Category } from 'src/app/models/category.model';
 import { HttpClient } from '@angular/common/http';
+import { ProductService } from 'src/app/services/product.service';
+import { Ballotimport } from 'src/app/models/ballotimport.model';
+import { threadId } from 'worker_threads';
 // import {Popup} from 'ng2-opd-popup';
 declare function showSwal(type,message):any;
 declare var $;
@@ -15,6 +18,10 @@ declare var $;
   styleUrls: ['./addwarehouse.component.css']
 })
 export class AddwarehouseComponent implements OnInit {
+  @ViewChild('numberProductElement') numberProductElement:ElementRef; 
+  @ViewChild('priceProductElement') priceProductElement:ElementRef; 
+  @ViewChild('txtKeyword2') txtKeyword:ElementRef;
+  @ViewChild('myModal') myModal:ElementRef;
 
   public loading:boolean=false;
   products : Product[];
@@ -32,9 +39,21 @@ export class AddwarehouseComponent implements OnInit {
   categorys:Category[];
   public selectedWH;
   public inventory=[];
- 
-
-  constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient) { }
+  public allProducts = new BehaviorSubject<Product[]>(null);
+  public searched_products : Product[];
+  public selected_entries = 0;
+  public ip_s = "";
+  public show_option_product = false;
+  public product_selected : Ballotimport[] = [];
+  public price_element = "";
+  public amount_element = "";
+  public pr_sl:Product = new Product; 
+  public same_product = false;
+  public ngaylapphieu = "";
+  public am = 0;
+  public user_name = "";
+  public user_id = "";
+  constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient, private productService:ProductService, private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getCate();
@@ -44,6 +63,15 @@ export class AddwarehouseComponent implements OnInit {
       currentPage: 1,
       totalItems: this.amount 
     };
+    this.ngaylapphieu = this.dateFormat(new Date(),'YYYY-MM-DD');
+    if(localStorage.getItem('user_id')){
+      this.user_name =  localStorage.getItem('user_name');
+      this.user_id =  localStorage.getItem('user_id');
+    }
+    if(sessionStorage.getItem('user_id')){
+      this.user_name =  sessionStorage.getItem('user_name');
+      this.user_id =  localStorage.getItem('user_id');
+    }
   }
   timkiem(txtKeyword){
     this.warehouseservies.search(txtKeyword).subscribe(
@@ -109,6 +137,28 @@ export class AddwarehouseComponent implements OnInit {
     );
   }
   addProductWareHouse(){
+    const fd = new FormData();
+    var s = JSON.stringify(this.product_selected); 
+    fd.append('product', s);
+    fd.append('user_id', this.user_id.toString());
+    fd.append('wh_id', this.selectedWH.toString());
+    fd.append('sum_amount', this.am.toString());
+    this.warehouseservies.importProductWH(fd).subscribe(
+      res=>{
+        if(res['message']=="success"){
+          this.product_selected = [];
+          // this.myModal.nativeElement.modal('hide');
+          $('#myModal').modal('hide');
+          showSwal('auto-close','Thêm phiếu nhập thành công!');
+        }else{
+          showSwal('auto-close','Đã xảy ra lỗi');
+        }
+      },error=>{
+        showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
+      }
+    );
+  }
+  addProductWareHouse2(){
     this.check_name(this.prod_name);
     this.checkcapcity(this.selectedWH);
     this.loading = true;
@@ -203,5 +253,156 @@ export class AddwarehouseComponent implements OnInit {
   ClickButton(){
     // this.popup.show();
   }
+  search(event, txtKeyword){
+    if(event.key=='ArrowDown' || event.key=='ArrowUp'){
+      return;
+    }
+    if(txtKeyword == ""){
+      this.searched_products = null;
+      return;
+    }
+    if(event.key=='Enter'){
+      this.show_option_product = false;
+      this.numberProductElement.nativeElement.focus();
+      this.ip_s = this.searched_products[this.selected_entries].product_name;
+      this.pr_sl = this.searched_products[this.selected_entries];
+      console.log(this.pr_sl.product_name);
+      return;
+    }
+    this.show_option_product = true;
+    const fd = new FormData();
+    fd.append('key',txtKeyword);
+    this.productService.getFromDB(fd).subscribe(res=>{
+        var r:any = res;
+        this.allProducts.next(r.products);
+    });
+    this.allProducts.subscribe(res=>{
+      this.searched_products=res;
+    });
+    this.selected_entries=0;
+  }
 
+  moveDown(){
+    if(this.selected_entries<this.searched_products.length-1){
+      this.selected_entries+=1;
+      this.ip_s = this.searched_products[this.selected_entries].product_name;
+    }
+  }
+  moveUp(){
+    if(this.selected_entries>0){
+      this.selected_entries-=1;
+      this.ip_s = this.searched_products[this.selected_entries].product_name;
+    }
+  }
+  enterNumber(){
+    if(this.amount_element==''){
+      return;
+    }
+    this.priceProductElement.nativeElement.focus();
+  }
+  enterPrice(){
+    if(!this.validateAddElement()){
+      return;
+    }else{
+      var b:Ballotimport = new Ballotimport;
+      b.product = this.pr_sl;
+      b.price = this.price_element;
+      b.amount = this.amount_element;
+      this.product_selected.push(b);
+      this.pr_sl = new Product;
+      this.ip_s = "";
+      this.amount_element = "";
+      this.price_element = "";
+      this.changeSumAmount();
+    }
+  }
+  findIndexToUpdate(newItem) { 
+    return newItem.id === this;
+  }
+  validateAddElement(){
+    if(!this.validateName()||!this.validateAmount()||!this.validatePrice()){
+      return false;
+    }
+    return true;
+  }
+  validateName(){
+    this.same_product = false;
+    for(var i = 0; i < this.product_selected.length; i++){
+      if(this.pr_sl.product_id == this.product_selected[i].product.product_id){
+        this.same_product = true;
+        return false;
+      }
+    }
+    if(this.ip_s==""){
+      this.txtKeyword.nativeElement.style.borderColor =  'red';
+      return false;
+    }else{
+      this.txtKeyword.nativeElement.style.borderColor =  '#ced4da';
+      return true;
+    }
+    return true;
+  }
+  validateAmount(){
+    if(this.amount_element==""||this.amount_element==null){
+      this.numberProductElement.nativeElement.style.borderColor =  'red';
+      return false;
+    }else{
+      this.numberProductElement.nativeElement.style.borderColor =  '#ced4da';
+      return true;
+    }
+  }
+  validatePrice(){
+    if(this.price_element==""||this.price_element==null){
+      this.priceProductElement.nativeElement.style.borderColor =  'red';
+      return false;
+    }else{
+      this.priceProductElement.nativeElement.style.borderColor =  '#ced4da';
+      return true;
+    }
+  }
+  changeAmount(id){
+    for(var i = 0; i < this.product_selected.length; i++){
+      if(this.product_selected[i].product.product_id==id){
+        if(this.product_selected[i].amount <= 0){
+          this.product_selected[i].amount = 1;
+        }
+      }
+    }
+    this.changeSumAmount();
+  }
+  changeSumAmount(){
+    var sum = 0;
+    for(var i = 0; i < this.product_selected.length; i++){
+      sum += this.product_selected[i].amount*this.product_selected[i].product.product_price;
+    }
+    // var formatter = new Intl.NumberFormat('vi', {
+    //   style: 'currency',
+    //   currency: 'VND'
+    // });
+    this.am = sum;
+  }
+  dateFormat(dt:Date, f:string){
+    var y:string = '';
+    var m:string = '';
+    var d:string = '';
+    if(dt.getMonth() < 10){
+      m = '0'+(dt.getMonth()+1);
+    }else{
+      m = ''+(dt.getMonth()+1);
+    }
+    if(dt.getDate() < 10){
+      d = '0'+(dt.getDate());
+    }else{
+      d = ''+(dt.getDate());
+    }
+    y = '' + dt.getFullYear();
+    switch(f){
+      case 'YYYY-MM-DD':
+        return y + '-' + m + '-'+d;
+      case 'DD-MM-YYYY':
+        return d + '-' + m + '-'+y;
+      default:
+        return y + '-' + m + '-'+d;
+    }
+  }
 }

@@ -88,4 +88,8 @@ export class WarehouseService {
     return this.http.post(this.baseUrl+'checkname',form);
   }
 
+  public importProductWH(form){
+    return this.http.post(this.baseUrl+'importProductWH',form);
+  }
+
 }
