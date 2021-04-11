@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Ballotexport } from 'src/app/models/ballotexport.models';
 import { Ballotimport } from 'src/app/models/ballotimport.model';
 import { CtpxLn } from 'src/app/models/ctpx-ln.models';
 import { DetailBallotExport } from 'src/app/models/detail-ballot-export.model';
@@ -58,7 +59,13 @@ export class DeliverybillComponent implements OnInit {
   public dbes:DetailBallotExport[] = [];
   public price_product:number = 0;
   public total_price:number = 0;
-
+  public allBES= new BehaviorSubject<Ballotexport[]>(null);
+  public bes:Ballotexport[] = [];
+  public allDBES= new BehaviorSubject<DetailBallotExport[]>(null);
+  public dbeshome:DetailBallotExport[] = [];
+  public all_see_ctpx_lns= new BehaviorSubject<CtpxLn[]>(null);
+  public see_ctpx_lns:CtpxLn[] = [];
+  
   constructor( private warehouseservies:WarehouseService) { }
 
   ngOnInit(): void {
@@ -78,6 +85,7 @@ export class DeliverybillComponent implements OnInit {
     };
     this.ngaylapphieu = this.dateFormat(new Date(),'YYYY-MM-DD');
     this.getwarehouse();
+    this.getBallotExport();
   }
   getDeliverybill(){
     this.warehouseservies.getDeliverybill().subscribe(
@@ -364,6 +372,7 @@ export class DeliverybillComponent implements OnInit {
     }
     dbe.amount = sum;
     dbe.price = this.price_product;
+    dbe.ctpx_ln = this.ctpx_lns;
     this.dbes.push(dbe);
     $('#ctpx_ln_Modal').modal('hide');
     this.total_price = 0;
@@ -393,5 +402,66 @@ export class DeliverybillComponent implements OnInit {
     if(this.price_product < 0){
       this.price_product = 0;
     }
+  }
+  addBE(){
+    const fd = new FormData();
+    var s = JSON.stringify(this.dbes); 
+    fd.append('user_id', this.user_id.toString());
+    fd.append('wh_id', this.selectedWH.toString());
+    fd.append('sum_amount', this.total_price.toString());
+    fd.append('dbes', s);
+    this.warehouseservies.addBE(fd).subscribe(
+      res=>{
+        if(res['message']=='success'){
+          $('#beModal').modal('hide');
+          showSwal('auto-close','Thêm phiếu xuất thành công!');
+        }
+      },error=>{
+        alert("Có lỗi trong quá trình xử lý thông tin!");
+      }
+    );
+  }
+  getBallotExport(){
+    this.warehouseservies.getBallotExport().subscribe(
+      res=>{
+        var r:any = res;
+        this.allBES.next(r.bes)
+      },error=>{
+        showSwal('auto-close','Có lỗi truy xuất dữ liệu!');
+      }
+    );
+    this.allBES.subscribe(res=>{
+      this.bes=res;
+    });
+  }
+  getAllDBEByBEID(id){
+    this.warehouseservies.getAllDBEByBEID(id).subscribe(
+      res=>{
+        var r:any = res;
+        this.allDBES.next(r.dbes)
+      },error=>{
+        showSwal('auto-close','Có lỗi truy xuất dữ liệu!');
+      }
+    );
+    this.allDBES.subscribe(res=>{
+      this.dbeshome=res;
+    });
+  }
+  getAllCTPXLN(dbe_id){
+    alert(dbe_id);
+    this.warehouseservies.getAllCTPXLN(dbe_id).subscribe(
+      res=>{
+        var r:any = res;
+        this.all_see_ctpx_lns.next(r.dbes)
+      },error=>{
+        showSwal('auto-close','Có lỗi truy xuất dữ liệu!');
+      }
+    );
+    this.all_see_ctpx_lns.subscribe(res=>{
+      this.see_ctpx_lns=res;
+    });
+  }
+  changeAmountCTPXLNElement(){
+    
   }
 }

@@ -110,4 +110,16 @@ export class WarehouseService {
   public changeAmountElement(form){
     return this.http.post(this.baseUrl+'changeAmountElement',form);
   }
+  public addBE(form){
+    return this.http.post(this.baseUrl+'addBE',form);
+  }
+  public getBallotExport(){
+    return this.http.post(this.baseUrl+'getBallotExport',null);
+  }
+  public getAllDBEByBEID(id){
+    return this.http.post(this.baseUrl+'getAllDBEByBEID?be_id='+id,null);
+  }
+  public getAllCTPXLN(dbe_id){
+    return this.http.post(this.baseUrl+'getAllCTPXLN?dbe_id='+dbe_id,null);
+  }
 }
