@@ -4,6 +4,5 @@ export class Ballotimport {
     public warehouse_id:any="";
     public sum_amount:any="";
     public sum_product:any="";
-    public exported:any="";
     public created_at:any="";
 }

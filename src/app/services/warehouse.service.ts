@@ -33,6 +33,9 @@ export class WarehouseService {
   public search(key){
     return this.http.get(this.baseUrl+'search?key='+key);
   }
+  public search2(form){
+    return this.http.post(this.baseUrl+'search2',form);
+  }
   public checkwh_id(form){
     return this.http.post(this.baseUrl+'checkwh_id',form);
   }
@@ -97,6 +100,14 @@ export class WarehouseService {
   }
   public getAllBDIByBIID(bi_id){
     return this.http.post(this.baseUrl+'getAllBDIByBIID?bi_id='+bi_id,null);
- }
-
+  }
+  public getAllBIEligible(form){
+    return this.http.post(this.baseUrl+'getAllBIEligible',form);
+  }
+  public checkOutOfProduct(form){
+    return this.http.post(this.baseUrl+'checkOutOfProduct',form);
+  }
+  public changeAmountElement(form){
+    return this.http.post(this.baseUrl+'changeAmountElement',form);
+  }
 }

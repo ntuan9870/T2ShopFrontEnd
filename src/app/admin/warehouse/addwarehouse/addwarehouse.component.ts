@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { Detailballotimport } from 'src/app/models/detailballotimport.model';
 import { threadId } from 'worker_threads';
 import { Ballotimport } from 'src/app/models/ballotimport.model';
+import { Supplier } from 'src/app/models/supplier.model';
 // import {Popup} from 'ng2-opd-popup';
 declare function showSwal(type,message):any;
 declare var $;
@@ -58,6 +59,9 @@ export class AddwarehouseComponent implements OnInit {
   public ballotImports:Ballotimport[] = [];
   public allDBI = new BehaviorSubject<Detailballotimport[]>(null);
   public detailBallotImports:Detailballotimport[] = [];
+  public allSupplier = new BehaviorSubject<Supplier[]>(null);
+  public suppliers:Supplier[] = [];
+  public selectedSP;
 
   constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient, private productService:ProductService, private changeDetection: ChangeDetectorRef) { }
 
@@ -65,6 +69,7 @@ export class AddwarehouseComponent implements OnInit {
     this.getCate();
     this.getwarehouse();
     this.getAllBI();
+    this.getAllSupplier();
     this.config = {
       itemsPerPage: 10,
       currentPage: 1,
@@ -107,7 +112,7 @@ export class AddwarehouseComponent implements OnInit {
     this.warehouseservies.getwarehouse().subscribe(
       res=>{
         this.warehouses=res['warehouses'];
-        console.log( this.warehouses);
+        this.selectedWH = this.warehouses[0].warehouse_id;
       },
       error=>{
         showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
@@ -150,14 +155,17 @@ export class AddwarehouseComponent implements OnInit {
     fd.append('user_id', this.user_id.toString());
     fd.append('wh_id', this.selectedWH.toString());
     fd.append('sum_amount', this.am.toString());
+    fd.append('supplier_id', this.selectedSP.toString());
     var s1 = 0;
     for(var i = 0; i < this.product_selected.length; i++){
       s1+=this.product_selected[i].amount;
     }
     for(var i = 0; i < this.warehouses.length; i++){
-      if(this.warehouses[i].empty < s1){
-        showSwal('auto-close','Kho đầy rồi!');
-        return;
+      if(this.warehouses[i].warehouse_id == this.selectedWH){
+        if(this.warehouses[i].empty<s1){
+          showSwal('auto-close','Kho đầy rồi!');
+          return;
+        }
       }
     }
     fd.append('sum_product', s1.toString());
@@ -167,6 +175,7 @@ export class AddwarehouseComponent implements OnInit {
           this.product_selected = [];
           // this.myModal.nativeElement.modal('hide');
           $('#myModal').modal('hide');
+          this.getAllBI();
           showSwal('auto-close','Thêm phiếu nhập thành công!');
         }else{
           showSwal('auto-close','Đã xảy ra lỗi');
@@ -281,7 +290,6 @@ export class AddwarehouseComponent implements OnInit {
       this.numberProductElement.nativeElement.focus();
       this.ip_s = this.searched_products[this.selected_entries].product_name;
       this.pr_sl = this.searched_products[this.selected_entries];
-      console.log(this.pr_sl.product_name);
       return;
     }
     this.show_option_product = true;
@@ -298,9 +306,11 @@ export class AddwarehouseComponent implements OnInit {
   }
 
   moveDown(){
+    console.log(this.searched_products[this.selected_entries]);
     if(this.selected_entries<this.searched_products.length-1){
       this.selected_entries+=1;
       this.ip_s = this.searched_products[this.selected_entries].product_name;
+      
     }
   }
   moveUp(){
@@ -331,9 +341,6 @@ export class AddwarehouseComponent implements OnInit {
       this.changeSumAmount();
       this.txtKeyword.nativeElement.focus();
     }
-  }
-  findIndexToUpdate(newItem) { 
-    return newItem.id === this;
   }
   validateAddElement(){
     if(!this.validateName()||!this.validateAmount()||!this.validatePrice()){
@@ -437,6 +444,20 @@ export class AddwarehouseComponent implements OnInit {
     });
     this.allDBI.subscribe(res=>{
       this.detailBallotImports=res;
+    });
+  }
+  getAllSupplier(){
+    this.http.get('http://localhost:8000/api/warehouse/getSupplier').subscribe(
+  		res=>{
+        var r:any = res;
+        this.allSupplier.next(r.supplier);
+       
+  		}, error=>{
+	      showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
+	    }
+  	);
+    this.allSupplier.subscribe(res=>{
+      this.suppliers=res;
     });
   }
 }

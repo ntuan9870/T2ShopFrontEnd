@@ -62,3 +62,45 @@
       margin-top: 20%;
      color: green;
   }
+  #beModal{
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  #beModal>div{
+    margin-top: 0px;
+  }
+  .form-group{
+    margin-bottom: 0.5rem;
+  }
+  #infor{
+    display: inline-block;
+    vertical-align:top;
+  }
+  #list_product{
+    display: inline-block;
+    height: 100%;
+    vertical-align:top;
+  }
+  #btn-add-product{
+    box-shadow: 1px 1px rgb(219, 219, 219);
+    padding: 10px;
+  }
+  #search_input{
+    
+  }
+  #l-p{
+    margin-top: 1rem;
+    border: 1px solid rgb(177, 177, 177);
+    position: absolute;
+    background: white;
+    z-index: 1000;
+  }
+  .table-image{
+    border: none;
+    margin-bottom: 0px;
+  }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
