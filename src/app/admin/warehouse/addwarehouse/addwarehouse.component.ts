@@ -389,7 +389,7 @@ export class AddwarehouseComponent implements OnInit {
   changeSumAmount(){
     var sum = 0;
     for(var i = 0; i < this.product_selected.length; i++){
-      sum += this.product_selected[i].amount*this.product_selected[i].product.product_price;
+      sum += this.product_selected[i].amount*this.product_selected[i].price;
     }
     // var formatter = new Intl.NumberFormat('vi', {
     //   style: 'currency',

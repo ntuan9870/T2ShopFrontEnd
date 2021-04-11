@@ -113,7 +113,7 @@
                                 </table> 
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top:15px; padding: 0px;height: 26rem; overflow-y: scroll;">
-                                <table class="table">
+                                <table class="table" *ngIf="product_selected.length!=0">
                                     <thead>
                                       <tr>
                                         <th scope="col">STT</th>
@@ -131,10 +131,11 @@
                                         <td width="6%"><img src={{p.product.product_img}} class="img-fluid img-thumbnail"></td>
                                         <td width="44%">{{p.product.product_name}}</td>
                                         <td width="10%"><input [(ngModel)]="product_selected[i].amount" name = "product_selected[{{i}}].amount" type="number" value="{{p.amount}}" (change)="changeAmount(p.product.product_id)"></td>
-                                        <td width="30%">{{p.price}}</td>
+                                        <td width="30%">{{p.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
                                       </tr>
                                     </tbody>
                                   </table>
+                                  <div style="text-align:center" *ngIf="product_selected.length==0||product_selected.length==null"><p style="color: red;">Hãy thêm sản phẩm vào..</p></div>
                             </div>
                         </div>
                         <div id="infor" class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
@@ -162,7 +163,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addProductWareHouse()">
+                    <input type="submit" [disabled]="!addSupplierForm.valid||product_selected.length==0||product_selected.length==null" class="btn btn-success"   value="Thêm" (click)="addProductWareHouse()">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
