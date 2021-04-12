@@ -422,6 +422,7 @@ export class DeliverybillComponent implements OnInit {
     this.warehouseservies.addBE(fd).subscribe(
       res=>{
         if(res['message']=='success'){
+          this.getBallotExport();
           $('#beModal').modal('hide');
           showSwal('auto-close','Thêm phiếu xuất thành công!');
         }
