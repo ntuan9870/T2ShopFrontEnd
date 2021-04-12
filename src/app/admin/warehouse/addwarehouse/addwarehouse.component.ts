@@ -62,6 +62,7 @@ export class AddwarehouseComponent implements OnInit {
   public allSupplier = new BehaviorSubject<Supplier[]>(null);
   public suppliers:Supplier[] = [];
   public selectedSP;
+  public error2 = false;
 
   constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient, private productService:ProductService, private changeDetection: ChangeDetectorRef) { }
 
@@ -306,11 +307,9 @@ export class AddwarehouseComponent implements OnInit {
   }
 
   moveDown(){
-    console.log(this.searched_products[this.selected_entries]);
     if(this.selected_entries<this.searched_products.length-1){
       this.selected_entries+=1;
-      this.ip_s = this.searched_products[this.selected_entries].product_name;
-      
+      this.ip_s = this.searched_products[this.selected_entries].product_name; 
     }
   }
   moveUp(){
@@ -349,6 +348,17 @@ export class AddwarehouseComponent implements OnInit {
     return true;
   }
   validateName(){
+    if(this.searched_products!=null){
+      if(this.searched_products.length!=0){
+        this.pr_sl = this.searched_products[0];
+      }
+    }
+    if(this.pr_sl.product_name != this.ip_s.trim()){
+      this.txtKeyword.nativeElement.style.color='red'; 
+      return false;
+    }
+    this.txtKeyword.nativeElement.style.color='black';
+    this.error2 = false;
     this.same_product = false;
     for(var i = 0; i < this.product_selected.length; i++){
       if(this.pr_sl.product_id == this.product_selected[i].product.product_id){
@@ -386,8 +396,37 @@ export class AddwarehouseComponent implements OnInit {
   changeAmount(id){
     for(var i = 0; i < this.product_selected.length; i++){
       if(this.product_selected[i].product.product_id==id){
-        if(this.product_selected[i].amount <= 0){
+        if(this.product_selected[i].amount <= 0  && this.product_selected[i].amount!=""){
           this.product_selected[i].amount = 1;
+        }
+      }
+    }
+    this.changeSumAmount();
+  }
+  cp(product_id){
+    for(var i = 0; i < this.product_selected.length; i++){
+      if(this.product_selected[i].product.product_id==product_id){
+        if(this.product_selected[i].price==null){
+          this.product_selected[i].price = 0;
+        }
+      }
+    }
+  }
+  ca(product_id){
+    for(var i = 0; i < this.product_selected.length; i++){
+      if(this.product_selected[i].product.product_id==product_id){
+        if(this.product_selected[i].amount==null){
+          this.product_selected[i].amount = 0;
+        }
+      }
+    }
+  }
+
+  changePrice(id){
+    for(var i = 0; i < this.product_selected.length; i++){
+      if(this.product_selected[i].product.product_id==id){
+        if(this.product_selected[i].price <= 0 && this.product_selected[i].price!=""){
+          this.product_selected[i].price = 1;
         }
       }
     }
@@ -459,5 +498,14 @@ export class AddwarehouseComponent implements OnInit {
     this.allSupplier.subscribe(res=>{
       this.suppliers=res;
     });
+  }
+  hideoptionsproducts(){
+    this.show_option_product = false;
+  }
+  mouseEnterSelectProduct(i){
+    this.selected_entries = i;
+  }
+  mouseChooseProduct(){
+    this.ip_s = this.searched_products[this.selected_entries].product_name;
   }
 }

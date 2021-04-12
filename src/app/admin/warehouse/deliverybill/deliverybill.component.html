@@ -7,7 +7,7 @@
         <h5>Danh sách phiếu xuất hàng</h5>
         <button class="btn-add-admin btn btn-success"  data-toggle="modal" data-target="#beModal"><i class="fas fa-plus">Lấy hàng cần xuất</i></button>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12" style="margin-top: 20px;">
         <table class="table table-striped">
             <tr id="tbl-first-row">
                 <td>STT</td>
@@ -85,7 +85,7 @@
                                         <th scope="row">{{i+1}}</th>
                                         <td>{{d.product_id}}</td>
                                         <td>{{d.amount}}</td>
-                                        <td>{{d.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                                        <td><input [(ngModel)]="dbes[i].price" name = "dbes[{{i}}].price" type="number" value="{{d.price}}" (keyup)="changePrice(d.product_id)" (change)="cp(d.product_id)"></td>
                                         <td><a (click)="removeDBEElement(i)" [routerLink]="['#']">Xóa</a></td>
                                       </tr>
                                     </tbody>
@@ -153,7 +153,7 @@
                                       <tr *ngFor="let c of ctpx_lns; let i = index">
                                         <th scope="row">{{i+1}}</th>
                                         <td>Lô {{c.bi_id}}</td>
-                                        <td><input [(ngModel)]="ctpx_lns[i].amount" name = "ctpx_lns[{{i}}].amount" type="number" value="{{c.amount}}" (keyup)="changeAmountElement(i)"></td>
+                                        <td><input [(ngModel)]="ctpx_lns[i].amount" name = "ctpx_lns[{{i}}].amount" type="number" value="{{c.amount}}" (keyup)="changeAmountElement(i)" (change)="cae(i)"></td>
                                         <td><a (click)="removeElement(i)" [routerLink]="['#']">Xóa</a></td>
                                       </tr>
                                     </tbody>
@@ -216,7 +216,7 @@
         <div class="modal-dialog modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Xác định lô nhập</h4>
+                    <h4 class="modal-title">Xem lô nhập</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -239,7 +239,7 @@
                                         <td>{{c.cl_id}}</td>
                                         <td>{{c.dbe_id}}</td>
                                         <td>Lô {{c.bi_id}}</td>
-                                        <td><input [(ngModel)]="see_ctpx_lns[i].amount" name = "see_ctpx_lns[{{i}}].amount" type="number" value="{{c.amount}}" (keyup)="changeAmountCTPXLNElement(i)"></td>
+                                        <td>{{c.amount}}</td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -248,7 +248,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" [disabled]="ctpx_lns.length==0" class="btn btn-success" value="Thêm" (click)="addDBE()">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

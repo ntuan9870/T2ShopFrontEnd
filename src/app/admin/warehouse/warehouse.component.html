@@ -34,7 +34,7 @@
                             <td>{{w.capacity}}</td>
                             <td>{{w.empty}}</td>
                             <td>{{w.warehouse_address}}</td>
-                            <td><button class="btn-add-admin btn btn-success" (click)="getProductWH(w.warehouse_id)" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-eye">Xem</i></button></td>
+                            <td><button class="btn-add-admin btn btn-success" (click)="getAllP(w.warehouse_id)" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-eye">Xem</i></button></td>
                             <td><button class="btn-add-admin btn btn-success" (click)="getEditWH(w.warehouse_id)" data-toggle="modal" data-target=".bd-example-modal-sl"><i class="fas fa-edit">Sửa</i></button></td>
                             <td><i style="cursor: pointer;" class="fas fa-trash-alt" (click)="remove(w.warehouse_id)"></i></td>
                         </tr>
@@ -100,24 +100,23 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <table class="table table-striped">
+                        <table class="table">
                             <tr id="tbl-first-row">
                                 <td>STT</td>
                                 <td>Mã hàng</td>
+                                <td>Thành tiền</td>
                                 <td>Tên hàng</td>
-                                <td>ĐVT</td>
                                 <td>Số lượng</td>
                                 <td>Đơn giá</td>
-                                <td>Thành tiền</td>
+                                
                             </tr>
-                            <tr *ngFor="let p of products|paginate: config; trackBy: trackByFn;let i = index">
+                            <tr *ngFor="let h of ps|paginate: config; trackBy: trackByFn;let i = index">
                                 <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
-                                <td>{{p.prod_id}}</td>
-                                <td>{{p.prod_name}}</td>
-                                <td>{{p.unit}}</td>
-                                <td>{{inventory[i].amount}}</td>
-                                <td>{{p.price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
-                                <td>{{p.prod_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                                <td>{{h.product_id}}</td>
+                                <td width="6%"><img src={{h.product_img}} class="img-fluid img-thumbnail"></td>
+                                <td>{{h.product_name}}</td>
+                                <td>{{h.amount}}</td>
+                                <td>{{h.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
                             </tr>
                         </table>
                         <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>

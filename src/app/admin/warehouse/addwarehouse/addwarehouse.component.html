@@ -74,7 +74,7 @@
     </div>
 
     <!-- Thêm sản phẩm mới -->
-    <div class="modal fade" id="myModal" >
+    <div class="modal fade" id="myModal" (click)="hideoptionsproducts()" >
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -101,7 +101,7 @@
                             </div>
                             <div id="l-p" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;" *ngIf="show_option_product">
                                 <table class="table table-image">
-                                    <tr *ngFor = "let p of searched_products; let i = index" [style.background-color]="(selected_entries == i) ? 'gray' : 'white'" style="padding: 0px;">
+                                    <tr *ngFor = "let p of searched_products; let i = index" [style.background-color]="(selected_entries == i) ? 'gray' : 'white'" style="padding: 0px;" (mouseenter) ="mouseEnterSelectProduct(i)" (click)="mouseChooseProduct()">
                                         <th scope="row" width="3%">{{i+1}}</th>
                                         <td width="6%" style="padding: 2px;">
                                             <img src={{p.product_img}} class="img-fluid img-thumbnail">
@@ -128,8 +128,8 @@
                                         <td width="5%">{{p.product.product_id}}</td>
                                         <td width="6%"><img src={{p.product.product_img}} class="img-fluid img-thumbnail"></td>
                                         <td width="44%">{{p.product.product_name}}</td>
-                                        <td width="10%"><input [(ngModel)]="product_selected[i].amount" name = "product_selected[{{i}}].amount" type="number" value="{{p.amount}}" (change)="changeAmount(p.product.product_id)"></td>
-                                        <td width="30%">{{p.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                                        <td width="10%"><input [(ngModel)]="product_selected[i].amount" name = "product_selected[{{i}}].amount" type="number" value="{{p.amount}}" (keyup)="changeAmount(p.product.product_id)" (change)="ca(p.product.product_id)"></td>
+                                        <td width="30%"><input [(ngModel)]="product_selected[i].price" name = "product_selected[{{i}}].price" type="number" value="{{p.price}}" (keyup)="changePrice(p.product.product_id)" (change)="cp(p.product.product_id)"></td>
                                       </tr>
                                     </tbody>
                                   </table>

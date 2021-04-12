@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {WarehouseService} from 'src/app/services/warehouse.service';
+import { Product } from 'src/app/models/product.model';
+import { BehaviorSubject } from 'rxjs';
 declare function showSwal(type,message):any;
 declare var $;
 
@@ -31,7 +33,8 @@ export class WarehouseComponent implements OnInit {
   public wh_address;
   public wh_empty;
   public change_capacity;
-
+  public allP = new BehaviorSubject<Product[]>(null);
+  public ps:Product[] = [];
 
   constructor(private http:HttpClient, private warehouseservies:WarehouseService) { }
 
@@ -186,6 +189,15 @@ export class WarehouseComponent implements OnInit {
     audio.src = "../../../assets/sound/success.mp3";
     audio.load();
     audio.play();
+  }
+  getAllP(wh_id){
+    this.warehouseservies.getAllP(wh_id).subscribe(res=>{
+      var r:any = res;
+      this.allP.next(r.hts);
+    });
+    this.allP.subscribe(res=>{
+      this.ps=res;
+    });
   }
 
 }

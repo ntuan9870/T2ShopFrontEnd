@@ -334,7 +334,7 @@ export class DeliverybillComponent implements OnInit {
     this.ctpx_lns.push(ct);
   }
   changeAmountElement(id){
-    if(this.ctpx_lns[id].amount<1){
+    if(this.ctpx_lns[id].amount<0){
       this.ctpx_lns[id].amount = 1;
       return;
     }
@@ -347,6 +347,15 @@ export class DeliverybillComponent implements OnInit {
         this.ctpx_lns[id].amount=res['max'];
       }
     });
+  }
+  cae(id){
+    for(var i = 0; i < this.ctpx_lns.length; i++){
+      if(i==id){
+        if(this.ctpx_lns[i].amount==null){
+          this.ctpx_lns[i].amount = 0;
+        }
+      }
+    }
   }
   removeElement(id){
     var tmpArr: CtpxLn[] = this.ctpx_lns;
@@ -448,7 +457,6 @@ export class DeliverybillComponent implements OnInit {
     });
   }
   getAllCTPXLN(dbe_id){
-    alert(dbe_id);
     this.warehouseservies.getAllCTPXLN(dbe_id).subscribe(
       res=>{
         var r:any = res;
@@ -463,5 +471,30 @@ export class DeliverybillComponent implements OnInit {
   }
   changeAmountCTPXLNElement(){
     
+  }
+  changePrice(product_id){
+    for(var i = 0; i < this.dbes.length; i++){
+      if(this.dbes[i].product_id==product_id){
+        if(this.dbes[i].price <= 0 && this.dbes[i].price!=null){
+          this.dbes[i].price = 1;
+        }
+      }
+    }
+    this.changeSumAmount();
+  }
+  cp(product_id){
+    for(var i = 0; i < this.dbes.length; i++){
+      if(this.dbes[i].product_id==product_id){
+        if(this.dbes[i].price==null){
+          this.dbes[i].price = 0;
+        }
+      }
+    }
+  }
+  changeSumAmount(){
+    this.total_price = 0;
+    for(var i = 0; i < this.dbes.length; i++){
+      this.total_price += this.dbes[i].amount*this.dbes[i].price;
+    }
   }
 }
