@@ -35,6 +35,7 @@ export class DetailvoucherComponent implements OnInit {
   config: any;
   labelnext = 'Sau';
   labelprevious = 'Trước';
+  public voucher_remain = 0;
 
   constructor(private voucherService:VoucherService, private activatedRoute:ActivatedRoute, private userService:UserService, public location:Location) { }
 
@@ -123,10 +124,11 @@ export class DetailvoucherComponent implements OnInit {
     if(this.amount[i]>parseInt(this.users[i].voucher_user_score)/this.voucher.voucher_score){
       this.amount[i] = parseInt(this.users[i].voucher_user_score)/this.voucher.voucher_score;
     }
-    alert(this.amount[i]);
     var t:number = 0;
     for(let k = 0; k < this.user_vouchers.length; k++){
-      t+=this.user_vouchers[k].amount_voucher;
+      if(k!=i){
+        t+=this.user_vouchers[k].amount_voucher;
+      }
     }
     var t2:number = t;
     t+=this.amount[i];
