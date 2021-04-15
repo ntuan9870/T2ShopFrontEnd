@@ -23,7 +23,7 @@
           <h4 class="card-title" style="float:left">Đánh giá: Chưa có</h4>
         </div>
       </div>
-      <div class="favorite" *ngIf="user_id!=''">
+      <div class="favorite" *ngIf="user_id!=''&& favoriteProduct.length==0">
         <h4>Thêm vào sản phẩm yêu thích</h4> <i class="fas fa-heart" (click)="favorite()" ></i>
       </div>
     </div>

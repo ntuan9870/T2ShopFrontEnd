@@ -31,6 +31,7 @@ export class DetailproductComponent implements OnInit {
   public ratingproduct:number = 0;
   public arrcount:number[]=new Array;
   public promotion:Promotion = new Promotion;
+  public favoriteProduct;
 
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
   ngOnInit(): void {
@@ -50,6 +51,7 @@ export class DetailproductComponent implements OnInit {
     this.getComment();
     this.getratingproduct();
     this.getratingall();
+    this.getfavorite();
   }
 
   getProductById(){
@@ -79,6 +81,20 @@ export class DetailproductComponent implements OnInit {
     this.productService.pushFavoriteProduct(fd).subscribe(
       res=>{
        console.log(res);
+       this.getfavorite();
+      },
+      error=>{
+        alert('Có lỗi trong quá trình xử lý dữ liệu!');
+      }
+    );
+  }
+  getfavorite(){
+    const fd = new FormData();
+    fd.append('product_id',this.id);
+    fd.append('user_id',this.user_id);
+    this.productService.getFavorite(fd).subscribe(
+      res=>{
+      this.favoriteProduct=res['favoriteProduct'];
       },
       error=>{
         alert('Có lỗi trong quá trình xử lý dữ liệu!');

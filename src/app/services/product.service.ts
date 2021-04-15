@@ -79,4 +79,7 @@ export class ProductService {
   public getFavoriteProduct(user_id){
     return this.http.post(this.baseUrl+"getFavoriteProduct?user_id="+user_id,null);
   }
+  public getFavorite(form){
+    return this.http.post(this.baseUrl+"getFavorite",form);
+  }
 }
