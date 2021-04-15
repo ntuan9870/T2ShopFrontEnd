@@ -35,6 +35,7 @@ export class DetailvoucherComponent implements OnInit {
   config: any;
   labelnext = 'Sau';
   labelprevious = 'Trước';
+  public show_add_user_button = false;
 
   constructor(private voucherService:VoucherService, private activatedRoute:ActivatedRoute, private userService:UserService, public location:Location) { }
 
@@ -69,6 +70,9 @@ export class DetailvoucherComponent implements OnInit {
     this.allUsers.subscribe(
       res=>{
         this.user_vouchers = res;
+        if(this.user_vouchers!=null){
+          this.checkRemainVoucher();
+        }
       }
     );
     this.voucherService.getpotentialcustomers(this.voucher_id).subscribe(
@@ -123,15 +127,28 @@ export class DetailvoucherComponent implements OnInit {
     if(this.amount[i]>parseInt(this.users[i].voucher_user_score)/this.voucher.voucher_score){
       this.amount[i] = parseInt(this.users[i].voucher_user_score)/this.voucher.voucher_score;
     }
-    alert(this.amount[i]);
     var t:number = 0;
     for(let k = 0; k < this.user_vouchers.length; k++){
-      t+=this.user_vouchers[k].amount_voucher;
+      if(k!=i){
+        t+=this.user_vouchers[k].amount_voucher;
+      }
     }
     var t2:number = t;
     t+=this.amount[i];
     if(t>this.voucher.voucher_total){
       this.amount[i]=this.voucher.voucher_total-t2;
+    }
+  }
+
+  checkRemainVoucher(){
+    var t = 0;
+    for(let k = 0; k < this.user_vouchers.length; k++){
+        t+=this.user_vouchers[k].amount_voucher;
+    }
+    if(t>=this.voucher.voucher_total){
+      this.show_add_user_button = false;
+    }else{
+      this.show_add_user_button = true;
     }
   }
 

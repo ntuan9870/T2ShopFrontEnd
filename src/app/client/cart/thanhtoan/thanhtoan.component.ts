@@ -111,6 +111,15 @@ export class ThanhtoanComponent implements OnInit {
     );
   }
   getVoucher(){
+    for(var i = 0; i < this.vouchers.length; i++){
+      if(this.vouchers[i].voucher_id==this.form.select_voucher){
+        if(localStorage.getItem('total')<this.vouchers[i].voucher_price){
+          this.form.select_voucher = null;
+          alert('Số tiền không áp dụng được cho voucher này, vui lòng mua thêm hàng nếu bạn muốn áp dụng voucher này (số tiền tối thiểu áp dụng là '+this.vouchers[i].voucher_price+' đồng)');
+          return;
+        }
+      }
+    }
     for(let i = 0; i < this.vouchers.length; i++){
       if(this.form.select_voucher == this.vouchers[i].voucher_id){
         this.voucher =  this.vouchers[i];

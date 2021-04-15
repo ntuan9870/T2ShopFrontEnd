@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { RecommenedService } from 'src/app/services/recommened.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/category.model';
+import { Cart } from 'src/app/models/cart.model';
 declare function showSwal(type,message):any;
 
 @Component({
@@ -16,7 +17,6 @@ declare function showSwal(type,message):any;
   styleUrls: ['./topbar.component.css']
 })
 export class TopbarComponent implements OnInit {
-  
   categories:Category[];
   category:Category[];
   public user_id='';
@@ -124,6 +124,14 @@ export class TopbarComponent implements OnInit {
   select_voucher(voucher_id){
     if(localStorage.getItem('cart')==null){
       showSwal('auto-close','Giỏ hàng rỗng!');
+    }
+    for(var i = 0; i < this.vouchers.length; i++){
+      if(this.vouchers[i].voucher_id==voucher_id){
+        if(localStorage.getItem('total')<this.vouchers[i].voucher_price){
+          alert('Số tiền không áp dụng được cho voucher này, vui lòng mua thêm hàng nếu bạn muốn áp dụng voucher này (số tiền tối thiểu áp dụng là '+this.vouchers[i].voucher_price+' đồng)');
+          return;
+        }
+      }
     }
     this.router.navigate(['/cart/thanhtoan/'+voucher_id]);
   }
