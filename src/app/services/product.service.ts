@@ -76,4 +76,7 @@ export class ProductService {
   public removeFavoriteProduct(FP_id){
     return this.http.post(this.baseUrl+"removeFavoriteProduct?FP_id="+FP_id,null);
   }
+  public getFavoriteProduct(user_id){
+    return this.http.post(this.baseUrl+"getFavoriteProduct?user_id="+user_id,null);
+  }
 }

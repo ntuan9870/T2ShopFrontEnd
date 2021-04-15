@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="productsrecommend&&user_id!='' && productsrecommend.length>0">
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="productsrecommend && user_id!='' && productsrecommend.length>0">
       <div class="card-body">
         <h5 class="card-title">Sản phẩm bạn có thể cũng thích</h5>
         <ul class="list-row-sp">
@@ -86,5 +86,31 @@
       </div>
     </div>
 
+    <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="FavoriteProduct && user_id!=''">
+      <div class="card-body">
+        <h5 class="card-title">Sản phẩm bạn đã thích</h5>
+        <ul class="list-row-sp">
+          <li *ngFor="let p of FavoriteProduct ; let i=index" class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-xl-2">
+            <div class="card product-item">
+              <div class="card-header">{{p.product_name}}</div>
+              <div class="card-body">
+                <div class="promotion" *ngIf="promotionsFR[i]['promotion_status']!=2" >
+                  <div style="background-color: red; height:25px; line-height: 25px; text-align: center;"  *ngIf="promotionsFR[i]['promotion_status']!=2" >{{promotionsFR[i].promotion_infor}}%</div>
+                  <div class="trai"></div>
+                  <div class="phai"></div>
+                </div>
+                <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
+              </div>
+              <div class="card-footer">
+                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsFR[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsFR[i].promotion_infor)"></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
