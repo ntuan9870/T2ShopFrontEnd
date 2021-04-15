@@ -67,4 +67,7 @@ export class ProductService {
   public filter(form){
     return this.http.post(this.baseUrl+"filter",form);
   }
+  public pushFavoriteProduct(form){
+    return this.http.post(this.baseUrl+"pushFavoriteProduct",form);
+  }
 }

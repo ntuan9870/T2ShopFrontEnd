@@ -72,6 +72,19 @@ export class DetailproductComponent implements OnInit {
       }
     );
   }
+  favorite(){
+    const fd = new FormData();
+    fd.append('product_id',this.id);
+    fd.append('user_id',this.user_id);
+    this.productService.pushFavoriteProduct(fd).subscribe(
+      res=>{
+       console.log(res);
+      },
+      error=>{
+        alert('Có lỗi trong quá trình xử lý dữ liệu!');
+      }
+    );
+  }
   add(){
     if(this.user_id != ''){
         const fd = new FormData();

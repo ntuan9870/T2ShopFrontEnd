@@ -217,3 +217,21 @@
   box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
   animation: spin 1.5s linear infinite;
 }
+.favorite{
+  margin: 10px 20px 0px 20px;
+  display: inline-flex;
+}
+.favorite h4{
+  width: 100%;
+  display: flex;
+  margin-left: 18px;
+}    
+.favorite i{
+  margin: 0px 0px 0px 20px;
+  font-size: 25px;
+  color: rgb(20, 133, 35);
+  cursor: pointer;
+}    
+.favorite i:hover{
+ color: rgb(160, 29, 121);
+} 
