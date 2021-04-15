@@ -45,5 +45,14 @@ export class FovoriteproductComponent implements OnInit {
       }
     );
   }
+  remove(FP_id){
+    console.log(FP_id);
+    this.productservice.removeFavoriteProduct(FP_id).subscribe(
+      res=>{
+        console.log(res);
+        this.showFavoriteProduct();
+      }
+    );
+  }
 
 }
