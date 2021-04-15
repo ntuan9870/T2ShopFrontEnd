@@ -70,4 +70,7 @@ export class ProductService {
   public pushFavoriteProduct(form){
     return this.http.post(this.baseUrl+"pushFavoriteProduct",form);
   }
+  public showFavoriteProduct(user_id){
+    return this.http.get(this.baseUrl+"showFavoriteProduct?user_id="+user_id,null);
+  }
 }
