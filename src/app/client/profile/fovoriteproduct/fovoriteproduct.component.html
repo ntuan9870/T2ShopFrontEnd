@@ -22,7 +22,10 @@
                     <th scope="row">{{i}}</th>
                     <th>{{f.product_name}}</th>
                     <th><img src="{{f.product_img}}" alt="" style="height: 90px;"></th>
-                    <th><i class="fas fa-trash-alt" (click)="remove(f.FP_id)" style="cursor: pointer;"></i></th>
+                    <th>
+                      <i class="fas fa-trash-alt" (click)="remove(f.FP_id)" style="cursor: pointer;"></i>/
+                      <a [routerLink]="['../../products/'+f.product_id]"><i class="fas fa-eye"></i></a>
+                    </th>
                   </tr>
                 </tbody>
               </table>
