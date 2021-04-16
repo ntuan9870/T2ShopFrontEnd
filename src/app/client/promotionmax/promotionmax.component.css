@@ -37,6 +37,7 @@ ul i{
     top: 2px;
     /* height: 70px; */
     cursor: pointer;
+    font-size: 30px;
 }
 .infor{
     /* height: 30px; */
@@ -47,5 +48,6 @@ ul i{
     width: 60px;
 }
 .head{
-    background-color: #829cb6;
+    background-color: #afb3b4;
+    height: 33px;
 }
