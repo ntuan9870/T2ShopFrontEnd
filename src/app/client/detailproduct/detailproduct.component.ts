@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute  } from '@angular/router';
 import { StarRatingComponent } from 'ng-starrating';
 import { BehaviorSubject } from 'rxjs';
 import { Comment } from 'src/app/models/comment.model';
@@ -9,8 +9,10 @@ import { Promotion } from 'src/app/models/promotion.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { RecommenedService } from 'src/app/services/recommened.service';
+
 declare function showSwal(type,message):any;
 declare var $;
+
 
 @Component({
   selector: 'app-detailproduct',
@@ -19,7 +21,7 @@ declare var $;
 })
 export class DetailproductComponent implements OnInit {
 
-  public id = '';
+  public id:any;
   public loading = false;
   public comment_content = '';
   public user_id = '';
@@ -33,6 +35,7 @@ export class DetailproductComponent implements OnInit {
   public promotion:Promotion = new Promotion;
   public favoriteProduct;
 
+
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
   ngOnInit(): void {
     this.user_id = '';
@@ -45,13 +48,18 @@ export class DetailproductComponent implements OnInit {
       this.user_id = sessionStorage.getItem('user_id');
       this.user_name = sessionStorage.getItem('user_name')
     }
-    this.id = this.activatedRoute.snapshot.params['id'];
-    this.getProductById();
-    this.getratingelement();
-    this.getComment();
-    this.getratingproduct();
-    this.getratingall();
-    this.getfavorite();
+    // this.id = this.activatedRoute.snapshot.params['id'];
+    // console.log(this.id);
+    this.activatedRoute.paramMap.subscribe(params=>{
+      this.id =+params.get("id");
+      this.getProductById();
+      this.getratingelement();
+      this.getComment();
+      this.getratingproduct();
+      this.getratingall();
+      this.getfavorite();
+    })
+    
   }
 
   getProductById(){
