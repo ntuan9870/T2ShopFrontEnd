@@ -52,7 +52,8 @@
                   </td>
                   <td>{{p.product_accessories}}</td>
                   <td>{{p.product_warranty}}</td>
-                  <td>{{promotions[i].promotion_infor}}%</td>
+                  <td *ngIf='promotions[i]==null'>Không</td>
+                  <td *ngIf='promotions[i]!=null'>{{promotions[i].promotion_infor}}%</td>
                   <td>{{p.product_condition}}</td>
                   <td><span [innerHTML]="p.product_description"></span></td>
                   <td>{{p.product_amount}}</td>

@@ -67,4 +67,7 @@ export class ProductService {
   public filter(form){
     return this.http.post(this.baseUrl+"filter",form);
   }
+  public checkSameName(product_name){
+    return this.http.post(this.baseUrl+"checkSameName?product_name="+product_name,null);
+  }
 }

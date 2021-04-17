@@ -10,6 +10,7 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
 declare var $;
 declare var toastr;
 declare var Toast;
@@ -30,7 +31,8 @@ export class AddComponent implements OnInit {
   public loading = false;
   public promotion;
   public selectedItem;
-  public selectedOption;
+  public selectedOption = null;
+  public samename = false;
   public form = {
     ten : "",
     price:0,
@@ -75,7 +77,8 @@ export class AddComponent implements OnInit {
     this.loading = true;
     var message;
     const fd = new FormData();
-    fd.append('product_id',this.selectedProduct);
+    fd.append('product_name',this.form.ten);
+    fd.append('product_price',this.form.price.toString());
     fd.append('img',this.SelectedImage);
     // fd.append('name',$('#name').val());
     // fd.append('price',$('#price').val());
@@ -170,5 +173,16 @@ export class AddComponent implements OnInit {
   }
   public back(){
     this.location.back();
+  }
+  public checkName(){
+    this.proSer.checkSameName(this.form.ten).subscribe(
+      res=>{
+        if(res['message']=='same'){
+          this.samename = true;
+        }else{
+          this.samename = false;
+        }
+      }
+    );
   }
 }

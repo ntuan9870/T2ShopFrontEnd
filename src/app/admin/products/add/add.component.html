@@ -16,26 +16,29 @@
             <div class="col-xs-12 col-md-12 col-lg-12">
               <div class="form-group" >
                 <label>Tên sản phẩm <i style="color: red;">(*)</i></label>
-                <!-- <input required type="text" id="name" name="name" class="form-control" [(ngModel)]="form.ten" #name="ngModel">
+                <input required type="text" id="name" name="name" class="form-control" [(ngModel)]="form.ten" #name="ngModel" (keyup)="checkName()" autocomplete="off">
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
                   <div *ngIf="name.errors.required">
-                    Tên đăng nhập là trường bắt buộc!
+                    Tên là trường bắt buộc!
                   </div>
-                </div> -->
-                <select  [(ngModel)]="selectedProduct"  name="selectedProduct" (change)="checkid(selectedProduct)">
+                </div>
+                <div *ngIf="samename" class="alert alert-danger">
+                  Tên sản phẩm đã tồn tại!
+                </div>
+                <!-- <select  [(ngModel)]="selectedProduct"  name="selectedProduct" (change)="checkid(selectedProduct)">
                   <option class="form-control" *ngFor="let p of productWH" [value]="p.prod_id">{{p.prod_name }}</option>
-                </select>
+                </select> -->
               </div>
 
-              <!-- <div class="form-group" >
+              <div class="form-group" >
                 <label>Giá sản phẩm <i style="color: red;">(*)</i></label>
-                <input required type="number" id="price" name="price" class="form-control" [(ngModel)]="form.price" #price="ngModel"  (keyup)="checkprice($event)" (change)="checkprice($event)">
+                <input required type="number" id="price" name="price" class="form-control" [(ngModel)]="form.price" #price="ngModel"  (keyup)="checkprice($event)" (change)="checkprice($event)" autocomplete="off">
                 <div *ngIf="price.invalid && (price.dirty || price.touched)" class="alert alert-danger">
                   <div *ngIf="price.errors.required">
                     Giá sản phẩm là trường bắt buộc!
                   </div>
                 </div>
-              </div> -->
+              </div>
               <div class="form-group" >
                 <label>Ảnh sản phẩm <i style="color: red;">(*)</i></label>
                 <input required id="img" type="file" #file2 name="img" class="form-control d-none" onchange="" (change) = "onSelect($event)" [(ngModel)]="form.img" #img="ngModel"><br>
@@ -48,7 +51,7 @@
               </div>
               <div class="form-group" >
                 <label>Phụ kiện</label>
-                <input type="text" id="accessories" name="accessories" class="form-control" [(ngModel)]="form.accessories" #accessories="ngModel">
+                <input type="text" id="accessories" name="accessories" class="form-control" [(ngModel)]="form.accessories" #accessories="ngModel" autocomplete="off">
                 <!-- <div *ngIf="accessories.invalid && (accessories.dirty || accessories.touched)" class="alert alert-danger">
                   <div *ngIf="accessories.errors.required">
                     Phụ kiện là trường bắt buộc!
@@ -57,7 +60,7 @@
               </div>
               <div class="form-group" >
                 <label>Bảo hành</label>
-                <input type="text" id="warranty" name="warranty" class="form-control" [(ngModel)]="form.warranty" #warranty="ngModel">
+                <input type="text" id="warranty" name="warranty" class="form-control" [(ngModel)]="form.warranty" #warranty="ngModel" autocomplete="off">
                 <!-- <div *ngIf="warranty.invalid && (warranty.dirty || warranty.touched)" class="alert alert-danger">
                   <div *ngIf="warranty.errors.required">
                     Bảo hành là trường bắt buộc!
@@ -67,7 +70,8 @@
               <div class="form-group" >
                 <label>Khuyến mãi</label>
                 <!-- <input type="number" id="promotion" name="promotion" class="form-control" [(ngModel)]="form.promotion" #promotion="ngModel"  (keyup)="checkpromotion($event)" (change)="checkpromotion($event)"> -->
-                <select  [(ngModel)]="selectedOption"  name="selectedOption"  >
+                <select  [(ngModel)]="selectedOption"  name="selectedOption" class="form-control">
+                  <option class="form-control" [value]="null">Không có khuyến mãi</option>
                   <option class="form-control" *ngFor="let p of promotion" [value]="p.promotion_id">{{p.promotion_name }} / {{ p.promotion_infor}} % </option>
                 </select>
                 <!-- <div *ngIf="promotion.invalid && (promotion.dirty || promotion.touched)" class="alert alert-danger">
@@ -78,7 +82,7 @@
               </div>
               <div class="form-group" >
                 <label>Tình trạng <i style="color: red;">(*)</i></label>
-                <input required type="text" id="condition" name="condition" class="form-control" [(ngModel)]="form.condition" #condition="ngModel">
+                <input required type="text" id="condition" name="condition" class="form-control" [(ngModel)]="form.condition" #condition="ngModel" autocomplete="off">
                 <div *ngIf="condition.invalid && (condition.dirty || condition.touched)" class="alert alert-danger">
                   <div *ngIf="condition.errors.required">
                     Tình trạng là trường bắt buộc!
@@ -96,7 +100,7 @@
               </div>
               <div class="form-group" >
                 <label>Số lượng <i style="color: red;">(*)</i></label>
-                <input required type="number" id="amount" name="amount" class="form-control" [(ngModel)]="form.amount" #amount="ngModel" (keyup)="checkamount($event)" (change)="checkamount($event)">
+                <input required type="number" id="amount" name="amount" class="form-control" [(ngModel)]="form.amount" #amount="ngModel" (keyup)="checkamount($event)" (change)="checkamount($event)" autocomplete="off">
                 <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="alert alert-danger">
                   <div *ngIf="amount.errors.required">
                     Số lượng là trường bắt buộc!
