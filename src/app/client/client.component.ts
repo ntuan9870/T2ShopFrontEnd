@@ -9,6 +9,8 @@ import { ShareService } from '../services/share.service';
 })
 export class ClientComponent implements OnInit {
 
+  chatDialogFlow:boolean;
+
   constructor(private router:Router,private shareService:ShareService) {
     shareService.changeEmitted$.subscribe(
       text=>{
@@ -20,6 +22,14 @@ export class ClientComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('user_level')=='2'||sessionStorage.getItem('user_level')=='2'||localStorage.getItem('user_level')=='1'||sessionStorage.getItem('user_level')=='1'){
       this.router.navigate(['/admin']);
+    }
+    this.chatDialogFlow=false;
+  }
+  click(){
+    if(this.chatDialogFlow==false){
+      this.chatDialogFlow=true;
+    }else{
+      this.chatDialogFlow=false;
     }
   }
 
