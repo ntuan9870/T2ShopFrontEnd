@@ -83,7 +83,7 @@ export class AddwarehouseComponent implements OnInit {
     }
     if(sessionStorage.getItem('user_id')){
       this.user_name =  sessionStorage.getItem('user_name');
-      this.user_id =  localStorage.getItem('user_id');
+      this.user_id =  sessionStorage.getItem('user_id');
     }
   }
   timkiem(txtKeyword){
@@ -442,6 +442,7 @@ export class AddwarehouseComponent implements OnInit {
     //   currency: 'VND'
     // });
     this.am = sum;
+    
   }
   dateFormat(dt:Date, f:string){
     var y:string = '';
