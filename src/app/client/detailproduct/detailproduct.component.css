@@ -235,3 +235,19 @@
 .favorite i:hover{
  color: rgb(160, 29, 121);
 } 
+.favorited{
+  display: inline-grid;
+  margin-left: 40px;
+}
+.favorited h4{
+  color: chocolate;
+}
+.heart{
+  display: flex;
+}
+.heart i{
+  margin-left: 30px;
+  font-size: 24px;
+  color: #413d3d;
+  cursor: pointer;
+}

@@ -26,6 +26,12 @@
       <div class="favorite" *ngIf="user_id!=''&& favoriteProduct.length==0">
         <h4>Thêm vào sản phẩm yêu thích</h4> <i class="fas fa-heart" (click)="favorite()" ></i>
       </div>
+      <div class="favorited" *ngIf="user_id!=''&& favoriteProduct.length>0">
+        <h4>Sản phẩm bạn đã thích</h4>
+        <div class="heart">
+          <p>Nếu bạn không muốn thích nữa thì </p> <i class="fas fa-heart-broken" (click)="heart()"></i>
+        </div>
+      </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ctsp">
       <h3 style="margin-top:20px;color: chocolate;">Chi tiết sản phẩm</h3>

@@ -4,6 +4,7 @@ import { ActivatedRoute  } from '@angular/router';
 import { StarRatingComponent } from 'ng-starrating';
 import { BehaviorSubject } from 'rxjs';
 import { Comment } from 'src/app/models/comment.model';
+import { FavoriteProduct } from 'src/app/models/favorite-product.model';
 import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
 import { CartService } from 'src/app/services/cart.service';
@@ -33,7 +34,7 @@ export class DetailproductComponent implements OnInit {
   public ratingproduct:number = 0;
   public arrcount:number[]=new Array;
   public promotion:Promotion = new Promotion;
-  public favoriteProduct;
+  public favoriteProduct:FavoriteProduct[];
 
 
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
@@ -108,6 +109,15 @@ export class DetailproductComponent implements OnInit {
         alert('Có lỗi trong quá trình xử lý dữ liệu!');
       }
     );
+  }
+  heart(){
+    if(confirm("Bạn có muốn xóa sản phẩm ra khỏi danh sách sản phẩm yêu thích")){
+      this.productService.removeFavoriteProduct(this.favoriteProduct[0].FP_id).subscribe(
+        res=>{
+          this.getfavorite();
+        }
+      );
+    }
   }
   add(){
     if(this.user_id != ''){
