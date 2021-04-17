@@ -15,6 +15,7 @@ import { HistoryComponent } from './profile/history/history.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { FovoriteproductComponent } from './profile/fovoriteproduct/fovoriteproduct.component';
 
 const routes: Routes = [
   {path:'',component:ClientComponent,
@@ -36,6 +37,7 @@ const routes: Routes = [
         {path:'detail/:id',component:DetailComponent},
       ]},
       {path:'profile/changepass',component:ChangepassComponent},
+      {path:'profile/fovoriteproduct',component:FovoriteproductComponent},
       {path:'supplier/confirm/:id',component:SupplierComponent},
     ]
   }

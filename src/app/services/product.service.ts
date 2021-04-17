@@ -67,6 +67,21 @@ export class ProductService {
   public filter(form){
     return this.http.post(this.baseUrl+"filter",form);
   }
+  public pushFavoriteProduct(form){
+    return this.http.post(this.baseUrl+"pushFavoriteProduct",form);
+  }
+  public showFavoriteProduct(user_id){
+    return this.http.post(this.baseUrl+"showFavoriteProduct?user_id="+user_id,null);
+  }
+  public removeFavoriteProduct(FP_id){
+    return this.http.post(this.baseUrl+"removeFavoriteProduct?FP_id="+FP_id,null);
+  }
+  public getFavoriteProduct(user_id){
+    return this.http.post(this.baseUrl+"getFavoriteProduct?user_id="+user_id,null);
+  }
+  public getFavorite(form){
+    return this.http.post(this.baseUrl+"getFavorite",form);
+  }
   public checkSameName(product_name){
     return this.http.post(this.baseUrl+"checkSameName?product_name="+product_name,null);
   }

@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+      <ul class="list-group col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+        <li class="list-group-item"><a [routerLink]="['../']"><i class="far fa-edit"></i> Thông tin cá nhân</a></li>
+        <li class="list-group-item"><a [routerLink]="['../history']"><i class="far fa-eye"></i> Lịch sử mua hàng</a></li>
+        <li class="list-group-item"><a [routerLink]="['../changepass']"><i class="far fa-edit"></i> Đổi mật khẩu</a></li>
+        <li class="list-group-item"><a [routerLink]="['../fovoriteproduct']"><i class="far fa-eye"></i> Sản phẩm yêu thích</a></li>
+      </ul>
+      <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+          <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th>Tên</th>
+                    <th>Ảnh</th>
+                    <th>Lựa chọn</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let f of favoriteProduct ; let i = index'>
+                    <th scope="row">{{i}}</th>
+                    <th>{{f.product_name}}</th>
+                    <th><img src="{{f.product_img}}" alt="" style="height: 90px;"></th>
+                    <th>
+                      <i class="fas fa-trash-alt" (click)="remove(f.FP_id)" style="cursor: pointer;"></i>/
+                      <a [routerLink]="['../../products/'+f.product_id]"><i class="fas fa-eye"></i></a>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+          <!-- <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls> -->
+      </div>
+    </div>
+  </div>
+  

@@ -21,13 +21,17 @@ export class HomeComponent implements OnInit {
   allPromotion = new BehaviorSubject<Promotion[]>(null);
   allPromotionF = new BehaviorSubject<Promotion[]>(null);
   allPromotionR = new BehaviorSubject<Promotion[]>(null);
+  allPromotionFR = new BehaviorSubject<Promotion[]>(null);
   promotions:Promotion[];
   promotionsF:Promotion[];
   promotionsR:Promotion[];
+  promotionsFR:Promotion[];
   allProductFeatured = new BehaviorSubject<Product[]>(null);
   allProductRecommend = new BehaviorSubject<Product[]>(null);
+  allProductFavorite = new BehaviorSubject<Product[]>(null);
   productsFeatured:Product[];
   productsrecommend:Product[];
+  FavoriteProduct:Product[];
   public loading = true;
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private cartService:CartService) { }
 
@@ -48,6 +52,7 @@ export class HomeComponent implements OnInit {
     this.getNewProduct();
     this.getFeaturedProduct();
     this.getRecommendProduct();
+    this.getFavoriteProduct();
   }
 
   getNewProduct(){
@@ -99,16 +104,12 @@ export class HomeComponent implements OnInit {
       });
   }
   getRecommendProduct(){
-    // console.log(this.user_id);
-    // this.loading = true;
     if(this.user_id!=''){
       this.recommendservice.getRecommend(this.user_id).subscribe(
         res=>{
           var r:any = res;
           this.allProductRecommend.next(r.products);
           this.allPromotionR.next(r.promotions);
-          // this.productsrecommend=res['products'];
-          // this.promotions=res['promotions'];
           this.loading = false;
           console.log(this.productsrecommend);
         },
@@ -127,6 +128,34 @@ export class HomeComponent implements OnInit {
       );
       this.allPromotionR.subscribe(res=>{
         this.promotionsR=res;
+      });
+    }
+  }
+  getFavoriteProduct(){
+    if(this.user_id!=''){
+      this.productService.getFavoriteProduct(this.user_id).subscribe(
+        res=>{
+          var r:any = res;
+          this.allProductFavorite.next(r.products);
+          this.allPromotionFR.next(r.promotions);
+          this.loading = false;
+        },
+        error=>{
+          this.loading = false;
+          alert('Có lỗi trong quá trình xử lý thông tin!');
+        }
+      );
+      this.allProductFavorite.subscribe(
+        res=>{
+          this.FavoriteProduct = res;
+          console.log(this.FavoriteProduct);
+        },
+        error=>{
+          alert('Có lỗi trong quá trình xử lý thông tin!');
+        }
+      );
+      this.allPromotionFR.subscribe(res=>{
+        this.promotionsFR=res;
       });
     }
   }
