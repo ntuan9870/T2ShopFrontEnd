@@ -3,7 +3,10 @@ import { stringify } from 'querystring';
 import { BehaviorSubject } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
+// import { SwPush } from 'src/app/models/sw-push.model';
+import {SwPush} from '@angular/service-worker';
 import { CartService } from 'src/app/services/cart.service';
+import { NewsletterService } from 'src/app/services/newsletter.service';
 import { ProductService } from 'src/app/services/product.service';
 import { RecommenedService } from 'src/app/services/recommened.service';
 declare function showSwal(type,message):any;
@@ -33,7 +36,10 @@ export class HomeComponent implements OnInit {
   productsrecommend:Product[];
   FavoriteProduct:Product[];
   public loading = true;
-  constructor(private recommendservice:RecommenedService,private productService:ProductService,private cartService:CartService) { }
+  readonly VAPID_PUBLIC_KEY ="BGgqRns0vqv3lxOHhXyFDG8TVtQq_SsPt9ulSPT1PQbJkgsPc8lpOznH7oG3E7_4RIFuFNCAkORiuqvs2Ub-lQU";
+
+  constructor(private recommendservice:RecommenedService,private productService:ProductService,private cartService:CartService,private swPush: SwPush,
+    private newsletterService: NewsletterService) { }
 
   ngOnInit(): void {
     if(sessionStorage.getItem('user_name')){
@@ -53,8 +59,16 @@ export class HomeComponent implements OnInit {
     this.getFeaturedProduct();
     this.getRecommendProduct();
     this.getFavoriteProduct();
+    this.subscribeToNotifications();
   }
 
+  subscribeToNotifications() {
+    this.swPush.requestSubscription({
+        serverPublicKey: this.VAPID_PUBLIC_KEY
+    })
+    .then(sub => this.newsletterService.addPushSubscriber(sub).subscribe())
+    .catch(err => console.error("Could not subscribe to notifications", err));
+  }
   getNewProduct(){
     this.productService.getNewProduct(12).subscribe(
       res=>{

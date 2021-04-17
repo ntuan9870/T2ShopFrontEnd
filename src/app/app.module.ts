@@ -21,6 +21,8 @@ import { LoginadminComponent } from './auth/loginadmin/loginadmin.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import {SocialLoginModule,AuthServiceConfig,FacebookLoginProvider,GoogleLoginProvider} from 'ng4-social-login';
 import { LoginshipperComponent } from './auth/loginshipper/loginshipper.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 const config= new AuthServiceConfig([
@@ -60,7 +62,8 @@ registerLocaleData(localeVi,'vi-VN')
     RatingModule,
     NgxCaptchaModule,
     SocialLoginModule,
-    DocumentEditorAllModule
+    DocumentEditorAllModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [AuthGuard,{provide:AuthServiceConfig,useFactory:provideConfig}],
   bootstrap: [AppComponent]
