@@ -7,10 +7,11 @@ import { OrderComponent } from './order/order.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InforComponent } from './infor/infor.component';
 import { FormsModule }   from '@angular/forms';
+import { MapComponent } from './map/map.component';
 
 
 @NgModule({
-  declarations: [ShipperComponent, TopbarComponent, OrderComponent, InforComponent],
+  declarations: [ShipperComponent, TopbarComponent, OrderComponent, InforComponent, MapComponent],
   imports: [
     CommonModule,
     ShipperRoutingModule,
