@@ -10,7 +10,7 @@ const routes: Routes = [
     children:[
       {path:'',component:OrderComponent},
       {path:'shipperinfor',component:InforComponent},
-      {path:'map',component:InforComponent}
+      {path:'map',component:MapComponent}
     ]
   }
 ];

@@ -21,6 +21,7 @@
                             <td>Tổng tiền</td>
                             <td>Thanh toán</td>
                             <td>Địa chỉ giao</td>
+                            <td>Bản đồ</td>
                             <td>Trạng thái</td>
                             <td>Giao</td>
                             <td>Hủy</td> 
@@ -37,6 +38,7 @@
                             <td>
                                 {{orders[i].address}}
                             </td>
+                            <td><a [routerLink]="['../map']">Chỉ dẫn</a></td>
                             <td>
                                 <!-- <span *ngIf="s.status==0" >Chưa xong</span> -->
                                 <i *ngIf="s.status==0" class="fas fa-exclamation-triangle" style="color: red;"></i>
@@ -49,6 +51,7 @@
                             <td *ngIf="s?.status=='0'">
                                 <i class="fas fa-window-close" style="cursor: pointer; color: red;" (click)="destroyShip(s)"></i>
                             </td>
+                           
                         </tr>
                     </tbody>
                 </table>
