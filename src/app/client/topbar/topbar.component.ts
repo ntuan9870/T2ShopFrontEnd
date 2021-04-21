@@ -30,6 +30,8 @@ export class TopbarComponent implements OnInit {
   public totalamount = '';
   public allVouchers = new BehaviorSubject<Voucher[]>(null);
   public vouchers:Voucher[];
+  public VouchersDetail = new BehaviorSubject<Voucher[]>(null);
+  public voucherD:Voucher[];
   constructor(private categoryService:CategoryService, private recommendservice:RecommenedService , private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
     shareService.changeEmitted$.subscribe(
       text=>{
@@ -121,7 +123,7 @@ export class TopbarComponent implements OnInit {
   shownotification(){
     this.shown = !this.shown;
   }
-  select_voucher(voucher_id){
+  apply(voucher_id){
     if(localStorage.getItem('cart')==null){
       showSwal('auto-close','Giỏ hàng rỗng!');
     }
@@ -134,6 +136,19 @@ export class TopbarComponent implements OnInit {
       }
     }
     this.router.navigate(['/cart/thanhtoan/'+voucher_id]);
+  }
+  select_voucher(voucher_id){
+    this.voucherService.getdetailvoucher(voucher_id).subscribe(
+      res=>{
+       this.voucherD=res['voucher'];
+       console.log(this.voucherD);
+      }
+    );
+    
+  }
+  
+  trackByFn(index, item) {
+    return index;
   }
 
 }
