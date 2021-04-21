@@ -13,7 +13,7 @@
       </form>
       <div class="btn-group" *ngIf='checklogin'>
         <a style="width: 50px; margin-right: -5px;" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-gift"><span *ngIf="!this.vouchers&&this.vouchers!=null">{{this.vouchers.length}}</span></i>
+          <i class="fas fa-gift"><span *ngIf="this.vouchers&&this.vouchers!=null">{{this.vouchers.length}}</span></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right voucher-dropdown">
           <div class="arrow"></div>
