@@ -1,6 +1,9 @@
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChatBotMessage } from 'src/app/models/chat-bot-message.model';
 import { ChatbotService } from 'src/app/services/chatbot.service';
+import { VoucherService } from 'src/app/services/voucher.service';
+import { Voucher } from 'src/app/models/voucher.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-chatbot',
@@ -13,8 +16,16 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
 
   public arrMessages:ChatBotMessage[] = new Array();
   public chatbotmessage = '';
+  public user_id='';
+  public user_name = '';
+  public user_email = '';
+  public user_phone = '';
+  public user_level = '';
+  public checklogin = false;
+  public allVouchers = new BehaviorSubject<Voucher[]>(null);
+  public vouchers:Voucher[];
 
-  constructor(private chatbotservice:ChatbotService) { }
+  constructor(private chatbotservice:ChatbotService,private voucherservice:VoucherService) { }
 
   ngOnInit(): void {
     var a = new ChatBotMessage();
@@ -23,10 +34,55 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     a.message_content = 'hello';
     a.customer_chatbot = 'chatbot';
     this.arrMessages[0] = a;
+
+    if(sessionStorage.getItem('user_name')){
+      this.user_name = sessionStorage.getItem('user_name');
+      this.user_id = sessionStorage.getItem('user_id');
+      this.checklogin = true;
+    }else{
+      if(localStorage.getItem('user_name')){
+        this.user_name = localStorage.getItem('user_name');
+        this.user_id = localStorage.getItem('user_id');
+        this.checklogin = true;
+      }else{
+        this.checklogin = false;
+      }
+    }
+    this.showVoucher();
   }
 
   ngAfterViewChecked() {        
     this.scrollToBottom();        
+  }
+  showVoucher(){
+    if(this.user_name!=''){
+      this.voucherservice.getallvoucherforuser(this.user_id).subscribe(
+        res=>{
+          this.vouchers = res['vouchers'];
+          var a = new ChatBotMessage();
+          a.user_id = '1';
+          a.message_id='1';
+          a.message_content = 'Sau đây là một số voucher của bạn';
+          a.customer_chatbot = 'chatbot';
+          this.chatbotmessage = '';
+          this.arrMessages.push(a);
+          this.scrollToBottom();
+          for(var i=0; i<=this.vouchers.length;i++){
+            var m=new Array();
+            m.push('Mã voucher:',this.vouchers[i].voucher_id,'Tên voucher:',this.vouchers[i].voucher_name,
+            'Ngày bắt đầu',this.vouchers[i].voucher_start,'Ngày kết thúc',this.vouchers[i].voucher_end);
+            var a = new ChatBotMessage();
+            a.user_id = '1';
+            a.message_id='1';
+            a.message_content = m;
+            a.customer_chatbot = 'chatbot';
+            this.chatbotmessage = '';
+            this.arrMessages.push(a);
+            this.scrollToBottom();
+          }
+        }
+      );
+    }
   }
   checkMessage(e){
     if(e.keyCode == 13){
