@@ -8,6 +8,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { InforComponent } from './infor/infor.component';
 import { FormsModule }   from '@angular/forms';
 import { MapComponent } from './map/map.component';
+// import { AgmCoreModule } from '@agm/core';
+import {GoogleMapsModule} from '@angular/google-maps'
 
 
 @NgModule({
@@ -16,7 +18,12 @@ import { MapComponent } from './map/map.component';
     CommonModule,
     ShipperRoutingModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    GoogleMapsModule,
+    // AgmCoreModule.forRoot({
+    //   apiKey: "AIzaSyAofrlMwlRyXzbZNtsBfdkRl0GXZRsHpnk",
+    //   libraries: ["places", "geometry"]
+    // })
   ]
 })
 export class ShipperModule { }

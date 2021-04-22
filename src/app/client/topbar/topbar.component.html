@@ -13,12 +13,12 @@
       </form>
       <div class="btn-group" *ngIf='checklogin'>
         <a style="width: 50px; margin-right: -5px;" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-gift"><span *ngIf="!this.vouchers&&this.vouchers!=null">{{this.vouchers.length}}</span></i>
+          <i class="fas fa-gift"><span *ngIf="this.vouchers&&this.vouchers!=null">{{this.vouchers.length}}</span></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right voucher-dropdown">
           <div class="arrow"></div>
           <h5 style="margin-left: 20px;">Ưu đãi cho bạn</h5>
-          <a  *ngFor="let v of vouchers; let i = index" class="dropdown-item" type="button" (click)="select_voucher(v.voucher_id)"><i class="fas fa-gift"></i> {{v.voucher_name}}</a>
+          <a  *ngFor="let v of vouchers; let i = index" class="dropdown-item" type="button" data-toggle="modal" data-target=".bd-example-modal-sl" (click)="select_voucher(v.voucher_id)"><i class="fas fa-gift"></i> {{v.voucher_name}}</a>
         </div>
       </div>
       <!-- <a [routerLink]="['/filter']" style="width: 50px; margin-right: -5px;"><div><i class="fas fa-filter"></i></div></a> -->
@@ -38,3 +38,36 @@
   </nav>
 </div>
 
+<div class="modal fade bd-example-modal-sl" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="margin-top: 100px; width: 600px; margin-left: 30%;">
+  <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">Thông tin chi tiết voucher</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <ul *ngFor="let u of user_voucher;trackBy: trackByFn" style="list-style: none;">
+              <li>Số lượng: {{u.amount_voucher}}</li>
+              <li>Đã sử dụng: {{u.voucher_used}}</li>
+            </ul>
+            <ul *ngFor="let v of voucherD;trackBy: trackByFn" style="list-style: none;" >
+              <li>Mã voucher: {{v.voucher_id}}</li>
+              <li>Tên voucher: {{v.voucher_name}}</li>
+              <li>Điểm Voucher : {{v.voucher_score}}</li>
+              <li *ngIf="v.voucher_discount!=0">Giá trị, chiết khấu :{{v.voucher_discount}}%</li>
+              <li *ngIf="v.voucher_value!=0">Giá trị, chiết khấu :{{v.voucher_value | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+              <li>Mức giá áp dụng : {{v.voucher_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</li>
+              <li>Ngày bắt đầu : {{v.voucher_start}}</li>
+              <li>Ngày kết thúc : {{v.voucher_end}}</li>
+              <li><button  class="btn btn-success" (click)="apply(v.voucher_id)">Sử dụng</button></li>
+            </ul>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

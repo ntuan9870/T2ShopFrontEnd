@@ -23,6 +23,8 @@ import {SocialLoginModule,AuthServiceConfig,FacebookLoginProvider,GoogleLoginPro
 import { LoginshipperComponent } from './auth/loginshipper/loginshipper.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+// import { AgmCoreModule } from '@agm/core';
+import {GoogleMapsModule} from '@angular/google-maps'
 
 
 const config= new AuthServiceConfig([
@@ -63,7 +65,12 @@ registerLocaleData(localeVi,'vi-VN')
     NgxCaptchaModule,
     SocialLoginModule,
     DocumentEditorAllModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    GoogleMapsModule
+    // AgmCoreModule.forRoot({
+    //   apiKey: "AIzaSyCBmF-ET9tryoxNIuO2NjKO3NdC08nZcBM",
+    //   libraries: ["places", "geometry"]
+    // })
   ],
   providers: [AuthGuard,{provide:AuthServiceConfig,useFactory:provideConfig}],
   bootstrap: [AppComponent]
