@@ -1,0 +1,7 @@
+th a{
+    color: blue;
+}
+th a:hover{
+    color: blue;
+    cursor: pointer;
+}

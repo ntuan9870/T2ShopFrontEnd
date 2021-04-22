@@ -34,6 +34,9 @@ import { DetailvoucherComponent } from './vouchers/detailvoucher/detailvoucher.c
 import { EditVoucherComponent } from './vouchers/edit-voucher/edit-voucher.component';
 import { ShipperComponent } from './shipper/shipper.component';
 import { AccessoriesComponent } from './accessories/accessories.component';
+import { StoresComponent } from './stores/stores.component';
+import { AddstoreComponent } from './stores/addstore/addstore.component';
+import { EditstoreComponent } from './stores/editstore/editstore.component';
 
 const routes: Routes = [
   {path:'',component:AdminComponent,
@@ -122,6 +125,13 @@ const routes: Routes = [
         path:'accessories',
         children:[
           {path:'',component:AccessoriesComponent}
+        ]
+      },{
+        path:'stores',
+        children:[
+          {path:'',component:StoresComponent},
+          {path:'add',component:AddstoreComponent},
+          {path:'edit/:id',component:EditstoreComponent}
         ]
       }
     ]

@@ -1,0 +1,49 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Thêm cửa hàng</h1>
+    </div>
+  </div><!--/.row-->
+  <i style="color: red;">(*) là trường bắt buộc! </i>
+  <div class="row">
+    <div class="col-sm-8">
+        <form #addAdminForm="ngForm" method="post">
+            <div class="form-group">
+              <label>Tên cửa hàng <i style="color: red;">(*)</i></label>
+              <input type="text" name="store_name" class="form-control" placeholder="Tên cửa hàng.." required [(ngModel)]="store_name" #storenamecheck='ngModel' autocomplete="off" (keyup)="checkSameName()"/>
+              <div class="check-error" *ngIf="storenamecheck.invalid&&(storenamecheck.touched||storenamecheck.dirty)">
+                <span *ngIf="storenamecheck.errors.required">Tên cửa hàng là trường bắt buộc!</span>
+              </div>
+              <span class="check-error" *ngIf="store_name!=''&&checksames=='same'">Tên cửa hàng này đã tồn tại!</span>
+            </div>
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;">
+                <label class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" for="pwd">Địa chỉ cửa hàng:</label>
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                  <input type="text" class="form-control" id="store_address" name="store_address" required [(ngModel)]='store_address' #storesaddress='ngModel' placeholder="Số nhà, tên đường.." (keyup)="checkSameAddress()">
+                  <div *ngIf="storesaddress.invalid&&(storesaddress.dirty||storesaddress.touched)">
+                    <div *ngIf="storesaddress.errors.required" style="color:red">
+                      Vui lòng nhập địa chỉ!
+                    </div>
+                  </div>
+                  <span class="check-error" *ngIf="store_address!=''&&checksamea=='same'">Đã có cửa hàng đặt ở đây rồi!</span>
+                </div>
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                  <div class="row">
+                    <select  class="form-control col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" name="sl_ward" id="sl_ward" [(ngModel)]="store_ward" (change)="checkSameAddress()">
+                      <option *ngFor = "let w of ws; let i = index">{{w.Title}}</option>
+                    </select>
+                    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                      <select class="form-control" name="sl_district" id="sl_district" [(ngModel)]="store_district" (change)="selectDistrict()">
+                        <option *ngFor = "let d of districts">{{d.Title}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <input [disabled]="!addAdminForm.valid||checksames=='same'||checksamea=='same'" type="submit" name="submit" value="Thêm" class="btn btn-primary" (click)="addStore()"/>
+            <a style="margin-left: 10px;" class="btn btn-warning" (click)='location.back()'>Quay về</a>
+        </form>
+      </div>
+  </div>

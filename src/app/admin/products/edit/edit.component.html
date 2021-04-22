@@ -60,7 +60,7 @@
               <div class="form-group" >
                 <label>Khuyến mãi</label> 
                 <!-- <input type="number" id="promotion" name="promotion" class="form-control" [(ngModel)]="form.product_promotion" (keyup)="checkpromotion($event)" (change)="checkpromotion($event)"> -->
-                <select  [(ngModel)]="selectedOption"  name="selectedOption"  >
+                <select class="form-control" [(ngModel)]="selectedOption"  name="selectedOption"  >
                   <option class="form-control" *ngFor="let p of promotion" [value]="p.promotion_id">{{p.promotion_name }} / {{ p.promotion_infor}} % </option>
                 </select>
                 <!-- <div *ngIf="promotion.invalid && (promotion.dirty || promotion.touched)" class="alert alert-danger">

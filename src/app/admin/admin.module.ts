@@ -44,9 +44,12 @@ import { DetailvoucherComponent } from './vouchers/detailvoucher/detailvoucher.c
 import { EditVoucherComponent } from './vouchers/edit-voucher/edit-voucher.component';
 import { ShipperComponent } from './shipper/shipper.component';
 import { AccessoriesComponent } from './accessories/accessories.component';
+import { StoresComponent } from './stores/stores.component';
+import { AddstoreComponent } from './stores/addstore/addstore.component';
+import { EditstoreComponent } from './stores/editstore/editstore.component';
 
 @NgModule({
-  declarations: [AdminComponent, ProductsComponent, TopbarComponent, SidebarComponent, AddComponent, EditComponent, CategoriesComponent, AddcategoryComponent, EditcategoryComponent, ShowComponent, EdituserComponent, AddadminComponent, ShoworderComponent, DetailorderComponent, StatisticalComponent, ContainerComponent, PromotionComponent,AddpromotionComponent, EditpromotionComponent, WarehouseComponent, AddwarehouseComponent, SupplierComponent, AddsupplierComponent, EditsupplierComponent,DetailsupplierComponent, OrderwarehouseComponent, AddorderwarehouseComponent, EditorderwarehouseComponent, DetailorderwarehouseComponent, DeliverybillComponent, VouchersComponent, AddvoucherComponent, DetailvoucherComponent, EditVoucherComponent, ShipperComponent, AccessoriesComponent],
+  declarations: [AdminComponent, ProductsComponent, TopbarComponent, SidebarComponent, AddComponent, EditComponent, CategoriesComponent, AddcategoryComponent, EditcategoryComponent, ShowComponent, EdituserComponent, AddadminComponent, ShoworderComponent, DetailorderComponent, StatisticalComponent, ContainerComponent, PromotionComponent,AddpromotionComponent, EditpromotionComponent, WarehouseComponent, AddwarehouseComponent, SupplierComponent, AddsupplierComponent, EditsupplierComponent,DetailsupplierComponent, OrderwarehouseComponent, AddorderwarehouseComponent, EditorderwarehouseComponent, DetailorderwarehouseComponent, DeliverybillComponent, VouchersComponent, AddvoucherComponent, DetailvoucherComponent, EditVoucherComponent, ShipperComponent, AccessoriesComponent, StoresComponent, AddstoreComponent, EditstoreComponent],
   imports: [
     CKEditorModule,
     CommonModule,

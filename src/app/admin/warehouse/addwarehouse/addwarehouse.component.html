@@ -51,7 +51,7 @@
                 <td>Mã NCC</td>
                 <td>Tổng tiền</td>
                 <td>Số sản phẩm</td>
-                <td>Đã xuất</td>
+                <!-- <td>Đã xuất</td> -->
                 <td>Ngày lập phiếu</td>
                 <td>Xem</td>
                 <!-- <td>Sửa</td> -->
@@ -64,7 +64,7 @@
                 <td>{{b.supplier_id}}</td>
                 <td>{{b.sum_amount | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
                 <td>{{b.sum_product}}</td>
-                <td>{{b.exported}}</td>
+                <!-- <td>{{b.exported}}</td> -->
                 <td>{{b.created_at}}</td>
                 <td><button data-toggle="modal" data-target="#detailModal" (click)="getAllBDIByBIID(b.bi_id)"><i class="fas fa-eye"></i></button></td>
                 <!-- <td><i class="fas fa-edit"></i></td> -->
@@ -191,6 +191,7 @@
                                 <th scope="col">Mã PN</th>
                                 <th scope="col">Mã SP</th>
                                 <th scope="col">SL</th>
+                                <td scope="col">Đã xuất</td>
                                 <th scope="col">Giá</th>
                               </tr>
                             </thead>
@@ -201,7 +202,8 @@
                                 <td>{{d.bi_id}}</td>
                                 <td>{{d.product_id}}</td>
                                 <td>{{d.amount}}</td>
-                                <td>{{d.price}}</td>
+                                <td>{{d.exported}}</td>
+                                <td>{{d.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
                               </tr>
                             </tbody>
                           </table>

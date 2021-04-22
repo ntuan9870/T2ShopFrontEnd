@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+      <h1 class="page-header col-md-12 col-lg-8 col-xl-8">Cửa hàng</h1>
+      <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../stores/add']"><button style="margin-right:0px; float:right;" class="btn-add-promotion btn btn-success"><i class="fas fa-plus"> Thêm Cửa hàng</i></button></a>
+   </div><!--/.row-->
+    <div class="row">
+      <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="card-body">
+          <table class="table table-striped" style="font-size: 13px;">
+            <thead>
+              <tr>
+                <!-- <th scope="col">#</th> -->
+                <th>Mã cửa hàng</th>
+                <th>Tên cửa hàng</th>
+                <th>Địa chỉ</th>
+                <th>Tình trạng</th>
+                <th>Lựa chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of stores | paginate: config; let i = index">
+                  <!-- <th scope="row">{{i+1}}</th> -->
+                  <th>{{s.store_id}}</th>
+                  <th>{{s.store_name}}</th>
+                  <th>{{s.store_address}}, {{s.store_ward}}, {{s.store_district}}</th>
+                  <th *ngIf="s.store_status==1"><a (click)="changeStatus(s.store_id)">Hoạt động</a></th>
+                  <th *ngIf="s.store_status==0"><a (click)="changeStatus(s.store_id)">Ngưng hoạt động</a></th>
+                  <th>
+                    <a class="btn btn-warning" value="Sửa" [routerLink]="['edit/'+s.store_id]">Sửa</a>
+                  </th>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+      </div>
+    </div>
+</div>

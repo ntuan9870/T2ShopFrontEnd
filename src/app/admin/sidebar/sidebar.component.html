@@ -3,14 +3,15 @@
     <div class="card">
       <a class="card-header" [routerLink]="['/admin']"><span class="icon"><i class="fas fa-home"></i></span>Home</a>
       <a href="#categorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
-      <span class="icon"><i class="fas fa-mobile-alt"></i></span>Loại sản phẩm</a>
+      <span class="icon"><i class="fas fa-mobile-alt"></i></span>Loại SP</a>
       <ul class="collapse list-unstyled" id="categorySubmenu">
           <li><a [routerLink]="['categories/add']"><i class="fas fa-eye"></i> Xem</a></li>
           <li><a [routerLink]="['categories/add']"><i class="fas fa-plus"></i> Thêm</a></li>
       </ul>
+      <a class="card-header" [routerLink]="['stores']"><span class="icon"><i class="fas fa-store"></i>
+      </span>Cửa hàng</a>
       <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed card-header">
         <span class="icon"><i class="fas fa-file"></i></span>Tài khoản</a>
-
       <ul class="collapse list-unstyled" id="userSubmenu">
           <li><a [routerLink]="['users/show']"><i class="fas fa-eye"></i> Xem</a></li>
           <li *ngIf="user_level==1"><a [routerLink]="['users/add']"><i class="fas fa-plus"></i> Thêm User</a></li>
