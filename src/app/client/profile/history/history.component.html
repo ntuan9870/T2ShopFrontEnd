@@ -29,7 +29,7 @@
               <th>{{o.created_at}}</th>
               <th>{{o.total | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
               <th>
-                <span *ngIf="o?.ready=='0'">Chưa sẵn sàng</span>
+                <span *ngIf="o?.ready=='0'">Đang xử lý</span>
                 <span *ngIf="o?.ready=='1'">Đã sẵn sàng</span>
               </th>
               <th>
