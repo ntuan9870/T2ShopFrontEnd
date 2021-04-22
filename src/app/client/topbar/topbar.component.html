@@ -48,6 +48,10 @@
           </div>
           <!-- Modal body -->
           <div class="modal-body">
+            <ul *ngFor="let u of user_voucher;trackBy: trackByFn" style="list-style: none;">
+              <li>Số lượng: {{u.amount_voucher}}</li>
+              <li>Đã sử dụng: {{u.voucher_used}}</li>
+            </ul>
             <ul *ngFor="let v of voucherD;trackBy: trackByFn" style="list-style: none;" >
               <li>Mã voucher: {{v.voucher_id}}</li>
               <li>Tên voucher: {{v.voucher_name}}</li>

@@ -32,6 +32,7 @@ export class TopbarComponent implements OnInit {
   public vouchers:Voucher[];
   public VouchersDetail = new BehaviorSubject<Voucher[]>(null);
   public voucherD:Voucher[];
+  public user_voucher;
   constructor(private categoryService:CategoryService, private recommendservice:RecommenedService , private router:Router,private cartService:CartService,private shareService:ShareService,private voucherService:VoucherService) {
     shareService.changeEmitted$.subscribe(
       text=>{
@@ -138,12 +139,24 @@ export class TopbarComponent implements OnInit {
     this.router.navigate(['/cart/thanhtoan/'+voucher_id]);
   }
   select_voucher(voucher_id){
-    this.voucherService.getdetailvoucher(voucher_id).subscribe(
+    const fd = new FormData();
+    fd.append('voucher_id',voucher_id);
+    fd.append('user_id',this.user_id);
+    this.voucherService.getdetailvoucher(fd).subscribe(
       res=>{
-       this.voucherD=res['voucher'];
-       console.log(this.voucherD);
+        this.voucherD=res['voucher'];
+        console.log(this.voucherD);
+        this.user_voucher=res['user_voucher'];
+      },error=>{
+        alert('Có lỗi trong quá trình xử lý dữ liệu!');
       }
     );
+    // this.voucherService.getdetailvoucher(voucher_id).subscribe(
+    //   res=>{
+    //    this.voucherD=res['voucher'];
+    //    console.log(this.voucherD);
+    //   }
+    // );
     
   }
   
