@@ -23,11 +23,13 @@ export class EditVoucherComponent implements OnInit {
   public checksamev = '';
   public old_voucher_start = '';
   public old_voucher_end = '';
+  public voucher_total;
   public dt = new Date();
   public voucher_discount = 10000;
   public voucher_price = 0;
   public select_discount = '0';
   public voucher_score:number = 1;
+  public sumVouderUsed;
 
   constructor(private voucherService:VoucherService, private activatedRoute:ActivatedRoute, public location:Location) {}
 
@@ -43,6 +45,7 @@ export class EditVoucherComponent implements OnInit {
           this.voucher_name = this.oldVoucher.voucher_name;
           this.voucher_score = this.oldVoucher.voucher_score;
           this.voucher_price = this.oldVoucher.voucher_price;
+          this.voucher_total=this.oldVoucher.voucher_total;
           if(this.oldVoucher.voucher_discount!=0){
             this.select_discount = '1';
             this.voucher_discount = this.oldVoucher.voucher_discount;
@@ -60,6 +63,17 @@ export class EditVoucherComponent implements OnInit {
         }
       },error=>{
         alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+      }
+    );
+    this.vouchertotalcheck();
+  }
+
+  vouchertotalcheck(){
+    this.voucherService.getSumVoucherUser(this.voucher_id).subscribe(
+      res=>{
+        this.sumVouderUsed=res['sum'];
+      },error=>{
+        showSwal('auto-close','Có lỗi trên Serve!');
       }
     );
   }
@@ -81,27 +95,32 @@ export class EditVoucherComponent implements OnInit {
         this.location.back();
         showSwal('auto-close','Bạn không thay đổi gì cả!');
     }
-    const fd = new FormData();
-    fd.append('voucher_id', this.voucher_id);
-    fd.append('voucher_name', this.voucher_name);
-    fd.append('voucher_score', this.voucher_score.toString());
-    fd.append('voucher_price', this.voucher_price.toString());
-    fd.append('voucher_discount', this.voucher_discount.toString());
-    fd.append('select_discount', this.select_discount);
-    fd.append('voucher_start', this.voucher_start);
-    fd.append('voucher_end', this.voucher_end);
-    fd.append('voucher_apply', this.voucher_apply.toString());
-    this.voucherService.editVoucher(fd).subscribe(
-      res=>{
-        if(res['message']=='success'){
+    if(this.voucher_total>this.sumVouderUsed){
+      const fd = new FormData();
+      fd.append('voucher_id', this.voucher_id);
+      fd.append('voucher_name', this.voucher_name);
+      fd.append('voucher_score', this.voucher_score.toString());
+      fd.append('voucher_price', this.voucher_price.toString());
+      fd.append('voucher_discount', this.voucher_discount.toString());
+      fd.append('select_discount', this.select_discount);
+      fd.append('voucher_start', this.voucher_start);
+      fd.append('voucher_end', this.voucher_end);
+      fd.append('voucher_apply', this.voucher_apply.toString());
+      fd.append('voucher_total', this.voucher_total);
+      this.voucherService.editVoucher(fd).subscribe(
+        res=>{
+          if(res['message']=='success'){
+            this.location.back();
+            showSwal('auto-close','Sửa thông tin thành công!');
+          }
+        },error=>{
           this.location.back();
-          showSwal('auto-close','Sửa thông tin thành công!');
+          showSwal('auto-close','Có lỗi trên Serve!');
         }
-      },error=>{
-        this.location.back();
-        showSwal('auto-close','Có lỗi trên Serve!');
-      }
-    );
+      );
+    }else{
+      showSwal('auto-close','Số lượng cần phải lớn hơn số lượng cấp phát cho khách hàng!');
+    }
   }
   checkvoucherscore(){
     if(this.voucher_score < 1 && this.voucher_score!=null){

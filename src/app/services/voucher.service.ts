@@ -67,4 +67,7 @@ export class VoucherService {
   public getdetailvoucher(form){
     return this.http.post(this.baseUrl+'getdetailvoucher', form);
   }
+  public getSumVoucherUser(voucher_id){
+    return this.http.post(this.baseUrl+'getSumVoucherUser?voucher_id=' + voucher_id, null);
+  }
 }

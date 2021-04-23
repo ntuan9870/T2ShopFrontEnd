@@ -46,6 +46,13 @@
               </div>
             </div>
             <div class="form-group">
+              <label>Số lượng<i style="color: red;">(*)</i></label>
+              <input type="number" name="voucher_total" class="form-control" placeholder="Số lượng ...." required [(ngModel)]="voucher_total" #vouchertotalcheck='ngModel' autocomplete="off" (change)="vouchertotalcheck()" (keyup)="vouchertotalcheck()"/>
+              <div class="check-error" *ngIf="vouchertotalcheck.invalid&&(vouchertotalcheck.touched||vouchertotalcheck.dirty)">
+                <span *ngIf="vouchertotalcheck.errors.required">Số lượng là trường bắt buộc!</span>
+              </div>
+            </div>
+            <div class="form-group">
               <label>Ngày bắt đầu<i style="color: red;">(*)</i></label>
               <input type="date" name="voucher_start" class="form-control" required [(ngModel)]="voucher_start" #voucherstartcheck='ngModel' autocomplete="off" (change)='checkcorrectstartday()'/>
               <div class="check-error" *ngIf="voucherstartcheck.invalid&&(voucherstartcheck.touched||voucherstartcheck.dirty)">
