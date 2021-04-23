@@ -14,17 +14,21 @@
                 <th>Tên cửa hàng</th>
                 <th>Địa chỉ</th>
                 <th>Tình trạng</th>
+                <th>Kho</th>
                 <th>Lựa chọn</th>
               </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let s of stores | paginate: config; let i = index">
                   <!-- <th scope="row">{{i+1}}</th> -->
-                  <th>{{s.store_id}}</th>
+                  <th scope="row" >{{s.store_id}}</th>
                   <th>{{s.store_name}}</th>
                   <th>{{s.store_address}}, {{s.store_ward}}, {{s.store_district}}</th>
                   <th *ngIf="s.store_status==1"><a (click)="changeStatus(s.store_id)">Hoạt động</a></th>
                   <th *ngIf="s.store_status==0"><a (click)="changeStatus(s.store_id)">Ngưng hoạt động</a></th>
+                  <th>
+                    <a [routerLink]="['whstore/'+s.store_id]">Xem DS kho</a>
+                  </th>
                   <th>
                     <a class="btn btn-warning" value="Sửa" [routerLink]="['edit/'+s.store_id]">Sửa</a>
                   </th>
@@ -35,4 +39,43 @@
         <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
       </div>
     </div>
+
+    <!-- Hàng trong kho -->
+
+    <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h4 class="modal-title">Xem hàng trong kho</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <table class="table">
+                      <tr id="tbl-first-row">
+                          <td>STT</td>
+                          <td>Mã hàng</td>
+                          <td>Thành tiền</td>
+                          <td>Tên hàng</td>
+                          <td>Số lượng</td>
+                          <td>Đơn giá</td>
+                          
+                      </tr>
+                      <tr *ngFor="let h of ps|paginate: config; let i = index">
+                          <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                          <td>{{h.product_id}}</td>
+                          <td width="6%"><img src={{h.product_img}} class="img-fluid img-thumbnail"></td>
+                          <td>{{h.product_name}}</td>
+                          <td>{{h.amount}}</td>
+                          <td>{{h.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
+                      </tr>
+                  </table>
+                  <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>

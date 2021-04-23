@@ -125,4 +125,7 @@ export class WarehouseService {
   public getAllP(wh_id){
     return this.http.post(this.baseUrl+'getAllP?wh_id='+wh_id,null);
   }
+  public getAllDBIByProductId(product_id){
+    return this.http.post(this.baseUrl+'getAllDBIByProductId?product_id='+product_id,null);
+  }
 }

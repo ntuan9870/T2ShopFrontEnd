@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-md-6">
         <h5>Danh sách phiếu xuất hàng</h5>
-        <button class="btn-add-admin btn btn-success"  data-toggle="modal" data-target="#beModal"><i class="fas fa-plus">Lấy hàng cần xuất</i></button>
+        <button class="btn-add-admin btn btn-success"  data-toggle="modal" data-target="#beModal"><i class="fas fa-plus">Yêu cầu  xuất hàng</i></button>
     </div>
     <div class="col-sm-12" style="margin-top: 20px;">
         <table class="table table-striped">
@@ -37,7 +37,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thêm phiếu xuất</h4>
+                    <h4 class="modal-title">Yêu cầu xuất hàng</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -45,9 +45,9 @@
                         <div id="list_product" class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" style="padding: 0px;">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;">
                                 <form method="post" #addProduct="ngForm" >
-                                    <select class="form-control form-control-sm col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" [(ngModel)]="selectedWH"  name="selectedWH" required  style="margin-right:5px; display: inline-block; padding:0px; height: 2.3rem;">
+                                    <!-- <select class="form-control form-control-sm col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" [(ngModel)]="selectedWH"  name="selectedWH" required  style="margin-right:5px; display: inline-block; padding:0px; height: 2.3rem;">
                                         <option class="form-control" *ngFor="let w of warehouses" [ngValue]="w.warehouse_id" name="selectedWH">{{w.warehouse_name }}</option>
-                                    </select>
+                                    </select> -->
                                     <div id="search_product" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="display: inline-block; vertical-align: top; padding:0px">
                                         <input #txtKeyword2 name="ip_s" required [(ngModel)]="ip_s" type="search" (keyup)="search($event, txtKeyword2.value)" (keyup.arrowdown)="moveDown()" (keyup.arrowup)="moveUp()" class="form-control" id="search_input" placeholder="Tìm sản phẩm trong kho" autocomplete="off">
                                         <p *ngIf="same_product" style="color: red;">Bạn đã nhập sản phẩm này rồi!</p>
@@ -55,7 +55,11 @@
                                     <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="display: inline-block; vertical-align: top; padding:0px; margin-left: 5px;">
                                         <input name="price_product" required [(ngModel)]="price_product" (keyup)="checkPrice()" class="form-control" placeholder="Đơn giá.." autocomplete="off" (value)="pr_sl.product_price">
                                     </div>
-                                    <input [disabled]="!addProduct.valid" name="submit2" type="button" class="btn btn-success col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" value="Xác định lô nhập" style="margin-left:5px"  data-toggle="modal" data-target="#ctpx_ln_Modal" (click)="getAllBI()">
+                                    <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="display: inline-block; vertical-align: top; padding:0px; margin-left: 5px;">
+                                        <input type="number" name="amount_product" required [(ngModel)]="amount_product" (keyup)="checkAmountProduct()" class="form-control" placeholder="SL.." autocomplete="off">
+                                    </div>
+                                    <!-- <input [disabled]="!addProduct.valid" name="submit2" type="button" class="btn btn-success col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" value="Thêm" style="margin-left:5px"  data-toggle="modal" data-target="#ctpx_ln_Modal" (click)="getAllBI()"> -->
+                                    <input [disabled]="!addProduct.valid" name="submit2" type="button" class="btn btn-success col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" value="Thêm" style="margin-left:5px" (click)="themCTPX()">
                                 </form>
                             </div>
                             <div id="l-p" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;" *ngIf="show_option_product">
@@ -100,6 +104,18 @@
                                     <input type="text" disabled class="form-control" name="user_name" [(ngModel)]="user_name">
                                 </div>
                                 <div class="form-group">
+                                    <label>Cửa hàng yêu cầu <i style="color: red;">(*)</i></label>
+                                    <select required class="form-control form-control-sm" [(ngModel)]="selectedStore"  name="selectedStore" (change)="changeSLStore()">
+                                        <option class="form-control" *ngFor="let s of stores" [value]="s.store_id">{{s.store_name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kho <i style="color: red;">(*)</i></label>
+                                    <select required [disabled]="disabledSelectWarehouse" class="form-control form-control-sm" [(ngModel)]="selectedSWH"  name="selectedSWH" >
+                                        <option class="form-control" *ngFor="let s of storeWHs" [value]="s.store_wh_id">Kho {{s.store_wh_id}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label>Ngày xuất<i style="color: red;">(*)</i></label>
                                     <input type="text" disabled class="form-control" name="ngaylapphieu" [(ngModel)]="ngaylapphieu" required>
                                 </div>
@@ -112,7 +128,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" [disabled]="dbes.length==0" class="btn btn-success" value="Thêm" (click)="addBE()">
+                    <input type="submit" [disabled]="!addExportForm.valid||dbes.length==0" class="btn btn-success" value="Thêm" (click)="addBE()">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

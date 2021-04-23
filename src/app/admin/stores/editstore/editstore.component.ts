@@ -33,6 +33,7 @@ export class EditstoreComponent implements OnInit {
   public store_id = '';
   public store_status = true;
   public old_store:Store = new Store();
+  // public wh_capacity:number = 0;
 
   constructor(public location:Location, private storeService:StoreService, private activatedRoute:ActivatedRoute) { }
 
@@ -56,6 +57,7 @@ export class EditstoreComponent implements OnInit {
           this.store_address = res['store'].store_address;
           this.store_district = res['store'].store_district;
           this.store_ward = res['store'].store_ward;
+          // this.wh_capacity = res['store'].wh_capacity;
           if(res['store'].store_status == '1'){
             this.store_status = true;
           }else{

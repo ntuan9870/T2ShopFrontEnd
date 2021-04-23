@@ -37,6 +37,7 @@ import { AccessoriesComponent } from './accessories/accessories.component';
 import { StoresComponent } from './stores/stores.component';
 import { AddstoreComponent } from './stores/addstore/addstore.component';
 import { EditstoreComponent } from './stores/editstore/editstore.component';
+import { WhstoreComponent } from './stores/whstore/whstore.component';
 
 const routes: Routes = [
   {path:'',component:AdminComponent,
@@ -131,7 +132,8 @@ const routes: Routes = [
         children:[
           {path:'',component:StoresComponent},
           {path:'add',component:AddstoreComponent},
-          {path:'edit/:id',component:EditstoreComponent}
+          {path:'edit/:id',component:EditstoreComponent},
+          {path:'whstore/:id',component:WhstoreComponent}
         ]
       }
     ]

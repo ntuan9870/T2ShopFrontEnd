@@ -28,6 +28,7 @@ export class AddstoreComponent implements OnInit {
   public checksames = '';
   public store_address='';
   public checksamea = '';
+  // public wh_capacity:number = 1;
 
   constructor(public location:Location, private storeService:StoreService) { }
 
@@ -54,6 +55,7 @@ export class AddstoreComponent implements OnInit {
     fd.append('store_ward', this.store_ward);
     fd.append('store_district', this.store_district);
     fd.append('store_address', this.store_address);
+    // fd.append('wh_capacity', this.wh_capacity.toString());
     this.storeService.addStore(fd).subscribe(
       res=>{
         if(res['message']=='success'){
@@ -102,5 +104,9 @@ export class AddstoreComponent implements OnInit {
       }
     );
   }
-
+  // checkCapacity(){
+  //   if(this.wh_capacity<1&&this.wh_capacity.toString()!=''){
+  //     this.wh_capacity=1;
+  //   }
+  // }
 }

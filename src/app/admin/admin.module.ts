@@ -47,9 +47,10 @@ import { AccessoriesComponent } from './accessories/accessories.component';
 import { StoresComponent } from './stores/stores.component';
 import { AddstoreComponent } from './stores/addstore/addstore.component';
 import { EditstoreComponent } from './stores/editstore/editstore.component';
+import { WhstoreComponent } from './stores/whstore/whstore.component';
 
 @NgModule({
-  declarations: [AdminComponent, ProductsComponent, TopbarComponent, SidebarComponent, AddComponent, EditComponent, CategoriesComponent, AddcategoryComponent, EditcategoryComponent, ShowComponent, EdituserComponent, AddadminComponent, ShoworderComponent, DetailorderComponent, StatisticalComponent, ContainerComponent, PromotionComponent,AddpromotionComponent, EditpromotionComponent, WarehouseComponent, AddwarehouseComponent, SupplierComponent, AddsupplierComponent, EditsupplierComponent,DetailsupplierComponent, OrderwarehouseComponent, AddorderwarehouseComponent, EditorderwarehouseComponent, DetailorderwarehouseComponent, DeliverybillComponent, VouchersComponent, AddvoucherComponent, DetailvoucherComponent, EditVoucherComponent, ShipperComponent, AccessoriesComponent, StoresComponent, AddstoreComponent, EditstoreComponent],
+  declarations: [AdminComponent, ProductsComponent, TopbarComponent, SidebarComponent, AddComponent, EditComponent, CategoriesComponent, AddcategoryComponent, EditcategoryComponent, ShowComponent, EdituserComponent, AddadminComponent, ShoworderComponent, DetailorderComponent, StatisticalComponent, ContainerComponent, PromotionComponent,AddpromotionComponent, EditpromotionComponent, WarehouseComponent, AddwarehouseComponent, SupplierComponent, AddsupplierComponent, EditsupplierComponent,DetailsupplierComponent, OrderwarehouseComponent, AddorderwarehouseComponent, EditorderwarehouseComponent, DetailorderwarehouseComponent, DeliverybillComponent, VouchersComponent, AddvoucherComponent, DetailvoucherComponent, EditVoucherComponent, ShipperComponent, AccessoriesComponent, StoresComponent, AddstoreComponent, EditstoreComponent, WhstoreComponent],
   imports: [
     CKEditorModule,
     CommonModule,

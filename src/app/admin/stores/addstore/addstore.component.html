@@ -42,6 +42,12 @@
                   </div>
                 </div>
               </div>
+              <!-- <label>Sức chứa <i style="color: red;">(*)</i></label>
+              <input type="number" name="wh_capacity" class="form-control" placeholder="Sức chứa của kho.." required [(ngModel)]="wh_capacity" #whcapacitycheck='ngModel' autocomplete="off" (keyup)="checkCapacity()" (change)="checkCapacity()"/> -->
+              <!-- <div class="check-error" *ngIf="whcapacitycheck.invalid&&(whcapacitycheck.touched||whcapacitycheck.dirty)">
+                <span *ngIf="whcapacitycheck.errors.required">Hãy nhập sức chứa!</span>
+              </div> -->
+              <br>
             <input [disabled]="!addAdminForm.valid||checksames=='same'||checksamea=='same'" type="submit" name="submit" value="Thêm" class="btn btn-primary" (click)="addStore()"/>
             <a style="margin-left: 10px;" class="btn btn-warning" (click)='location.back()'>Quay về</a>
         </form>

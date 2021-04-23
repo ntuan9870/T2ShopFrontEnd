@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Product } from 'src/app/models/product.model';
 import { Store } from 'src/app/models/store.model';
 import { StoreService } from 'src/app/services/store.service';
 declare function showSwal(type,message):any;
@@ -17,6 +18,8 @@ export class StoresComponent implements OnInit {
   labelprevious = 'Trước';
   allStores = new BehaviorSubject<Store[]>(null);
   stores:Store[];
+  public allP = new BehaviorSubject<Product[]>(null);
+  public ps:Product[] = [];
 
   constructor(private storeService:StoreService) { }
 
@@ -60,6 +63,16 @@ export class StoresComponent implements OnInit {
         alert('Có lỗi trong quá trình truy xuất dữ liệu!');
       }
     );
+  }
+
+  getAllProductInWH(store_id){
+    this.storeService.getAllProductInWH(store_id).subscribe(res=>{
+      var r:any = res;
+      this.allP.next(r.hts);
+    });
+    this.allP.subscribe(res=>{
+      this.ps=res;
+    });
   }
 
 }
