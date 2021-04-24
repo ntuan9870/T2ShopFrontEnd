@@ -535,6 +535,18 @@ export class DeliverybillComponent implements OnInit {
     }
   }
   addBE(){
+    var c:number = 0;
+    for(var i = 0; i < this.dbes.length; i++){
+      c+=this.dbes[i].amount;
+    }
+    for(var i = 0; i < this.storeWHs.length; i++){
+      if(this.selectedSWH==this.storeWHs[i].store_wh_id){
+        if(this.storeWHs[i].wh_empty<c){
+          showSwal('auto-close', 'Kho đầy!');
+          return;
+        }
+      }
+    }
     const fd = new FormData();
     var s = JSON.stringify(this.dbes); 
     fd.append('user_id', this.user_id.toString());
