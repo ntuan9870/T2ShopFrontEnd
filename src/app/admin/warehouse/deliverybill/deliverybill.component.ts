@@ -111,7 +111,7 @@ export class DeliverybillComponent implements OnInit {
       if(tmp <= this.amount_product){
         var c = new CtpxLn;
         c.bi_id = this.dbibyproductids[i].bi_id;
-        c.amount = this.dbibyproductids[i].amount;
+        c.amount = this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
         this.ctpx_lns.push(c);
       }else{
         var c = new CtpxLn;
@@ -142,7 +142,7 @@ export class DeliverybillComponent implements OnInit {
     this.dbes.push(dbe);
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      this.total_price+=this.dbes[i].price;
+      this.total_price+=this.dbes[i].price*dbe.amount;
     }
     this.ctpx_lns = [];
     this.pr_sl = new Product;

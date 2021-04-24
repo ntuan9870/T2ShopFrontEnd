@@ -2,16 +2,24 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
+      <div class="form-group" *ngIf="!empty">
+        <label>Hãy chọn cửa hàng(Cửa hàng càng gần giao hàng càng nhanh): </label>
+        <select class="form-control" [(ngModel)]="selectedStore"  name="selectedStore" (change)="checkChangeStore()">
+          <option class="form-control" *ngFor="let s of stores" [value]="s.store_id">{{s.store_name}}</option>
+      </select>
+      <i *ngIf="!condition" style="color: red;">Lưu ý: Nếu hàng không đủ bạn có thể đổi cửa hàng, giảm số lượng hoặc mua 2 đơn hàng ở 2 cửa hàng khác nhau!</i>
+      </div>
       <table class="table table-striped" *ngIf="!empty">
         <thead>
           <tr>
-            <th>STT</th>
+            <th width="5%">STT</th>
             <th>Tên</th>
             <th>Hình</th>
             <th>Số lượng</th>
             <th>Đơn giá</th>
             <th>Khuyến mãi</th>
             <th>Thành tiền</th>
+            <th>Tình trạng</th>
             <th>Xóa</th>
           </tr>
         </thead>
@@ -24,11 +32,13 @@
             <td>{{p.product.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
             <td>{{promotion_infors[i]}}%</td>
             <td>{{thanhtien[i]| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+            <td *ngIf="resCheckCart[i]=='true'" style="color: green;">Đủ hàng</td>
+            <td *ngIf="resCheckCart[i]=='false'" style="color: red;">Thiếu hàng (tối đa {{resMax[i]}})</td>
             <td><a [routerLink]="['#']" (click)='removeProduct(i)'>Xóa</a></td>
           </tr>
-          <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChangedCart($event)"></pagination-controls>
         </tbody>
       </table>
+      <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChangedCart($event)"></pagination-controls>
       <h2 *ngIf = "empty" style="color:red">Giỏ hàng rỗng...</h2>
       <a  *ngIf = "empty" style="margin-left:30px; float:right; font-size:20px"  [routerLink]="['']">Mua tiếp</a>
       <div class="card-text" *ngIf = "!empty">
@@ -36,7 +46,7 @@
         <a style="margin-left:30px; float:right; font-size:20px"  [routerLink]="['']">Mua tiếp</a>
         <a style="margin-left:30px; float:right; font-size:20px" [routerLink]="['#']" (click) = "xoagiohang()">Xóa giỏ hàng</a>
       </div>
-      <a [routerLink]="['/cart/thanhtoan/null']"><button *ngIf="cartProductList!=null" class="add-cart" (click)="xacnhan()"><i class="fas fa-cart-plus"></i>Xác nhận đặt hàng</button></a>
+      <a [routerLink]="['/cart/thanhtoan/null']"><button [disabled]="!condition" *ngIf="cartProductList!=null" class="add-cart" (click)="xacnhan()"><i class="fas fa-cart-plus"></i>Xác nhận đặt hàng</button></a>
     </div>
   </div>
 </div>

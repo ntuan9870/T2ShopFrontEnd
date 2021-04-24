@@ -35,7 +35,8 @@ export class ThanhtoanComponent implements OnInit {
     total : '',
     cart : '',
     select_voucher:'null',
-    promotion:''
+    promotion:'',
+    store_id:''
   }
   public showformphone = true;
   public allDistrict = new BehaviorSubject<District[]>(null);
@@ -51,8 +52,7 @@ export class ThanhtoanComponent implements OnInit {
   constructor(private router:Router,private orderService:OrderService,private cartService:CartService,private location:Location, private voucherSerice:VoucherService, private activatedRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
-
-
+    this.form.store_id = localStorage.getItem('store_id');
     this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
     this.activatedRoute.params.subscribe(routeParams => {
       this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
@@ -191,6 +191,7 @@ export class ThanhtoanComponent implements OnInit {
         this.loading = false;
         this.cartService.xoagiohang();
         this.getv();
+        localStorage.removeItem('store_id');
         this.router.navigate(['/cart/complete']);
         showSwal('auto-close','Thành công!');
       },

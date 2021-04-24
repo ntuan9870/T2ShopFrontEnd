@@ -20,6 +20,7 @@ export class StoresComponent implements OnInit {
   stores:Store[];
   public allP = new BehaviorSubject<Product[]>(null);
   public ps:Product[] = [];
+  public selectedStore = '';
 
   constructor(private storeService:StoreService) { }
 
