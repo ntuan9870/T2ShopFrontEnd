@@ -234,6 +234,10 @@ export class ThanhtoanComponent implements OnInit {
           this.cartService.xoagiohang();
           window.location.href = res['checkouturl'];
         }
+      },
+      error=>{
+        this.router.navigate(['/cart']);
+        // alert('Có lỗi trong quá trình xử lý dữ liệu!');
       }
     );
   }

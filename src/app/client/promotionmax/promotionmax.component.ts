@@ -11,6 +11,7 @@ import { PromotionService } from 'src/app/services/promotion.service';
 export class PromotionmaxComponent implements OnInit {
 
   table:boolean=false;
+  message:boolean=true;
   products:Product = new Product;
   promotions:Promotion=new Promotion;
   constructor(private promorionservice:PromotionService) { }
@@ -19,10 +20,13 @@ export class PromotionmaxComponent implements OnInit {
     this.show();
   }
   open(){
+    this.message=false;
     this.table=true;
+    
   }
   close(){
     this.table=false;
+    this.message=true;
   }
   show(){
     this.promorionservice.getproduct().subscribe(

@@ -85,4 +85,7 @@ export class ProductService {
   public checkSameName(product_name){
     return this.http.post(this.baseUrl+"checkSameName?product_name="+product_name,null);
   }
+  public checkAcceptComment(fd){
+    return this.http.post(this.baseUrl+"checkAcceptComment",fd);
+  }
 }
