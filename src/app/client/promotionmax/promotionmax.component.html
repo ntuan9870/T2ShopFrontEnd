@@ -1,5 +1,6 @@
 <div class="lucky_box">
     <img src="./assets/box-empty-icon.png" alt="" (click)="open()">
+    <input  *ngIf="this.products&&this.products!=null && message==true" type="text" disabled class="form-controll"  placeholder="Các sản phẩm được khuyến mãi hấp dẫn"  (click)="open()" >
 </div>
 <div class="promotion" *ngIf="table==true">
     <ul >

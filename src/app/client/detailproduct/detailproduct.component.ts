@@ -35,6 +35,7 @@ export class DetailproductComponent implements OnInit {
   public arrcount:number[]=new Array;
   public promotion:Promotion = new Promotion;
   public favoriteProduct:FavoriteProduct[];
+  public checkComment;
 
 
   constructor(private recommendservice:RecommenedService,private productService:ProductService,private activatedRoute:ActivatedRoute, private cartService:CartService) { }
@@ -59,6 +60,7 @@ export class DetailproductComponent implements OnInit {
       this.getratingproduct();
       this.getratingall();
       this.getfavorite();
+      this.checkAcceptComment();
     })
     
   }
@@ -157,7 +159,21 @@ export class DetailproductComponent implements OnInit {
       }
     );
   }
-
+  checkAcceptComment(){
+    if(this.user_id!=''){
+      const fd = new FormData();
+      fd.append('product_id',this.id);
+      fd.append('user_id',this.user_id);
+      this.productService.checkAcceptComment(fd).subscribe(
+        res=>{
+          this.checkComment=res['order'];
+          console.log(this.checkComment);
+        },error=>{
+          alert('Có lỗi trong quá trình xử lý dữ liệu!');
+        }
+      );
+    }
+  }
   addComment(formDirective){
     this.loading = true;
     const fd = new FormData();

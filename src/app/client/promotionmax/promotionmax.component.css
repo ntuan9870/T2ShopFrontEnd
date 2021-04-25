@@ -17,6 +17,12 @@
     height: 70px;
     cursor: pointer;
 }
+.lucky_box input{
+    width: 300px;
+    margin-top: 25px;
+    position: absolute;
+    border-radius: 15px;
+}
 .promotion{
     position: fixed;
     /* border: 2px solid rgb(121, 114, 114); */

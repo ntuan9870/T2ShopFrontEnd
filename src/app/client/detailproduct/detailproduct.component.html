@@ -52,7 +52,7 @@
 </div>
 <div class="card container">
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngIf="user_id!=''">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngIf="user_id!='' &&  checkComment!=0">
       <h3 style="margin-top:20px;color: chocolate;" *ngIf="user_id!=''">Đánh giá của bạn</h3>
       <span *ngIf="rating==0">Vui lòng để lại đánh giá, chúng tôi sẽ cải thiện chất lượng sản phẩm trong tương lai!</span>
       <form>
@@ -116,7 +116,7 @@
   <h3 style="margin-top:20px;color: chocolate;">Bình luận</h3>
   <form #commentForm="ngForm">
     <div class="form-group" *ngIf="user_id==''">Vui lòng <a [routerLink]="['/auth/login']">đăng nhập</a> để được bình luận!</div>
-    <div class="form-group" *ngIf="user_id!=''">
+    <div class="form-group" *ngIf="user_id!=''&& checkComment!=0">
       <label for="exampleFormControlTextarea1">Nội dung bình luận:</label>
       <textarea class="form-control" name="comment_content" required [(ngModel)] = "comment_content" id="exampleFormControlTextarea1" rows="3" #checkcomment_content="ngModel"></textarea>
       <div *ngIf="checkcomment_content.invalid&&(checkcomment_content.dirty||checkcomment_content.touched)">
@@ -125,7 +125,7 @@
         </div>
       </div>
     </div>
-    <input [disabled]="!commentForm.valid" *ngIf="user_id!=''" type="submit" class="btn btn-primary" (click)="addComment(commentForm)" value="Đăng bình luận"/>
+    <input [disabled]="!commentForm.valid" *ngIf="user_id!='' && checkComment!=0" type="submit" class="btn btn-primary" (click)="addComment(commentForm)" value="Đăng bình luận"/>
   </form>
 
   <div class="list-group" style="margin-top:20px">

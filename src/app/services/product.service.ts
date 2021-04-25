@@ -85,8 +85,8 @@ export class ProductService {
   public checkSameName(product_name){
     return this.http.post(this.baseUrl+"checkSameName?product_name="+product_name,null);
   }
-  public getInforProduct(fd){
-    return this.http.post(this.baseUrl+"getInforProduct",fd);
+  public checkAcceptComment(fd){
+    return this.http.post(this.baseUrl+"checkAcceptComment",fd);
   }
   public getHistoryPrice(product_id){
     return this.http.post(this.baseUrl+"getHistoryPrice?product_id="+product_id,null);

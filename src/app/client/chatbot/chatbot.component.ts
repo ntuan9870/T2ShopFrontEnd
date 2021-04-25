@@ -4,6 +4,13 @@ import { ChatbotService } from 'src/app/services/chatbot.service';
 import { VoucherService } from 'src/app/services/voucher.service';
 import { Voucher } from 'src/app/models/voucher.model';
 import { BehaviorSubject } from 'rxjs';
+import { PromotionService } from 'src/app/services/promotion.service';
+import { Product } from 'src/app/models/product.model';
+import { Promotion } from 'src/app/models/promotion.model';
+import { CartService } from 'src/app/services/cart.service';
+import { ProductService } from 'src/app/services/product.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-chatbot',
@@ -24,8 +31,12 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
   public checklogin = false;
   public allVouchers = new BehaviorSubject<Voucher[]>(null);
   public vouchers:Voucher[];
+  public products:Product[];
+  public allproducts = new BehaviorSubject<Product[]>(null);
+  allPromotion = new BehaviorSubject<Promotion[]>(null);
+  promotions:Promotion[];
 
-  constructor(private chatbotservice:ChatbotService,private voucherservice:VoucherService) { }
+  constructor(private router:Router,private productService:ProductService,private chatbotservice:ChatbotService,private voucherservice:VoucherService,private promorionservice:PromotionService) { }
 
   ngOnInit(): void {
     var a = new ChatBotMessage();
@@ -50,7 +61,6 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     }
     this.showVoucher();
   }
-
   ngAfterViewChecked() {        
     this.scrollToBottom();        
   }
@@ -62,7 +72,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
           var a = new ChatBotMessage();
           a.user_id = '1';
           a.message_id='1';
-          a.message_content = 'Sau đây là một số voucher của bạn';
+          a.message_content = 'Bạn có một số voucher vẫn chưa được sử dụng';
           a.customer_chatbot = 'chatbot';
           this.chatbotmessage = '';
           this.arrMessages.push(a);
@@ -109,7 +119,8 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
       // this.chatbotmessage = '';
       // console.log(a.message_content.search("mua hàng"));
       // this.checkMessage(a.message_content);
-      if(a.message_content.includes("mua hàng")){
+      if(a.message_content.includes("nhân viên") || a.message_content.includes("nhân viên hỗ trợ") 
+      ||a.message_content.includes("nhân viên tư vấn")|| a.message_content.includes("tư vấn")|| a.message_content.includes("hỗ trợ")){
         this.arrMessages.push(a);
         this.answer();
       }else{
@@ -121,7 +132,9 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     }
   }
   answer(){
-    var m="A hiểu rồi chờ chúng tôi chút";
+   
+    var m= new Array();
+    m.push('Bạn có thể nhắn tin trực tiếp với nhân viên thông qua messenger, tin nhắn sẽ được phản hồi sớm nhất có thể cảm ơn');
     var a = new ChatBotMessage();
     a.user_id = '1';
     a.message_id='1';
@@ -131,17 +144,19 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     this.chatbotmessage = '';
     this.arrMessages.push(a);
     this.scrollToBottom();
+    window.open('https://www.facebook.com/T2Shop-100103625501034','_blank');
   }
   solver(){
-    var m = 'Xin lỗi chúng tôi không hiểu bạn đang nói gì';
+    // var m = 'Xin lỗi chúng tôi không hiểu bạn đang nói gì';
     var arrQuestion:string[] = new Array('hello', 'tên', 'tìm');
     var arrResponde:string[] = new Array('Xin chào bạn! Tui có thể giúp gì cho bạn!,', 'Tôi là trợ lý ảo của T2Shop', 'OK bạn muốn tìm sản phẩm như thế nào? hãy viết sản phẩm ra');
     for(var i = 0; i < arrQuestion.length; i++){
       if(this.chatbotmessage.includes(arrQuestion[i])){
         if(arrQuestion[i]=="tìm"){
-          this.search();
+          this.show();
         }
-        m = arrResponde[i];
+        // m = "tìm ra rồi";
+       var m = arrResponde[i];
       }
     }
     var a = new ChatBotMessage();
@@ -149,20 +164,70 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     a.message_id='1';
     a.message_content = m;
     a.customer_chatbot = 'chatbot';
-    // console.log(a.message_content);
     this.chatbotmessage = '';
     this.arrMessages.push(a);
     this.scrollToBottom();
   }
-  search(){
-    var m="";
-    var a = new ChatBotMessage();
-    a.user_id = '1';
-    a.message_id='1';
-    a.message_content = m;
-    a.customer_chatbot = 'customer';
-    console.log(a.message_content);
+  show(){
+    // var a = new ChatBotMessage();
+    // a.user_id = '1';
+    // a.message_id='1';
+    // a.message_content = this.chatbotmessage;
+    // a.customer_chatbot = 'customer';
+    // this.arrMessages.push(a);
+    // this.scrollToBottom();
+
+    if(this.chatbotmessage!="" && this.chatbotmessage!="tìm"){
+    const fd = new FormData();
+    fd.append('key',this.chatbotmessage);
+    fd.append('id','');
+
+    this.productService.getFromDB(fd).subscribe(
+      res=>{
+        var r:any = res;
+        this.allproducts.next(r.products);
+        this.allPromotion.next(r.promotions);
+      },
+      error=>{
+        alert('Error');
+      }
+    );
+    this.allproducts.subscribe(
+      res=>{
+        this.products = res;
+      },
+      error=>{
+        alert('Error');
+      }
+    );
+    this.allPromotion.subscribe(
+      res=>{
+        this.promotions = res;
+      },
+      error=>{
+        alert('Error');
+      }
+    );
+    if(this.products && this.promotions){
+      for(var i=0; i<=this.products.length;i++){
+        var m= new Array();
+        m.push('Tên sản phẩm:',this.products[i].product_name,'Giá sản phẩm:',this.products[i].product_price,
+              'Phần trăm:', this.promotions[i].promotion_infor,'%');
+        if(m!=null){
+          var a = new ChatBotMessage();
+          a.user_id = '1';
+          a.message_id='1';
+          a.message_content = m;
+          a.customer_chatbot = 'chatbot';
+          this.chatbotmessage = '';
+          this.arrMessages.push(a);
+          this.scrollToBottom();
+        }
+      }
+    }
+    }
   }
+ 
   scrollToBottom(): void {
     try {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight-100;
@@ -172,12 +237,13 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
   showchatbox(){
     if(this.chatbox.nativeElement.style.display=='none'){
       this.chatbox.nativeElement.style.display='block';
+      document.getElementById('new').style.display='none';
     }else{
       this.chatbox.nativeElement.style.display='none';
     }
   }
   showchatbox2(){
-    alert('Hello');
+     this.chatbox.nativeElement.style.display='none';
   }
 
 }
