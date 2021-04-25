@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-complete',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompleteComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cartService:CartService) { }
 
   ngOnInit(): void {
+    this.cartService.xoagiohang();
+    localStorage.removeItem('store_id');
   }
 
 }

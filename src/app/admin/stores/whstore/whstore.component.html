@@ -1,0 +1,131 @@
+<div class="spinner" *ngIf="loading==true">
+    <div class="blob blob-0"></div>
+    <div class="wait">Vui lòng chờ trong giây lát</div>
+</div>
+<div class="container">
+    <div class="row">
+        <h3 class="page-header col-md-12 col-lg-8 col-xl-8">Danh sách kho</h3>
+        <button class=" btn-add-admin btn btn-success btn-add" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-plus">Thêm kho mới</i></button>
+    </div><!--/.row-->
+     <div class="row">
+        <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr id="tbl-first-row">
+                            <td>Mã kho</td>
+                            <td>Mã CH</td>
+                            <td>ĐVT</td>
+                            <td>Sức chứa</td>
+                            <td>Còn lại</td>
+                            <td>Xem SP</td>
+                            <td>Sửa</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let w of ws; let i = index">
+                            <td>{{w.store_wh_id}}</td>
+                            <td>{{w.store_id}}</td>
+                            <td>{{w.wh_unit}}</td>
+                            <td>{{w.wh_capacity}}</td>
+                            <td>{{w.wh_empty}}</td>
+                            <td><button class="btn-add-admin btn btn-success" (click)="getAllP(w.store_wh_id)" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-eye">Xem</i></button></td>
+                            <td><button class="btn-add-admin btn btn-success" (click)="getEditWH(w.store_wh_id)" data-toggle="modal" data-target=".bd-example-modal-sl"><i class="fas fa-edit">Sửa</i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+            </div>
+        </div>
+
+        <!-- Sửa kho cửa hàng -->
+        <div class="modal fade bd-example-modal-sl" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">Sửa thông tin kho</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                       <form #editPromotionForm="ngForm" method="post">
+                            <div class="form-group">
+                                <label>Sức chứa <i style="color: red;">(*)</i></label>
+                                <input type="number"  class="form-control" placeholder="Sức chứa của kho.." name="edit_wh_capacity" [(ngModel)]="edit_wh_capacity" required (keyup)="checkCapacityEdit()">
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn vị <i style="color: red;">(*)</i></label>
+                                <input type="text"  class="form-control" placeholder="Đơn vị.." name="edit_wh_unit" [(ngModel)]="edit_wh_unit" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Còn lại<i style="color: red;">(*)</i></label> 
+                                <input type="number" class="form-control" name="edit_wh_empty"  [(ngModel)]="edit_wh_empty" required disabled>
+                            </div>
+                            <input [disabled]="!editPromotionForm.valid" type="submit" value="Sửa" class="btn btn-success" (click)="editWH()">
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Xem tồn kho -->
+        <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">Xem hàng tồn trong kho</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr id="tbl-first-row">
+                                <td>Mã TK</td>
+                                <td>Mã hàng</td>
+                                <td>Hình ảnh</td>
+                                <td>Tên hàng</td>
+                                <td>Số lượng</td>
+                                <td>Đơn giá</td>
+                                
+                            </tr>
+                            <tr *ngFor="let h of ps;let i = index">
+                                <td>{{h.store_wh_inventory_id}}</td>
+                                <td>{{h.product_id}}</td>
+                                <td width="6%"><img src={{h.product_img}} class="img-fluid img-thumbnail"></td>
+                                <td>{{h.product_name}}</td>
+                                <td>{{h.amount}}</td>
+                                <td>{{h.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}} </td>
+                            </tr>
+                        </table>
+                        <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thêm kho mới -->
+            <div class="modal fade bd-example-modal-lg"  id="addModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">Thêm kho mới</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" #addSupplierForm="ngForm">
+                            <div class="form-group">
+                                <label>Sức chứa <i style="color: red;">(*)</i></label>
+                                <input type="number"  class="form-control"   placeholder="Sức chứa của kho.." name="wh_capacity" [(ngModel)]="wh_capacity" required (keyup)="checkCapacity()">
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn vị <i style="color: red;">(*)</i></label>
+                                <input type="text"  class="form-control" placeholder="Đơn vị.." name="wh_unit" [(ngModel)]="wh_unit" required>
+                            </div>
+                            <input type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-success"   value="Thêm" (click)="addStoreWareHouse()">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

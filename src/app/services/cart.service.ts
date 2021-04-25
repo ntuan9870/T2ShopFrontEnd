@@ -144,5 +144,8 @@ export class CartService {
   public getAllDistrict(){
     return this.http.post('https://thongtindoanhnghiep.co/api/city/4/district',null);
   }
+  public checkChangeStore(fd){
+    return this.http.post(this.baseUrl+"checkChangeStore", fd);
+  }
 
 }

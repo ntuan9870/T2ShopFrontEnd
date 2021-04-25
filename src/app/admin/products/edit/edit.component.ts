@@ -36,7 +36,7 @@ export class EditComponent implements OnInit {
     product_img:'',
     product_description:'',
     product_featured:'',
-    product_amount:1,
+    // product_amount:1,
     product_cate:''
   }
 
@@ -76,7 +76,7 @@ export class EditComponent implements OnInit {
     }
     fd.append('product_condition',this.form.product_condition);
     fd.append('product_description',this.form.product_description);
-    fd.append('product_amount',this.form.product_amount.toString());
+    // fd.append('product_amount',this.form.product_amount.toString());
     fd.append('product_featured',this.form.product_featured);
     fd.append('product_cate',this.form.product_cate);
     this.productService.update(fd).subscribe(
@@ -106,7 +106,7 @@ export class EditComponent implements OnInit {
         this.selectedOption=this.product.product_promotion;
         this.form.product_condition=this.product.product_condition;
         this.form.product_description=this.product.product_description;
-        this.form.product_amount=this.product.product_amount;
+        // this.form.product_amount=this.product.product_amount;
         this.form.product_featured=this.product.product_featured;
         this.form.product_cate=this.product.product_cate;
         $("#avatar").fadeIn("fast").attr('src',this.oldImage);
@@ -130,11 +130,11 @@ export class EditComponent implements OnInit {
   public textindescription( { editor }: ChangeEvent ) {
     this.textindesc = editor.getData();
   }
-  public checkamount(event){
-    if(this.form.product_amount!=null&&this.form.product_amount<1){
-      this.form.product_amount=1;
-    }
-  }
+  // public checkamount(event){
+  //   if(this.form.product_amount!=null&&this.form.product_amount<1){
+  //     this.form.product_amount=1;
+  //   }
+  // }
   public checkprice(event){
     if(this.form.product_price!=null&&this.form.product_price<0){
       this.form.product_price=0;

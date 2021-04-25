@@ -42,7 +42,7 @@ export class AddComponent implements OnInit {
     promotion:0,
     condition:"",
     description:"",
-    amount:1,
+    // amount:1,
     featured:"0",
     cate:""
   }
@@ -88,7 +88,7 @@ export class AddComponent implements OnInit {
     fd.append('condition',$('#condition').val());
     fd.append('status',$('#status').val());
     fd.append('description',this.textindesc);
-    fd.append('amount',this.form.amount.toString());
+    // fd.append('amount',this.form.amount.toString());
     fd.append('cate',this.id);
     fd.append('featured',this.form.featured);
     this.proSer.add(fd).subscribe(
@@ -153,11 +153,11 @@ export class AddComponent implements OnInit {
   public textindescription( { editor }: ChangeEvent ) {
     this.textindesc = editor.getData();
   }
-  public checkamount(event){
-    if(this.form.amount!=null&&this.form.amount<1){
-      this.form.amount=1;
-    }
-  }
+  // public checkamount(event){
+  //   if(this.form.amount!=null&&this.form.amount<1){
+  //     this.form.amount=1;
+  //   }
+  // }
   public checkprice(event){
     if(this.form.price!=null&&this.form.price<0){
       this.form.price=0;

@@ -6,6 +6,9 @@ import { CtpxLn } from 'src/app/models/ctpx-ln.models';
 import { DetailBallotExport } from 'src/app/models/detail-ballot-export.model';
 import { Detailballotimport } from 'src/app/models/detailballotimport.model';
 import { Product } from 'src/app/models/product.model';
+import { StoreWarehouse } from 'src/app/models/store-warehouse.class';
+import { Store } from 'src/app/models/store.model';
+import { StoreService } from 'src/app/services/store.service';
 import { WarehouseService } from 'src/app/services/warehouse.service';
 declare function showSwal(type,message):any;
 declare var $;
@@ -65,8 +68,20 @@ export class DeliverybillComponent implements OnInit {
   public dbeshome:DetailBallotExport[] = [];
   public all_see_ctpx_lns= new BehaviorSubject<CtpxLn[]>(null);
   public see_ctpx_lns:CtpxLn[] = [];
+  public all_swhs= new BehaviorSubject<StoreWarehouse[]>(null);
+  public swhs:StoreWarehouse[] = [];
+  public selectedSWH;
+  public allStores = new BehaviorSubject<Store[]>(null);
+  public stores:Store[];
+  public selectedStore;
+  public allStoreWHs = new BehaviorSubject<StoreWarehouse[]>(null);
+  public storeWHs:StoreWarehouse[];
+  public disabledSelectWarehouse=true;
+  public amount_product:number = 0;
+  public allDBIByProductID = new BehaviorSubject<Detailballotimport[]>(null);
+  public dbibyproductids:Detailballotimport[];
   
-  constructor( private warehouseservies:WarehouseService) { }
+  constructor( private warehouseservies:WarehouseService, private storeService:StoreService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('user_name')){
@@ -86,6 +101,112 @@ export class DeliverybillComponent implements OnInit {
     this.ngaylapphieu = this.dateFormat(new Date(),'YYYY-MM-DD');
     this.getwarehouse();
     this.getBallotExport();
+    this.getStore();
+  }
+  themCTPX(){
+    this.ctpx_lns = [];
+    var tmp = 0;
+    for(var i = 0; i < this.dbibyproductids.length; i++){
+      tmp+=this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
+      if(tmp <= this.amount_product){
+        var c = new CtpxLn;
+        c.bi_id = this.dbibyproductids[i].bi_id;
+        c.amount = this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
+        this.ctpx_lns.push(c);
+      }else{
+        var c = new CtpxLn;
+        c.bi_id = this.dbibyproductids[i].bi_id;
+        c.amount = this.amount_product-(tmp-(this.dbibyproductids[i].amount-this.dbibyproductids[i].exported));
+        if(c.amount==0){
+          break;
+        }
+        this.ctpx_lns.push(c);
+        break;
+      }
+    }
+    console.log(this.ctpx_lns);
+    for(var i = 0; i < this.dbes.length; i++){
+      if(this.pr_sl.product_id == this.dbes[i].product_id){
+        showSwal('auto-close','Sản phẩm đã tồn tại!');
+      }
+    }
+    var dbe:DetailBallotExport = new DetailBallotExport;
+    dbe.product_id = this.pr_sl.product_id;
+    var sum = 0;
+    for(var i = 0; i < this.ctpx_lns.length; i++){
+      sum+=this.ctpx_lns[i].amount;
+    }
+    dbe.amount = sum;
+    dbe.price = this.price_product;
+    dbe.ctpx_ln = this.ctpx_lns;
+    this.dbes.push(dbe);
+    this.total_price = 0;
+    for(var i = 0; i < this.dbes.length; i++){
+      this.total_price+=this.dbes[i].price*dbe.amount;
+    }
+    this.ctpx_lns = [];
+    this.pr_sl = new Product;
+    this.ae = "";
+    this.ip_s = "";
+    this.price_product = 0;
+    this.amount_product = 0;
+  }
+  checkAmountProduct(){
+    if(this.amount_product<1&&this.amount_product.toString()!=''){
+      this.amount_product = 1;
+    }
+    var tmp = 0;
+    for(var i = 0; i < this.dbibyproductids.length; i++){
+      tmp+=this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
+    }
+    if(this.amount_product>tmp){
+      this.amount_product=tmp;
+    }
+  }
+  getAllDBIProductID(){
+    this.warehouseservies.getAllDBIByProductId(this.pr_sl.product_id).subscribe(
+      res=>{
+        var r:any = res;
+        this.allDBIByProductID.next(r.dbis);
+      });
+      this.allDBIByProductID.subscribe(res=>{
+        this.dbibyproductids=res;
+      }
+    );
+  }
+  changeSLStore(){
+    this.disabledSelectWarehouse = false;
+    this.getStoreWarehouse();
+  }
+  getStore(){
+    this.storeService.showStore().subscribe(
+      res=>{
+        var r:any = res;
+        this.allStores.next(r.stores);
+      },error=>{
+        alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+      }
+    );
+    this.allStores.subscribe(
+      res=>{
+        this.stores = res;
+      }
+    );
+  }
+  getStoreWarehouse(){
+    this.storeService.getAllStoreWarehouseByStoreID(this.selectedStore).subscribe(
+      res=>{
+        var r:any = res;
+        this.allStoreWHs.next(r.storeWHs);
+      },error=>{
+        alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+      }
+    );
+    this.allStoreWHs.subscribe(
+      res=>{
+        this.storeWHs = res;
+      }
+    );
   }
   getDeliverybill(){
     this.warehouseservies.getDeliverybill().subscribe(
@@ -245,6 +366,7 @@ export class DeliverybillComponent implements OnInit {
       this.ip_s = this.searched_products[this.selected_entries].product_name;
       this.pr_sl = this.searched_products[this.selected_entries];
       this.getAllBI();
+      this.getAllDBIProductID();
       this.price_product = this.pr_sl.product_price;
       return;
     }
@@ -413,11 +535,24 @@ export class DeliverybillComponent implements OnInit {
     }
   }
   addBE(){
+    var c:number = 0;
+    for(var i = 0; i < this.dbes.length; i++){
+      c+=this.dbes[i].amount;
+    }
+    for(var i = 0; i < this.storeWHs.length; i++){
+      if(this.selectedSWH==this.storeWHs[i].store_wh_id){
+        if(this.storeWHs[i].wh_empty<c){
+          showSwal('auto-close', 'Kho đầy!');
+          return;
+        }
+      }
+    }
     const fd = new FormData();
     var s = JSON.stringify(this.dbes); 
     fd.append('user_id', this.user_id.toString());
     fd.append('wh_id', this.selectedWH.toString());
     fd.append('sum_amount', this.total_price.toString());
+    fd.append('store_wh_id', this.selectedSWH.toString());
     fd.append('dbes', s);
     this.warehouseservies.addBE(fd).subscribe(
       res=>{

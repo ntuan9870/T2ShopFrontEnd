@@ -35,7 +35,8 @@ export class ThanhtoanComponent implements OnInit {
     total : '',
     cart : '',
     select_voucher:'null',
-    promotion:''
+    promotion:'',
+    store_id:''
   }
   public showformphone = true;
   public allDistrict = new BehaviorSubject<District[]>(null);
@@ -51,8 +52,8 @@ export class ThanhtoanComponent implements OnInit {
   constructor(private router:Router,private orderService:OrderService,private cartService:CartService,private location:Location, private voucherSerice:VoucherService, private activatedRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
-
-
+    this.checkCheckOutByVNPAY();
+    this.form.store_id = localStorage.getItem('store_id');
     this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
     this.activatedRoute.params.subscribe(routeParams => {
       this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
@@ -189,8 +190,9 @@ export class ThanhtoanComponent implements OnInit {
           }
         }
         this.loading = false;
-        this.cartService.xoagiohang();
+        // this.cartService.xoagiohang();
         this.getv();
+        // localStorage.removeItem('store_id');
         this.router.navigate(['/cart/complete']);
         showSwal('auto-close','Thành công!');
       },
@@ -222,6 +224,56 @@ export class ThanhtoanComponent implements OnInit {
     }
   }
 
+  checkCheckOutByVNPAY(){
+    if(localStorage.getItem('vnpay')!=null&&this.activatedRoute.snapshot.queryParamMap.get('vnp_Amount')!=null){
+      this.loading = true;
+      this.form.user_id = localStorage.getItem('user_id');
+      this.form.user_name_receive = localStorage.getItem('user_name_receive');
+      this.form.user_email = localStorage.getItem('user_email');
+      this.form.user_phone = localStorage.getItem('user_phone');
+      this.form.user_address = localStorage.getItem('user_address');
+      this.form.user_message = localStorage.getItem('user_message');
+      this.form.form = localStorage.getItem('form');
+      this.form.total = localStorage.getItem('total');
+      this.form.cart = localStorage.getItem('cart');
+      this.form.select_voucher = localStorage.getItem('select_voucher');
+      this.form.promotion = localStorage.getItem('promotion');
+      this.form.store_id = localStorage.getItem('store_id');
+      this.orderService.addorder(this.form).subscribe(
+        res=>{
+          if(sessionStorage.getItem('user_id')){
+            sessionStorage.setItem('user_phone',this.form.user_phone.toString());
+          }else{
+            if(localStorage.getItem('user_id')){
+              localStorage.setItem('user_phone',this.form.user_phone.toString());
+            }
+          }
+          this.loading = false;
+          this.getv();
+          localStorage.removeItem('vnpay');
+          localStorage.removeItem('user_id');
+          localStorage.removeItem('user_name_receive');
+          localStorage.removeItem('user_email');
+          localStorage.removeItem('user_phone');
+          localStorage.removeItem('user_address');
+          localStorage.removeItem('user_message');
+          localStorage.removeItem('form');
+          localStorage.removeItem('total');
+          localStorage.removeItem('cart');
+          localStorage.removeItem('select_voucher');
+          localStorage.removeItem('promotion');
+          localStorage.removeItem('store_id');
+          this.router.navigate(['/cart/complete']);
+          showSwal('auto-close','Thành công!');
+        },
+        error=>{
+          this.loading = false;
+          alert('Có lỗi trong quá trình xử lý dữ liệu!');
+        }
+      );
+    }
+  }
+
   thanhtoanvnpay(){
     this.loading = true;
     this.form.form  = 'VNPAY';
@@ -231,7 +283,19 @@ export class ThanhtoanComponent implements OnInit {
     this.orderService.thanhtoanvnpay(this.form).subscribe(
       res=>{
         if(res['message']=='success'){
-          this.cartService.xoagiohang();
+          localStorage.setItem('vnpay', 'ok');
+          localStorage.setItem('user_id', this.form.user_id);
+          localStorage.setItem('user_name_receive', this.form.user_name_receive);
+          localStorage.setItem('user_email', this.form.user_email);
+          localStorage.setItem('user_phone', this.form.user_phone);
+          localStorage.setItem('user_address', this.form.user_address);
+          localStorage.setItem('user_message', this.form.user_message);
+          localStorage.setItem('form', this.form.form);
+          localStorage.setItem('total', this.form.total);
+          localStorage.setItem('cart', this.form.cart);
+          localStorage.setItem('select_voucher', this.form.select_voucher);
+          localStorage.setItem('promotion', this.form.promotion);
+          localStorage.setItem('store_id', this.form.store_id);
           window.location.href = res['checkouturl'];
         }
       },

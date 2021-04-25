@@ -4,10 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 import { Cart } from 'src/app/models/cart.model';
 import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
+import { Store } from 'src/app/models/store.model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { PromotionService } from 'src/app/services/promotion.service';
 import { ShareService } from 'src/app/services/share.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-cart',
@@ -28,8 +30,15 @@ export class CartComponent implements OnInit {
   amount:number = 0;
   labelnext = 'Sau';
   labelprevious = 'Trước';
+  public selectedStore = '';
+  public allStores = new BehaviorSubject<Store[]>(null);
+  public stores : Store[];
+  public resCheckCart:String[] = [];
+  public condition = true;
+  public resMax:number[]=[];
 
-  constructor(private productService:ProductService,private cartService:CartService,private shareService:ShareService, private promotionService:PromotionService) { }
+  constructor(private productService:ProductService,private cartService:CartService,private shareService:ShareService, private promotionService:PromotionService
+    ,private storeService:StoreService) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('cart')){
@@ -43,6 +52,33 @@ export class CartComponent implements OnInit {
       currentPage: 1,
       totalItems: this.amount
     };
+    this.getAllStore();
+  }
+
+  getAllStore(){
+    this.storeService.showStore().subscribe(
+      res=>{
+        var r:any = res;
+        this.allStores.next(r.stores);
+      },error=>{
+        alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+      }
+    );
+    this.allStores.subscribe(
+      res=>{
+        this.stores = res;
+        if(this.stores!=null){
+          if(localStorage.getItem('store_id')!=null){
+            this.selectedStore=localStorage.getItem('store_id');
+          }else{
+            this.selectedStore = this.stores[0].store_id;
+          }
+        }
+        if(res!=null){
+          this.checkChangeStore();
+        }
+      }
+    );
   }
 
   pageChangedCart(event){
@@ -85,14 +121,20 @@ export class CartComponent implements OnInit {
       this.prod_num[i] = 1;
     }
     var currentproduct:Product = null;
-    this.productService.getEditProduct(p.product_id).subscribe(
+    const fd = new FormData();
+    fd.append('id',p.product_id);
+    fd.append('store_id',this.selectedStore);
+    this.productService.getInforProduct(fd).subscribe(
       res=>{
         // var r:any = res;
         currentproduct = res['product'];
-        console.log(res['product'].product_amount);
-        if(this.prod_num[i]>currentproduct.product_amount){
-          this.prod_num[i]=currentproduct.product_amount;
-        }
+        // console.log(res['product'].product_amount);
+        // if(this.prod_num[i]>currentproduct.product_amount){
+        //   this.prod_num[i]=currentproduct.product_amount;
+        // }
+        // if(this.prod_num[i]>res['amountmax']){
+          this.resMax[i] = res['amountmax'];
+        // }
         this.tongthanhtoan = 0;
         this.tonghang = 0;
         this.thanhtien[i] = this.cartService.tinhthanhtien(i,this.cartProductList[i].product.product_price,this.prod_num[i])*(100-this.cartProductList[i].promotion)/100;
@@ -104,6 +146,7 @@ export class CartComponent implements OnInit {
         this.cartService.luutongtien(this.tongthanhtoan);
         this.cartService.luutonghang(this.tonghang);
         this.shareService.emitChange(this.tonghang);
+        this.checkChangeStore();
       },error=>{
         console.log('Fail');
       }
@@ -132,6 +175,7 @@ export class CartComponent implements OnInit {
       this.cartService.luutonghang(this.tonghang);
       this.shareService.emitChange(this.tonghang);
       this.cartProductList = this.cartService.showcart();
+      this.checkChangeStore();
     }
 
     if(this.cartProductList.toString()==''){
@@ -139,6 +183,33 @@ export class CartComponent implements OnInit {
       this.showcart();
       this.empty = true;
       this.showcart();
+    }
+  }
+  checkChangeStore(){
+    localStorage.setItem('store_id', this.selectedStore);
+    const fd = new FormData();
+    fd.append('cart', localStorage.getItem('cart'));
+    fd.append('store_id', this.selectedStore);
+    this.cartService.checkChangeStore(fd).subscribe(
+      res=>{
+        this.resCheckCart = [];
+        this.resCheckCart = res['message'];
+        this.resMax = res['max'];
+        if(res['message']!=null){
+          this.checkCondition();
+        }
+      }, error=>{
+
+      }
+    );
+  }
+  checkCondition(){
+    this.condition = true;
+    for(var i = 0; i < this.resCheckCart.length; i++){
+      if(this.resCheckCart[i]=='false'){
+        this.condition = false;
+        return;
+      }
     }
   }
 
