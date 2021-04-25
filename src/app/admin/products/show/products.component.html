@@ -39,6 +39,7 @@
                   <!-- <th>SL</th> -->
                   <!-- <th>Nổi bật</th> -->
                   <th>Danh mục</th>
+                  <th>Lịch sử giá</th>
                   <th>Tùy chọn</th>
                 </tr>
               </thead>
@@ -59,6 +60,7 @@
                   <!-- <td>{{p.product_amount}}</td> -->
                   <!-- <td>{{p.product_featured}}</td> -->
                   <td>{{p.category_name}}</td>
+                  <td><a [routerLink]="['#']" (click)="getHistoryPrice(p.product_id)" data-toggle="modal" data-target="#hpModal">LS Giá</a></td>
                   <td>
                     <a [routerLink]="['../../edit/'+p.product_id]" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i> Sửa</a>
                     <a [routerLink]="['#']" class="btn btn-danger" (click)='removeProduct(p)'><i class="fa fa-trash" aria-hidden="true"></i> Xóa</a>
@@ -73,3 +75,37 @@
     </div>
   </div>
 </div><!--/.row-->
+<div class="modal fade" id="hpModal" tabindex="-1" role="dialog" aria-labelledby="hpModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hpModalLabel">Lịch sử giá</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" style="margin-top:20px;">
+          <h6 *ngIf="products.length==0" >Không có sản phẩm cần tìm</h6>
+          <thead>
+            <tr class="bg-primary">
+              <th>Mã</th>
+              <th>Giá sản phẩm</th>
+              <th>Ngày hiệu lực</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor = "let h of hps; let i = index">
+              <td>{{h.hp_id}}</td>
+              <td>{{h.product_price}}</td>
+              <td>{{h.updated_at}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

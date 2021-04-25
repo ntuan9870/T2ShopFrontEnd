@@ -88,4 +88,7 @@ export class ProductService {
   public getInforProduct(fd){
     return this.http.post(this.baseUrl+"getInforProduct",fd);
   }
+  public getHistoryPrice(product_id){
+    return this.http.post(this.baseUrl+"getHistoryPrice?product_id="+product_id,null);
+  }
 }
