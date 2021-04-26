@@ -12,7 +12,7 @@
             <div class="card product-item">
               <a style="text-decoration:none;color:rgb(129, 98, 98)"[routerLink]="['products/'+p.product_id]" class="card-header">{{p.product_name}}</a>
               <div class="card-body">
-                <div class="promotion" *ngIf="promotions[i]!=null&&promotions[i]!=2">
+                <div class="promotion" *ngIf="promotions[i]!=null&&promotions[i]['promotion_status']!=2">
                   <div style="background-color: red; height:25px; line-height: 25px; text-align: center;" *ngIf="promotions[i].promotion_status!=2">{{promotions[i].promotion_infor}}%</div>
                   <div class="trai"></div>
                   <div class="phai"></div>
@@ -39,7 +39,7 @@
             <div class="card product-item">
               <div class="card-header">{{p.product_name}}</div>
               <div class="card-body">
-                <div class="promotion" *ngIf="promotionsF[i]['promotion_status']!=2" >
+                <div class="promotion" *ngIf="promotionsF[i]!=null&&promotionsF[i]['promotion_status']!=2" >
                   <div style="background-color: red; height:25px; line-height: 25px; text-align: center;"  *ngIf="promotionsF[i]['promotion_status']!=2" >{{promotionsF[i].promotion_infor}}%</div>
                   <div class="trai"></div>
                   <div class="phai"></div>
@@ -47,11 +47,11 @@
                 <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
               </div>
               <div class="card-footer">
-                <i class="fas fa-money-bill" *ngIf="promotionsF[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsF[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <i class="fas fa-money-bill" *ngIf="promotionsF[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsF[i]!=null&&promotionsF[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsF[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsF[i]==null||promotionsF[i]!=null&&promotionsF[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
                 <!-- <i class="fas fa-dollar-sign" style="font-size: 9px; font-weight: normal; position: absolute;"> <s> {{p.product_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</s></i> -->
-                <i class="fas fa-cart-plus" *ngIf="promotionsF[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsF[i].promotion_infor)"></i>
-                <i class="fas fa-cart-plus" *ngIf="promotionsF[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsF[i]!=null&&promotionsF[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsF[i].promotion_infor)"></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsF[i]==null||promotionsF[i]!=null&&promotionsF[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
               </div>
             </div>
           </li>
@@ -67,7 +67,7 @@
             <div class="card product-item">
               <div class="card-header">{{p.product_name}}</div>
               <div class="card-body">
-                <div class="promotion" *ngIf="promotionsR[i]['promotion_status']!=2" >
+                <div class="promotion" *ngIf="promotionsR[i]!=null&&promotionsR[i]['promotion_status']!=2" >
                   <div style="background-color: red; height:25px; line-height: 25px; text-align: center;"  *ngIf="promotionsR[i]['promotion_status']!=2" >{{promotionsR[i].promotion_infor}}%</div>
                   <div class="trai"></div>
                   <div class="phai"></div>
@@ -75,10 +75,10 @@
                 <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
               </div>
               <div class="card-footer">
-                <i class="fas fa-money-bill" *ngIf="promotionsR[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsR[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <i class="fas fa-money-bill" *ngIf="promotionsR[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <i class="fas fa-cart-plus" *ngIf="promotionsR[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsR[i].promotion_infor)"></i>
-                <i class="fas fa-cart-plus" *ngIf="promotionsR[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsR[i]!=null&&promotionsR[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsR[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsR[i]==null||promotionsR[i]!=null&&promotionsR[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsR[i]!=null&&promotionsR[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsR[i].promotion_infor)"></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsR[i]==null||promotionsR[i]!=null&&promotionsR[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
               </div>
             </div>
           </li>
@@ -94,7 +94,7 @@
             <div class="card product-item">
               <div class="card-header">{{p.product_name}}</div>
               <div class="card-body">
-                <div class="promotion" *ngIf="promotionsFR[i]['promotion_status']!=2" >
+                <div class="promotion" *ngIf="promotionsFR[i]!=null&&promotionsFR[i]['promotion_status']!=2" >
                   <div style="background-color: red; height:25px; line-height: 25px; text-align: center;"  *ngIf="promotionsFR[i]['promotion_status']!=2" >{{promotionsFR[i].promotion_infor}}%</div>
                   <div class="trai"></div>
                   <div class="phai"></div>
@@ -102,10 +102,10 @@
                 <a [routerLink]="['products/'+p.product_id]"><img src={{p.product_img}} alt=""></a>
               </div>
               <div class="card-footer">
-                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsFR[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
-                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsFR[i].promotion_infor)"></i>
-                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]!=null&&promotionsFR[i]['promotion_status']!=2" > <span> {{p.product_price*(100-promotionsFR[i].promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-money-bill" *ngIf="promotionsFR[i]==null||promotionsFR[i]!=null&&promotionsFR[i]['promotion_status']==2" > <span> {{p.product_price*(100-0)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</span></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]!=null&&promotionsFR[i]['promotion_status']!=2" style="float:right" (click)="addtocart(p,promotionsFR[i].promotion_infor)"></i>
+                <i class="fas fa-cart-plus" *ngIf="promotionsFR[i]==null||promotionsFR[i]!=null&&promotionsFR[i]['promotion_status']==2" style="float:right" (click)="addtocart(p,0)"></i>
               </div>
             </div>
           </li>

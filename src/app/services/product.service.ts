@@ -43,6 +43,9 @@ export class ProductService {
   public getFeaturedProduct(sl){
     return this.http.post(this.baseUrl+"getFeaturedProduct?sl="+sl,null);
   }
+  public getInforProduct(form){
+    return this.http.post(this.baseUrl+"getInforProduct",form);
+  }
   public addComment(form){
     return this.http.post(this.baseUrl+"addComment",form);
   }

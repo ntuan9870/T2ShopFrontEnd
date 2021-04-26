@@ -90,6 +90,7 @@ export class HomeComponent implements OnInit {
     );
     this.allPromotion.subscribe(res=>{
       this.promotions=res;
+      console.log(this.promotions);
     });
   }
   getFeaturedProduct(){
@@ -115,6 +116,7 @@ export class HomeComponent implements OnInit {
       );
       this.allPromotionF.subscribe(res=>{
         this.promotionsF=res;
+        console.log(this.promotionsF);
       });
   }
   getRecommendProduct(){

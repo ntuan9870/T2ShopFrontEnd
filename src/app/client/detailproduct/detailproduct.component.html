@@ -9,7 +9,8 @@
         <h3 class="card-title" style="text-align: center;">{{product.product_name}}</h3>
         <div style="margin:10px auto;"><img class="container" id="avatar" src="" alt=""></div>
         <div style="margin: 0px 20px 0px 20px;">
-          <h4 class="card-title" style="float:left">Giá: {{product.product_price*(100-promotion.promotion_infor)/100| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
+          <h4 class="card-title" style="float:left" *ngIf="promotion==null">Giá: {{product.product_price| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
+          <h4 class="card-title" style="float:left" *ngIf="promotion!=null">Giá: {{product.product_price*(100-promotion.promotion_infor)/100| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</h4>
           <div style="float:right" *ngIf="ratingproduct!=0">
             <h4 class="card-title" style="float:left">Đánh giá: </h4>
             <span *ngIf="ratingproduct>0" class="fa fa-star checked"></span><span *ngIf="ratingproduct<1" class="fa fa-star"></span>
@@ -37,16 +38,16 @@
       <h3 style="margin-top:20px;color: chocolate;">Chi tiết sản phẩm</h3>
       <div><b>Tên sản phẩm: </b>{{product.product_name}}</div>
       <div><b>Giá bán: </b> {{product.product_price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</div>
-      <div *ngIf="promotion.promotion_status!=2" ><b>Giá khuyến mãi: </b> {{product.product_price*(100-promotion.promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</div>
+      <div *ngIf="promotion!=null&&promotion.promotion_status!=2" ><b>Giá khuyến mãi: </b> {{product.product_price*(100-promotion.promotion_infor)/100 | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</div>
       <div><b>Phụ kiện: </b> {{product.product_accessories}}</div>
       <div><b>Bảo hành: </b> {{product.product_warranty}}</div>
       <div><b>Tình trạng: </b>{{product.product_condition}}</div>
       <div><b>Miêu tả: </b><span [innerHTML]="product.product_description"></span></div>
-      <div><b>Khuyến mãi: </b>{{promotion.promotion_infor}}%</div>
-      <div><b>Khuyến mãi từ ngày: </b>{{promotion.start_date}}  đến {{promotion.end_date}}</div>
-      <div *ngIf="promotion.promotion_status==2"><b>Khuyến mãi đã hết hạn</b></div>
-      <button *ngIf="promotion.promotion_status!=2" class="add-cart" (click)="addtocart()"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
-      <button *ngIf="promotion.promotion_status==2" class="add-cart" (click)="addtocart1()"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
+      <div *ngIf="promotion!=null"><b>Khuyến mãi: </b>{{promotion.promotion_infor}}%</div>
+      <div *ngIf="promotion!=null"><b>Khuyến mãi từ ngày: </b>{{promotion.start_date}}  đến {{promotion.end_date}}</div>
+      <div *ngIf="promotion!=null&&promotion.promotion_status==2"><b>Khuyến mãi đã hết hạn</b></div>
+      <button *ngIf="promotion!=null&&promotion.promotion_status!=2" class="add-cart" (click)="addtocart()"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
+      <button *ngIf="promotion==null||promotion.promotion_status==2" class="add-cart" (click)="addtocart1()"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
     </div>
   </div>
 </div>
