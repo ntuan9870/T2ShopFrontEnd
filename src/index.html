@@ -18,7 +18,10 @@
   <!-- <script src="http://maps.googleapis.com/maps/api/js"></script> -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+  <!-- <script src="https://polyfill.io/v3/polyfill.js?features=default"></script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAofrlMwlRyXzbZNtsBfdkRl0GXZRsHpnk"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry" type="text/javascript"></script>   
 </head>
 <body>
   <app-root></app-root>
@@ -30,9 +33,13 @@
     agent-id="81d946ec-b2c8-46b4-8b73-b090a76a71c3"
     language-code="en"
   ></df-messenger> -->
-  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBmF-ET9tryoxNIuO2NjKO3NdC08nZcBM&callback=initMap"
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAofrlMwlRyXzbZNtsBfdkRl0GXZRsHpnk&callback=initMap"
   type="text/javascript"></script> -->
-  
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAofrlMwlRyXzbZNtsBfdkRl0GXZRsHpnk&callback=initMap&libraries=&v=weekly"
+    async
+  ></script>
+ 
   <!-- Load Facebook SDK for JavaScript -->
   <div id="fb-root"></div>
   <script>

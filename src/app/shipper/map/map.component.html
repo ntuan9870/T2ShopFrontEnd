@@ -1,12 +1,52 @@
-
 <div class="container">
-    <!-- <google-map>
-        <map-marker
-        [position]="position"
-        [label]="label"
-        [title]="title"
-        >
-        </map-marker>
-    </google-map> -->
-    <h4>Chức năng này vẫn chưa hoàn thiện</h4>
+    <h4>Bản đồ</h4>
+    <div id="floating-panel">
+        <input id="address" type="textbox" value="Sydney, NSW" />
+        <input id="submit" type="button" value="Geocode" />
+    </div>
+    <div id="map"></div>
+    <div *ngIf="apiLoaded | async" class="map" id="map">
+        <google-map height="600px"
+        width="1100px"
+        [center]="center"
+        [zoom]="zoom"
+        (mapClick)="addMarker($event)"
+        (mapMousemove)="move($event)">
+        <map-marker #marker="mapMarker" [clickable]="true"
+        *ngFor="let markerPosition of markerPositions"
+        [position]="markerPosition"
+        [options]="markerOptions"
+        (mapClick)="openInfoWindow(marker)"></map-marker>
+        <map-info-window  >
+           
+        </map-info-window>
+        <map-polyline [path]="vertices"></map-polyline>
+        <map-polygon [paths]="vertices"></map-polygon>
+        <map-rectangle [bounds]="bounds"></map-rectangle>
+        <map-circle [center]="circleCenter"
+            [radius]="radius"></map-circle>
+        <map-ground-overlay [url]="imageUrl"
+            [bounds]="imageBounds"></map-ground-overlay>
+        <map-traffic-layer [autoRefresh]="false"></map-traffic-layer>
+        <map-transit-layer></map-transit-layer>
+        <map-bicycling-layer></map-bicycling-layer>
+        <!-- <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults"
+        [directions]="directionsResults"></map-directions-renderer> -->
+        <!-- <map-directions-renderer [destination]="destination"
+        [origin]="origin" ></map-directions-renderer> -->
+        
+        </google-map>
+    </div>
+    <div>Latitude: {{display?.lat}}</div>
+    <div>Longitude: {{display?.lng}}</div>
+    <div>Khoảng cách: {{distance}} km</div>
 </div>
+<div class="container">
+  
+    <h1>Angular Google Map Get Current Location Example - ItSolutionStuff.com</h1>
+    <h5>Address: {{address}}</h5>
+    <div>Latitude: {{latitude}}</div>
+    <div>Longitude: {{longitude}}</div>
+    
+  </div>
+ 
