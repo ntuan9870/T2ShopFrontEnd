@@ -6,6 +6,12 @@ import { google } from '@google/maps';
 import {MapInfoWindow, MapMarker} from '@angular/google-maps';
 import { MapsAPILoader } from '@agm/core';
 import {} from "googlemaps"
+declare module "@angular/core" {
+  interface ModuleWithProviders<T = any> {
+      ngModule: Type<T>;
+      providers?: Provider[];
+  }
+}
 declare var google: any;
 @Component({
   selector: 'app-map',
