@@ -52,7 +52,7 @@
               </th>
               <th>
                 <a [routerLink]="['../detail/'+o.order_id+'/'+o.user_id]">Xem chi tiết</a>/
-                <a *ngIf="o?.status!='1'" (click)="removeOrder(o)" style="cursor: pointer;"> Hủy</a>
+                <a *ngIf="o?.ready!='1'" (click)="removeOrder(o)" style="cursor: pointer;"> Hủy</a>
               </th>
             </tr>
           </tbody>
