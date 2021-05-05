@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import {WarehouseService} from 'src/app/services/warehouse.service';
 import { Product } from 'src/app/models/product.model';
 import { BehaviorSubject } from 'rxjs';
+import { Detailballotimport } from 'src/app/models/detailballotimport.model';
+import { Ballotimport } from 'src/app/models/ballotimport.model';
+import { DetailWHProduct } from 'src/app/models/detail-whproduct.model';
 declare function showSwal(type,message):any;
 declare var $;
 
@@ -28,6 +31,7 @@ export class WarehouseComponent implements OnInit {
   public capacity1=[];
   public oldWarehouse;
   public wh_id;
+  public wh_id_sl;
   public wh_name;
   public wh_capacity;
   public wh_address;
@@ -35,6 +39,8 @@ export class WarehouseComponent implements OnInit {
   public change_capacity;
   public allP = new BehaviorSubject<Product[]>(null);
   public ps:Product[] = [];
+  public allDWHP = new BehaviorSubject<DetailWHProduct[]>(null);
+  public DWHPs:DetailWHProduct[] = [];
 
   constructor(private http:HttpClient, private warehouseservies:WarehouseService) { }
 
@@ -191,12 +197,22 @@ export class WarehouseComponent implements OnInit {
     audio.play();
   }
   getAllP(wh_id){
+    this.wh_id_sl = wh_id;
     this.warehouseservies.getAllP(wh_id).subscribe(res=>{
       var r:any = res;
       this.allP.next(r.hts);
     });
     this.allP.subscribe(res=>{
       this.ps=res;
+    });
+  }
+  getAllDWHP(product_id){
+    this.warehouseservies.getAllDWHP(this.wh_id_sl, product_id).subscribe(res=>{
+      var r:any = res;
+      this.allDWHP.next(r.dbi);
+    });
+    this.allDWHP.subscribe(res=>{
+      this.DWHPs=res;
     });
   }
 

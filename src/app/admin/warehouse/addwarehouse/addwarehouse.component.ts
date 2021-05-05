@@ -288,11 +288,14 @@ export class AddwarehouseComponent implements OnInit {
     }
     if(event.key=='Enter'){
       this.show_option_product = false;
-      this.numberProductElement.nativeElement.focus();
       this.ip_s = this.searched_products[this.selected_entries].product_name;
       this.pr_sl = this.searched_products[this.selected_entries];
+      this.txtKeyword.nativeElement.style.color='black';
+      this.numberProductElement.nativeElement.focus();
+      this.validateName();
       return;
     }
+    this.validateName();
     this.show_option_product = true;
     const fd = new FormData();
     fd.append('key',txtKeyword);
@@ -350,7 +353,7 @@ export class AddwarehouseComponent implements OnInit {
   validateName(){
     if(this.searched_products!=null){
       if(this.searched_products.length!=0){
-        this.pr_sl = this.searched_products[0];
+        this.pr_sl = this.searched_products[this.selected_entries];
       }
     }
     if(this.pr_sl.product_name != this.ip_s.trim()){
