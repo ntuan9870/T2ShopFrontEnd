@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 import { Voucher } from 'src/app/models/voucher.model';
 import { VoucherService } from 'src/app/services/voucher.service';
 declare function showSwal(type,message):any;
@@ -17,6 +18,7 @@ export class VouchersComponent implements OnInit {
   labelprevious = 'Trước';
   allVouchers = new BehaviorSubject<Voucher[]>(null);
   vouchers:Voucher[];
+  public oldUser:User;
 
 
   constructor(private voucherService:VoucherService) { }
@@ -28,7 +30,20 @@ export class VouchersComponent implements OnInit {
       totalItems: this.amount
     };
     this.show();
+    this.showbirthday();
   }
+  
+  showbirthday(){
+    this.voucherService.showBirthDayUser().subscribe(
+      res=>{
+        this.oldUser=res['users'];
+        console.log(this.oldUser);
+      },error=>{
+        alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+      }
+    );
+  }
+
   show(){
     this.voucherService.showVoucher().subscribe(
       res=>{

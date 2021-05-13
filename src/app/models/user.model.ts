@@ -6,4 +6,5 @@ export class User {
   user_level:any="";
   voucher_accumulation:any="";
   voucher_user_score:any="";
+  birthday:any="";
 }

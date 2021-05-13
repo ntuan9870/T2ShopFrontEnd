@@ -17,6 +17,10 @@ export class VoucherService {
     return this.http.post(this.baseUrl+'show', null);
   }
 
+  public showBirthDayUser(){
+    return this.http.post(this.baseUrl+'showBirthDayUser', null);
+  }
+
   public editVoucher(fd){
     return this.http.post(this.baseUrl+'edit', fd);
   }

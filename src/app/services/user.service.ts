@@ -21,7 +21,9 @@ export class UserService {
   public postEdit(fd){
     return this.http.post(this.baseUrl+'postEdit',fd);
   }
-
+  public Edit(fd){
+    return this.http.post(this.baseUrl+'edit',fd);
+  }
   removeUser(user_id){
     return this.http.post(this.baseUrl+'removeUser?user_id='+user_id,null);
   }

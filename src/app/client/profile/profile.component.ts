@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   public oldUser:User;
   public id = '';
   public checkerrorp = false;
+  public birthday = '';
 
   constructor(private authService:AuthService, private userService:UserService,private location:Location) { }
 
@@ -36,6 +37,7 @@ export class ProfileComponent implements OnInit {
         this.user_name = this.oldUser.user_name;
         this.user_phone = this.oldUser.user_phone;
         this.user_email = this.oldUser.user_email;
+        this.birthday=this.oldUser.birthday;
       },
       error=>{
         showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
@@ -46,7 +48,8 @@ export class ProfileComponent implements OnInit {
   postEditUser(){
     if(this.oldUser.user_name == this.user_name
       &&this.oldUser.user_email == this.user_email
-      &&this.oldUser.user_phone == this.user_phone){
+      &&this.oldUser.user_phone == this.user_phone
+      &&this.oldUser.birthday == this.birthday){
         this.location.back();
         showSwal('auto-close','Bạn không thay đổi gì cả?');
     }else{
@@ -55,7 +58,8 @@ export class ProfileComponent implements OnInit {
       fd.append('user_name',this.user_name);
       fd.append('user_email',this.user_email);
       fd.append('user_phone',this.user_phone);
-      this.userService.postEdit(fd).subscribe(
+      fd.append('birthday',this.birthday);
+      this.userService.Edit(fd).subscribe(
         res=>{
           if(res['success']!=null){
             // this.location.back();
