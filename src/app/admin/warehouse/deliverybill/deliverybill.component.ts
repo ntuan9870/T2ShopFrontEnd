@@ -137,12 +137,12 @@ export class DeliverybillComponent implements OnInit {
       sum+=this.ctpx_lns[i].amount;
     }
     dbe.amount = sum;
-    dbe.price = this.price_product;
+    // dbe.price = this.price_product;
     dbe.ctpx_ln = this.ctpx_lns;
     this.dbes.push(dbe);
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      this.total_price+=this.dbes[i].price*dbe.amount;
+      // this.total_price+=this.dbes[i].price*dbe.amount;
     }
     this.ctpx_lns = [];
     this.pr_sl = new Product;
@@ -502,13 +502,13 @@ export class DeliverybillComponent implements OnInit {
       sum+=this.ctpx_lns[i].amount;
     }
     dbe.amount = sum;
-    dbe.price = this.price_product;
+    // dbe.price = this.price_product;
     dbe.ctpx_ln = this.ctpx_lns;
     this.dbes.push(dbe);
     $('#ctpx_ln_Modal').modal('hide');
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      this.total_price+=this.dbes[i].price;
+      // this.total_price+=this.dbes[i].price;
     }
     this.ctpx_lns = [];
     this.pr_sl = new Product;
@@ -526,7 +526,7 @@ export class DeliverybillComponent implements OnInit {
     } 
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      this.total_price+=this.dbes[i].price;
+      // this.total_price+=this.dbes[i].price;
     }
   }
   checkPrice(){
@@ -611,9 +611,9 @@ export class DeliverybillComponent implements OnInit {
   changePrice(product_id){
     for(var i = 0; i < this.dbes.length; i++){
       if(this.dbes[i].product_id==product_id){
-        if(this.dbes[i].price <= 0 && this.dbes[i].price!=null){
-          this.dbes[i].price = 1;
-        }
+        // if(this.dbes[i].price <= 0 && this.dbes[i].price!=null){
+        //   this.dbes[i].price = 1;
+        // }
       }
     }
     this.changeSumAmount();
@@ -621,16 +621,23 @@ export class DeliverybillComponent implements OnInit {
   cp(product_id){
     for(var i = 0; i < this.dbes.length; i++){
       if(this.dbes[i].product_id==product_id){
-        if(this.dbes[i].price==null){
-          this.dbes[i].price = 0;
-        }
+        // if(this.dbes[i].price==null){
+        //   this.dbes[i].price = 0;
+        // }
       }
     }
   }
   changeSumAmount(){
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      this.total_price += this.dbes[i].amount*this.dbes[i].price;
+      // this.total_price += this.dbes[i].amount*this.dbes[i].price;
     }
+  }
+  sWH(){
+    this.ip_s = '';
+    this.price_product = 0;
+    this.amount_product = 0;
+    this.show_option_product = false;
+    // search(event, );
   }
 }

@@ -13,7 +13,9 @@
                 <td>STT</td>
                 <td>Mã PX</td>
                 <td>Mã NV</td>
-                <td>Tổng tiền</td>
+                <!-- <td>Tổng tiền</td> -->
+                <td>Mã kho nhập</td>
+                <td>Mã kho CH</td>
                 <td>Ngày lập phiếu</td>
                 <td>Xem</td>
                 <!-- <td>Sửa</td> -->
@@ -22,7 +24,9 @@
                 <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
                 <td>{{b.be_id}}</td>
                 <td>{{b.user_id}}</td>
-                <td>{{b.sum_amount | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
+                <!-- <td>{{b.sum_amount | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td> -->
+                <td>{{b.wh_id}}</td>
+                <td>{{b.store_wh_id}}</td>
                 <td>{{b.created_at}}</td>
                 <td><button data-toggle="modal" data-target="#detailModal" (click)="getAllDBEByBEID(b.be_id)"><i class="fas fa-eye"></i></button></td>
                 <!-- <td><i class="fas fa-edit"></i></td> -->
@@ -45,10 +49,10 @@
                         <div id="list_product" class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9" style="padding: 0px;">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0px;">
                                 <form method="post" #addProduct="ngForm" >
-                                    <!-- <select class="form-control form-control-sm col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" [(ngModel)]="selectedWH"  name="selectedWH" required  style="margin-right:5px; display: inline-block; padding:0px; height: 2.3rem;">
+                                    <select class="form-control form-control-sm col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1" [(ngModel)]="selectedWH"  name="selectedWH" required  style="margin-right:5px; display: inline-block; padding:0px; height: 2.3rem;" (change)="sWH()">
                                         <option class="form-control" *ngFor="let w of warehouses" [ngValue]="w.warehouse_id" name="selectedWH">{{w.warehouse_name }}</option>
-                                    </select> -->
-                                    <div id="search_product" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" style="display: inline-block; vertical-align: top; padding:0px">
+                                    </select>
+                                    <div id="search_product" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5" style="display: inline-block; vertical-align: top; padding:0px">
                                         <input #txtKeyword2 name="ip_s" required [(ngModel)]="ip_s" type="search" (keyup)="search($event, txtKeyword2.value)" (keyup.arrowdown)="moveDown()" (keyup.arrowup)="moveUp()" class="form-control" id="search_input" placeholder="Tìm sản phẩm trong kho" autocomplete="off">
                                         <p *ngIf="same_product" style="color: red;">Bạn đã nhập sản phẩm này rồi!</p>
                                     </div>
@@ -80,16 +84,16 @@
                                         <th scope="col">STT</th>
                                         <th scope="col">Mã hàng</th>
                                         <th scope="col">Số lượng</th>
-                                        <th scope="col">Đơn giá</th>
+                                        <!-- <th scope="col">Đơn giá</th> -->
                                         <th scope="col">Xóa</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       <tr *ngFor="let d of dbes; let i =index">
                                         <th scope="row">{{i+1}}</th>
-                                        <td>{{d.product_id}}</td>
+                                        <td>{{d.product_img}}</td>
                                         <td>{{d.amount}}</td>
-                                        <td><input [(ngModel)]="dbes[i].price" name = "dbes[{{i}}].price" type="number" value="{{d.price}}" (keyup)="changePrice(d.product_id)" (change)="cp(d.product_id)"></td>
+                                        <!-- <td><input [(ngModel)]="dbes[i].price" name = "dbes[{{i}}].price" type="number" value="{{d.price}}" (keyup)="changePrice(d.product_id)" (change)="cp(d.product_id)"></td> -->
                                         <td><a (click)="removeDBEElement(i)" [routerLink]="['#']">Xóa</a></td>
                                       </tr>
                                     </tbody>
@@ -203,7 +207,7 @@
                                 <th scope="col">Mã PX</th>
                                 <th scope="col">Mã SP</th>
                                 <th scope="col">Số lượng</th>
-                                <th scope="col">Giá</th>
+                                <!-- <th scope="col">Giá</th> -->
                                 <th scope="col">Xem</th>
                               </tr>
                             </thead>
@@ -214,7 +218,7 @@
                                 <td>{{d.be_id}}</td>
                                 <td>{{d.product_id}}</td>
                                 <td>{{d.amount}}</td>
-                                <td>{{d.price}}</td>
+                                <!-- <td>{{d.price}}</td> -->
                                 <td><button data-toggle="modal" data-target="#see_ctpx_ln_Modal" (click)="getAllCTPXLN(d.dbe_id)"><i class="fas fa-eye"></i></button></td>
                               </tr>
                             </tbody>
