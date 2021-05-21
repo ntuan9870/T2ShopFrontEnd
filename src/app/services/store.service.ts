@@ -25,6 +25,10 @@ export class StoreService {
   public changeStatus(store_id){
     return this.http.post(this.base_url+'changeStatus?store_id='+store_id, null);
   }
+  
+  public getAdmin(){
+    return this.http.post(this.base_url+'getAdmin', null);
+  }
   public getStore(store_id){
     return this.http.post(this.base_url+'getStore?store_id='+store_id, null);
   }

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
       <h1 class="page-header col-md-12 col-lg-8 col-xl-8">Cửa hàng</h1>
-      <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../stores/add']"><button style="margin-right:0px; float:right;" class="btn-add-promotion btn btn-success"><i class="fas fa-plus"> Thêm Cửa hàng</i></button></a>
+      <a class="col-md-12 col-lg-4 col-xl-4" [routerLink]="['../../stores/add']" *ngIf="user_level==1"><button style="margin-right:0px; float:right;" class="btn-add-promotion btn btn-success"><i class="fas fa-plus"> Thêm Cửa hàng</i></button></a>
    </div><!--/.row-->
     <div class="row">
       <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -19,6 +19,7 @@
                 <th>Mã cửa hàng</th>
                 <th>Tên cửa hàng</th>
                 <th>Địa chỉ</th>
+                <th>Quản lý cửa hàng</th>
                 <th>Tình trạng</th>
                 <th>Kho</th>
                 <th>Lựa chọn</th>
@@ -30,13 +31,14 @@
                   <th scope="row" >{{s.store_id}}</th>
                   <th>{{s.store_name}}</th>
                   <th>{{s.store_address}}, {{s.store_ward}}, {{s.store_district}}</th>
-                  <th *ngIf="s.store_status==1"><a (click)="changeStatus(s.store_id)">Hoạt động</a></th>
-                  <th *ngIf="s.store_status==0"><a (click)="changeStatus(s.store_id)">Ngưng hoạt động</a></th>
+                  <th> {{s.admin_id}}</th>
+                  <th *ngIf="s.store_status==1"><a (click)="changeStatus(s.admin_id,s.store_id)">Hoạt động</a></th>
+                  <th *ngIf="s.store_status==0"><a (click)="changeStatus(s.admin_id,s.store_id)">Ngưng hoạt động</a></th>
                   <th>
                     <a [routerLink]="['whstore/'+s.store_id]">Xem DS kho</a>
                   </th>
                   <th>
-                    <a class="btn btn-warning" value="Sửa" [routerLink]="['edit/'+s.store_id]">Sửa</a>
+                    <a class="btn btn-warning" value="Sửa" *ngIf="user_level==1 ||s.admin_id==user_id " [routerLink]="['edit/'+s.store_id]">Sửa</a>
                   </th>
                 </tr>
             </tbody>

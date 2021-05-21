@@ -42,6 +42,13 @@
                   </div>
                 </div>
               </div>
+              <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="row">
+                  <select  class="form-control col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" name="admin_id"  [(ngModel)]="admin_id">
+                    <option *ngFor = "let ad of admin; let i = index" [value]="ad.user_id">{{ad.user_name}}</option>
+                  </select>
+                </div>
+              </div>
               <!-- <label>Sức chứa <i style="color: red;">(*)</i></label>
               <input type="number" name="wh_capacity" class="form-control" placeholder="Sức chứa của kho.." required [(ngModel)]="wh_capacity" #whcapacitycheck='ngModel' autocomplete="off" (keyup)="checkCapacity()" (change)="checkCapacity()"/> -->
               <!-- <div class="check-error" *ngIf="whcapacitycheck.invalid&&(whcapacitycheck.touched||whcapacitycheck.dirty)">

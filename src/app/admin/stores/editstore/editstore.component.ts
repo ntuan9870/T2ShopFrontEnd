@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { District } from 'src/app/models/district.model';
 import { Store } from 'src/app/models/store.model';
+import { User } from 'src/app/models/user.model';
 import { Ward } from 'src/app/models/ward.model';
 import { StoreService } from 'src/app/services/store.service';
 import  *  as  district  from  './district.json';
@@ -33,20 +34,50 @@ export class EditstoreComponent implements OnInit {
   public store_id = '';
   public store_status = true;
   public old_store:Store = new Store();
+  public admin:User= new User();
+  public admin_id;
+  public user_name = "";
+  public user_id = '';
+  public user_level;
   // public wh_capacity:number = 0;
 
   constructor(public location:Location, private storeService:StoreService, private activatedRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('user_name')==null&&sessionStorage.getItem('user_name')==null){
+      this.user_name="Admin";
+    }
+    if(localStorage.getItem('user_name')){
+      this.user_name=localStorage.getItem('user_name');
+      this.user_id=localStorage.getItem('user_id');
+      this.user_level=localStorage.getItem('user_level');
+    }
+    if(sessionStorage.getItem('user_name')){
+      this.user_name=sessionStorage.getItem('user_name');
+      this.user_id=sessionStorage.getItem('user_id');
+      this.user_level=sessionStorage.getItem('user_level');
+    }
+
     this.store_id = this.activatedRoute.snapshot.params['id'];
     this.getAllDistrict();
     this.getStore();
+    this.getadmin();
     // this.ws = new Array();
     // for(var i = 0; i < this.wards.length; i++){
     //   if(this.wards[i].QuanHuyenTitle=='Quận 1'){
     //     this.ws.push(this.wards[i]);
     //   }
     // }
+  }
+  getadmin(){
+    this.storeService.getAdmin().subscribe(
+      res=>{
+       this.admin=res['admin'];
+      //  this.admin_id=this.admin[0].user_id;
+      },error=>{
+        alert('Có lỗi truy xuất dữ liệu!');
+      }
+    );
   }
   getStore(){
     this.storeService.getStore(this.store_id).subscribe(
@@ -57,6 +88,7 @@ export class EditstoreComponent implements OnInit {
           this.store_address = res['store'].store_address;
           this.store_district = res['store'].store_district;
           this.store_ward = res['store'].store_ward;
+          this.admin_id=res['store'].admin_id;
           // this.wh_capacity = res['store'].wh_capacity;
           if(res['store'].store_status == '1'){
             this.store_status = true;
@@ -117,7 +149,8 @@ export class EditstoreComponent implements OnInit {
     if(this.old_store.store_name == this.store_name
       &&this.old_store.store_address == this.store_address
       &&this.old_store.store_ward == this.store_ward
-      &&this.old_store.store_district == this.store_district){
+      &&this.old_store.store_district == this.store_district
+      &&this.old_store.admin_id == this.admin_id){
         this.location.back();
         showSwal('auto-close', 'Bạn không thay đổi gì cả!');
     }else{
@@ -128,6 +161,7 @@ export class EditstoreComponent implements OnInit {
       fd.append('store_ward',this.store_ward);
       fd.append('store_district',this.store_district);
       fd.append('store_status',this.store_status.toString());
+      fd.append('admin_id',this.admin_id);
       this.storeService.editStore(fd).subscribe(
         res=>{
           if(res['message']=='success'){

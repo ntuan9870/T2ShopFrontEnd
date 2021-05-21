@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { District } from 'src/app/models/district.model';
+import { User } from 'src/app/models/user.model';
 import { Ward } from 'src/app/models/ward.model';
 import { StoreService } from 'src/app/services/store.service';
 import  *  as  district  from  './district.json';
@@ -28,6 +29,8 @@ export class AddstoreComponent implements OnInit {
   public checksames = '';
   public store_address='';
   public checksamea = '';
+  public admin_id;
+  public admin:User= new User();
   // public wh_capacity:number = 1;
 
   constructor(public location:Location, private storeService:StoreService) { }
@@ -40,6 +43,17 @@ export class AddstoreComponent implements OnInit {
         this.ws.push(this.wards[i]);
       }
     }
+    this.getadmin();
+  }
+  getadmin(){
+    this.storeService.getAdmin().subscribe(
+      res=>{
+       this.admin=res['admin'];
+       this.admin_id=this.admin[0].user_id;
+      },error=>{
+        alert('Có lỗi truy xuất dữ liệu!');
+      }
+    );
   }
 
   getAllDistrict(){
@@ -55,6 +69,7 @@ export class AddstoreComponent implements OnInit {
     fd.append('store_ward', this.store_ward);
     fd.append('store_district', this.store_district);
     fd.append('store_address', this.store_address);
+    fd.append('admin_id', this.admin_id);
     // fd.append('wh_capacity', this.wh_capacity.toString());
     this.storeService.addStore(fd).subscribe(
       res=>{

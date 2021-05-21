@@ -7,4 +7,5 @@ export class Store {
     store_status:any='';
     updated_at:any='';
     created_at:any='';
+    admin_id:any='';
 }

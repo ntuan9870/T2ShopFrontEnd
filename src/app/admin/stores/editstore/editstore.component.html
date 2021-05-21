@@ -46,6 +46,13 @@
               <input style="margin-left: 10px;" type="checkbox" name="store_status" [(ngModel)]="store_status" (change)="changeStatus()"/><br>
               <!-- <label>Sức chứa <i style="color: red;">(*)</i></label> -->
               <!-- <input disabled type="number" name="wh_capacity" class="form-control" placeholder="Sức chứa của kho.." required [(ngModel)]="wh_capacity" #whcapacitycheck='ngModel' autocomplete="off"/><br> -->
+              <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngIf="user_level==1">
+                <div class="row">
+                  <select  class="form-control col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" name="admin_id"  [(ngModel)]="admin_id">
+                    <option *ngFor = "let ad of admin; let i = index" [value]="ad.user_id">{{ad.user_name}}</option>
+                  </select>
+                </div>
+              </div>
             <input [disabled]="!addAdminForm.valid||checksames=='same'||checksamea=='same'" type="submit" name="submit" value="Sửa" class="btn btn-primary" (click)="editStore()"/>
             <a style="margin-left: 10px;" class="btn btn-warning" (click)='location.back()'>Quay về</a>
         </form>
