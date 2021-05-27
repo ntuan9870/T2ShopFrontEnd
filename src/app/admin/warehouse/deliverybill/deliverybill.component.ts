@@ -20,7 +20,7 @@ declare var $;
 })
 export class DeliverybillComponent implements OnInit {
   @ViewChild('txtKeyword2') txtKeyword:ElementRef;
-
+  @ViewChild('numberProductElement') numberProductElement:ElementRef; 
   amount:number = 0;
   config: any;
   labelnext = 'Sau';
@@ -77,9 +77,10 @@ export class DeliverybillComponent implements OnInit {
   public allStoreWHs = new BehaviorSubject<StoreWarehouse[]>(null);
   public storeWHs:StoreWarehouse[];
   public disabledSelectWarehouse=true;
-  public amount_product:number = 0;
+  public amount_product:number = 1;
   public allDBIByProductID = new BehaviorSubject<Detailballotimport[]>(null);
   public dbibyproductids:Detailballotimport[];
+  public current_WH = '';
   
   constructor( private warehouseservies:WarehouseService, private storeService:StoreService) { }
 
@@ -124,7 +125,7 @@ export class DeliverybillComponent implements OnInit {
         break;
       }
     }
-    console.log(this.ctpx_lns);
+    // console.log(this.ctpx_lns);
     for(var i = 0; i < this.dbes.length; i++){
       if(this.pr_sl.product_id == this.dbes[i].product_id){
         showSwal('auto-close','Sản phẩm đã tồn tại!');
@@ -139,6 +140,7 @@ export class DeliverybillComponent implements OnInit {
     dbe.amount = sum;
     // dbe.price = this.price_product;
     dbe.ctpx_ln = this.ctpx_lns;
+    dbe.product_img = this.pr_sl.product_img;
     this.dbes.push(dbe);
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
@@ -149,7 +151,7 @@ export class DeliverybillComponent implements OnInit {
     this.ae = "";
     this.ip_s = "";
     this.price_product = 0;
-    this.amount_product = 0;
+    this.amount_product = 1;
   }
   checkAmountProduct(){
     if(this.amount_product<1&&this.amount_product.toString()!=''){
@@ -365,11 +367,15 @@ export class DeliverybillComponent implements OnInit {
       this.show_option_product = false;
       this.ip_s = this.searched_products[this.selected_entries].product_name;
       this.pr_sl = this.searched_products[this.selected_entries];
+      this.txtKeyword.nativeElement.style.color='black';
+      this.numberProductElement.nativeElement.focus();
+      this.validateName();
       this.getAllBI();
       this.getAllDBIProductID();
       this.price_product = this.pr_sl.product_price;
       return;
     }
+    this.validateName();
     this.show_option_product = true;
     const fd = new FormData();
     fd.append('key',txtKeyword);
@@ -388,6 +394,7 @@ export class DeliverybillComponent implements OnInit {
       res=>{
         this.warehouses=res['warehouses'];
         this.selectedWH = this.warehouses[0].warehouse_id;
+        this.current_WH = this.selectedWH;
       },
       error=>{
         showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
@@ -395,6 +402,18 @@ export class DeliverybillComponent implements OnInit {
     );
   }
   validateName(){
+    if(this.searched_products!=null){
+      if(this.searched_products.length!=0){
+        this.pr_sl = this.searched_products[this.selected_entries];
+      }
+    }
+    console.log(this.pr_sl.product_name+"-"+this.ip_s.trim());
+    if(this.pr_sl.product_name != this.ip_s.trim()){
+      this.txtKeyword.nativeElement.style.color='red'; 
+      return false;
+    }
+    this.txtKeyword.nativeElement.style.color='black';
+    // this.error2 = false;
     this.same_product = false;
     for(var i = 0; i < this.product_selected.length; i++){
       if(this.pr_sl.product_id == this.product_selected[i].product.product_id){
@@ -559,6 +578,7 @@ export class DeliverybillComponent implements OnInit {
         if(res['message']=='success'){
           this.getBallotExport();
           $('#beModal').modal('hide');
+          this.removeAll();
           showSwal('auto-close','Thêm phiếu xuất thành công!');
         }
       },error=>{
@@ -608,6 +628,9 @@ export class DeliverybillComponent implements OnInit {
   changeAmountCTPXLNElement(){
     
   }
+  changeAmount(){
+    
+  }
   changePrice(product_id){
     for(var i = 0; i < this.dbes.length; i++){
       if(this.dbes[i].product_id==product_id){
@@ -633,11 +656,48 @@ export class DeliverybillComponent implements OnInit {
       // this.total_price += this.dbes[i].amount*this.dbes[i].price;
     }
   }
-  sWH(){
-    this.ip_s = '';
-    this.price_product = 0;
-    this.amount_product = 0;
-    this.show_option_product = false;
-    // search(event, );
+  sWH(previousState, state, statesEl){
+    if(this.dbes.length==0){
+      this.selectedWH = state;
+      this.ip_s = '';
+      this.price_product = 0;
+      this.amount_product = 1;
+      this.show_option_product = false;
+      this.current_WH = previousState;
+      return;
+    }
+    if (confirm('Nếu bạn đổi kho thì các sản phẩm hiện tại được sẽ bị xóa')) {
+      this.selectedWH = state;
+      this.ip_s = '';
+      this.price_product = 0;
+      this.amount_product = 1;
+      this.show_option_product = false;
+      this.removeAll();
+      this.current_WH = previousState;
+    } else {
+      var kk = 0;
+      for(var i = 0; i < this.warehouses.length; i++){
+        if(this.warehouses[i].warehouse_id==this.current_WH){
+          kk = i;
+        }
+      }
+      statesEl.selectedIndex = kk;
+    } 
+  }
+  checkAmount(k){
+    if(this.dbes[k].amount<1&&this.dbes[k].amount.toString()!=''){
+      this.dbes[k].amount = 1;
+    }
+    var tmp = 0;
+    for(var i = 0; i < this.dbibyproductids.length; i++){
+      tmp+=this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
+    }
+    if(this.dbes[k].amount>tmp){
+      this.dbes[k].amount=tmp;
+    }
+    console.log(this.dbes[k].amount+"-"+tmp);
+  }
+  removeAll(){
+    this.dbes = [];
   }
 }
