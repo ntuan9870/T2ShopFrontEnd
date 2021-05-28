@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Cart } from 'src/app/models/cart.model';
 import { Product } from 'src/app/models/product.model';
@@ -10,6 +11,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { PromotionService } from 'src/app/services/promotion.service';
 import { ShareService } from 'src/app/services/share.service';
 import { StoreService } from 'src/app/services/store.service';
+declare function showSwal(type,message):any;
 
 @Component({
   selector: 'app-cart',
@@ -38,7 +40,7 @@ export class CartComponent implements OnInit {
   public resMax:number[]=[];
 
   constructor(private productService:ProductService,private cartService:CartService,private shareService:ShareService, private promotionService:PromotionService
-    ,private storeService:StoreService) { }
+    ,private storeService:StoreService, private router:Router) { }
 
   ngOnInit(): void {
     if(localStorage.getItem('cart')){
@@ -115,6 +117,11 @@ export class CartComponent implements OnInit {
   }
   xacnhan(){
     // sessionStorage.setItem('promotion',JSON.stringify(this.promotion_infors));
+    if(this.condition==false){
+      showSwal('auto-close','Thiếu hàng');
+    }else{
+      this.router.navigate(['/cart/thanhtoan/null']);
+    }
   }
   tinhthanhtien(i,p){
     if(this.prod_num[i]<1){

@@ -46,7 +46,7 @@
         <a style="margin-left:30px; float:right; font-size:20px"  [routerLink]="['']">Mua tiếp</a>
         <a style="margin-left:30px; float:right; font-size:20px" [routerLink]="['#']" (click) = "xoagiohang()">Xóa giỏ hàng</a>
       </div>
-      <a [routerLink]="['/cart/thanhtoan/null']"><button [disabled]="!condition" *ngIf="cartProductList!=null" class="add-cart" (click)="xacnhan()"><i class="fas fa-cart-plus"></i>Xác nhận đặt hàng</button></a>
+      <a><button *ngIf="cartProductList!=null" class="add-cart" (click)="xacnhan()"><i class="fas fa-cart-plus"></i>Xác nhận đặt hàng</button></a>
     </div>
   </div>
 </div>
