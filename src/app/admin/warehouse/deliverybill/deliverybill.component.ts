@@ -138,13 +138,13 @@ export class DeliverybillComponent implements OnInit {
       sum+=this.ctpx_lns[i].amount;
     }
     dbe.amount = sum;
-    // dbe.price = this.price_product;
+    dbe.price = this.price_product;
     dbe.ctpx_ln = this.ctpx_lns;
     dbe.product_img = this.pr_sl.product_img;
     this.dbes.push(dbe);
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      // this.total_price+=this.dbes[i].price*dbe.amount;
+      this.total_price+=this.dbes[i].price*dbe.amount;
     }
     this.ctpx_lns = [];
     this.pr_sl = new Product;
@@ -521,13 +521,13 @@ export class DeliverybillComponent implements OnInit {
       sum+=this.ctpx_lns[i].amount;
     }
     dbe.amount = sum;
-    // dbe.price = this.price_product;
+    dbe.price = this.price_product;
     dbe.ctpx_ln = this.ctpx_lns;
     this.dbes.push(dbe);
     $('#ctpx_ln_Modal').modal('hide');
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      // this.total_price+=this.dbes[i].price;
+      this.total_price+=this.dbes[i].price;
     }
     this.ctpx_lns = [];
     this.pr_sl = new Product;

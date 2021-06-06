@@ -13,7 +13,7 @@
                 <td>STT</td>
                 <td>Mã PX</td>
                 <td>Mã NV</td>
-                <!-- <td>Tổng tiền</td> -->
+                <td>Tổng tiền</td>
                 <td>Mã kho nhập</td>
                 <td>Mã kho CH</td>
                 <td>Ngày lập phiếu</td>
@@ -24,7 +24,7 @@
                 <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
                 <td>{{b.be_id}}</td>
                 <td>{{b.user_id}}</td>
-                <!-- <td>{{b.sum_amount | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td> -->
+                <td>{{b.sum_amount | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
                 <td>{{b.wh_id}}</td>
                 <td>{{b.store_wh_id}}</td>
                 <td>{{b.created_at}}</td>
@@ -85,7 +85,7 @@
                                         <th scope="col">STT</th>
                                         <th scope="col">Sản phẩm</th>
                                         <th scope="col">Số lượng</th>
-                                        <!-- <th scope="col">Đơn giá</th> -->
+                                        <th scope="col">Đơn giá</th>
                                         <th scope="col">Xóa</th>
                                       </tr>
                                     </thead>
@@ -95,7 +95,7 @@
                                         <td width="13%"><img src={{d.product_img}} class="img-fluid img-thumbnail"></td>
                                         <!-- <td width="10%"><input [(ngModel)]="dbes[i].amount" name = "dbes[i].amount" type="number" value="{{d.amount}}" (keyup)="checkAmount(i)" (change)="checkAmount(i)"></td> -->
                                         <td width="40%">{{dbes[i].amount}}</td>
-                                        <!-- <td><input [(ngModel)]="dbes[i].price" name = "dbes[{{i}}].price" type="number" value="{{d.price}}" (keyup)="changePrice(d.product_id)" (change)="cp(d.product_id)"></td> -->
+                                        <td><input disabled [(ngModel)]="dbes[i].price" name = "dbes[{{i}}].price" type="number" value="{{d.price}}" (keyup)="changePrice(d.product_id)" (change)="cp(d.product_id)"></td>
                                         <td width="40%"><a (click)="removeDBEElement(i)" [routerLink]="['#']">Xóa</a></td>
                                       </tr>
                                     </tbody>
@@ -125,10 +125,10 @@
                                     <label>Ngày xuất<i style="color: red;">(*)</i></label>
                                     <input type="text" disabled class="form-control" name="ngaylapphieu" [(ngModel)]="ngaylapphieu" required>
                                 </div>
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <label>Tổng tiền<i style="color: red;">(*)</i></label>
                                     <input type="text" disabled class="form-control" value="{{total_price}}" name="total_price" [(ngModel)]="total_price" required>
-                                </div> -->
+                                </div>
                             </form>
                         </div>
                     </div>
