@@ -3,7 +3,7 @@ import { ChatBotMessage } from 'src/app/models/chat-bot-message.model';
 import { ChatbotService } from 'src/app/services/chatbot.service';
 import { VoucherService } from 'src/app/services/voucher.service';
 import { Voucher } from 'src/app/models/voucher.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject,Subscription  } from 'rxjs';
 import { PromotionService } from 'src/app/services/promotion.service';
 import { Product } from 'src/app/models/product.model';
 import { Promotion } from 'src/app/models/promotion.model';
@@ -35,8 +35,12 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
   public allproducts = new BehaviorSubject<Product[]>(null);
   allPromotion = new BehaviorSubject<Promotion[]>(null);
   promotions:Promotion[];
+  message: string;
+  subscription: Subscription;
 
-  constructor(private router:Router,private productService:ProductService,private chatbotservice:ChatbotService,private voucherservice:VoucherService,private promorionservice:PromotionService) { }
+  constructor(private router:Router,private productService:ProductService,private chatbotservice:ChatbotService,private voucherservice:VoucherService,private promorionservice:PromotionService) {
+    this.getHistoryPrice();
+   }
 
   ngOnInit(): void {
     var a = new ChatBotMessage();
@@ -60,6 +64,39 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
       }
     }
     this.showVoucher();
+  }
+  getHistoryPrice(){
+    setTimeout(()=>{  
+      this.productService.getHistoryPriceNew().subscribe(
+        res=>{
+         this.products=res['products'];
+         var a = new ChatBotMessage();
+         a.user_id = '1';
+         a.message_id='1';
+         a.message_content = 'Sản phẩm mới được thay đổi giá';
+         a.customer_chatbot = 'chatbot';
+         this.chatbotmessage = '';
+         this.arrMessages.push(a);
+         this.scrollToBottom();
+         for(var i=0; i<=this.products.length;i++){
+           var m=new Array();
+           m.push('Tên sản phẩm:',this.products[i].product_name,'Giá sản phẩm:',this.products[i].product_price);
+           var a = new ChatBotMessage();
+           a.user_id = '1';
+           a.message_id='1';
+           a.message_content = m;
+           a.customer_chatbot = 'chatbot';
+           this.chatbotmessage = '';
+           this.arrMessages.push(a);
+           this.scrollToBottom();
+         }
+        },
+        error=>{
+          alert('Có lỗi trong quá trình truy xuất dữ liệu!');
+        }
+      );
+      this.getHistoryPrice();         
+    }, 30000);
   }
   ngAfterViewChecked() {        
     this.scrollToBottom();        

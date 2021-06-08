@@ -6,6 +6,7 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
+import { BehaviorSubject,Subscription  } from 'rxjs';
 declare var $;
 declare function showSwal(type,message):any;
 
@@ -21,6 +22,7 @@ export class EditComponent implements OnInit {
   public SelectedImage:File=null;
   public id = '';
   public product:Product;
+  public oldPrice;
   public oldImage='';
   public loading = false;
   public selectedOption;
@@ -39,6 +41,8 @@ export class EditComponent implements OnInit {
     // product_amount:1,
     product_cate:''
   }
+  message:string;
+  subscription: Subscription;
 
   constructor(
     private productService:ProductService,
@@ -52,6 +56,7 @@ export class EditComponent implements OnInit {
     this.getEditProduct();
     this.form.product_id = this.id;
     this.getPromotion();
+    this.subscription =this.productService.currentMessage.subscribe(message => this.message = message);
   }
 
   onSelect(event) {
@@ -66,6 +71,10 @@ export class EditComponent implements OnInit {
     fd.append('product_id',this.form.product_id);
     fd.append('product_name',this.form.product_name);
     fd.append('product_price',this.form.product_price.toString());
+    if(this.oldPrice==this.form.product_price){
+      this.productService.changeMessage('Hello from Sibling');
+      console.log(this.message);
+    }
     if(this.SelectedImage!=null){
       fd.append('product_img',this.SelectedImage);
     }
@@ -99,6 +108,7 @@ export class EditComponent implements OnInit {
         this.product = r;
         this.form.product_name=this.product.product_name;
         this.form.product_price=this.product.product_price;
+        this.oldPrice=this.product.product_price;
         this.oldImage=this.product.product_img;
         this.form.product_accessories=this.product.product_accessories;
         this.form.product_warranty=this.product.product_warranty;

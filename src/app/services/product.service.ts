@@ -8,10 +8,21 @@ import { Product } from '../models/product.model';
 })
 export class ProductService {
 
+  private messageSource = new BehaviorSubject('Default message');
+  currentMessage = this.messageSource.asObservable();
+  
+  
+
   private baseUrl = "http://localhost:8000/api/";
   constructor(private http:HttpClient) {
   }
 
+  changeMessage(message: string) {
+    this.messageSource.next(message);
+  }
+  public getHistoryPriceNew(){
+    return this.http.post(this.baseUrl+"getHistoryPriceNew",null);
+  }
 
   public add(form){
     return this.http.post(this.baseUrl+"add",form);

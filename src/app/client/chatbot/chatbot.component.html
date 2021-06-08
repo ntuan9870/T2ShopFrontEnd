@@ -1,5 +1,6 @@
 <a data-toggle="modal" data-target="#addModal" data-whatever="@mdo" class="float" >
     <div id="new">
+        <p *ngIf="this.products&&this.products!=null">{{this.products.length}}</p>
         <p *ngIf="this.vouchers&&this.vouchers!=null">{{this.vouchers.length}}</p>
         <input type="text" class="form-control"  *ngIf="this.vouchers&&this.vouchers!=null" placeholder="Bạn có tin nhắn mới" (click)="showchatbox()">
     </div>
