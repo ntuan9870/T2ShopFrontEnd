@@ -31,7 +31,7 @@ export class SendemailComponent implements OnInit {
         }
       },
       error=>{
-        showSwal('auto-close','Có lỗi trong quá trình truy xuất dữ liệu!');
+        // showSwal('auto-close','Có lỗi trong quá trình truy xuất dữ liệu!');
       }
     );
   }
