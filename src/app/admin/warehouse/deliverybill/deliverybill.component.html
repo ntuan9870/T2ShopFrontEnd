@@ -208,6 +208,8 @@
                                 <th scope="col">Mã CTPX</th>
                                 <th scope="col">Mã PX</th>
                                 <th scope="col">Mã SP</th>
+                                <th scope="col">HA</th>
+                                <th scope="col">Tên SP</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Xem</th>
                               </tr>
@@ -218,6 +220,8 @@
                                 <td>{{d.dbe_id}}</td>
                                 <td>{{d.be_id}}</td>
                                 <td>{{d.product_id}}</td>
+                                <td width="5%"><img src={{d.product_img}} class="img-fluid img-thumbnail"></td>
+                                <td>{{d.product_name}}</td>
                                 <td>{{d.amount}}</td>
                                 <td><button data-toggle="modal" data-target="#see_ctpx_ln_Modal" (click)="getAllCTPXLN(d.dbe_id)"><i class="fas fa-eye"></i></button></td>
                               </tr>

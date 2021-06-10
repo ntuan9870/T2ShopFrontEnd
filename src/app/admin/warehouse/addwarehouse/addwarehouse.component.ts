@@ -63,6 +63,8 @@ export class AddwarehouseComponent implements OnInit {
   public suppliers:Supplier[] = [];
   public selectedSP;
   public error2 = false;
+  public allProducts2 = new BehaviorSubject<Product[]>(null);
+  public allPWH:Product[] = [];
 
   constructor( private warehouseservies:WarehouseService,private location:Location,private http:HttpClient, private productService:ProductService, private changeDetection: ChangeDetectorRef) { }
 
@@ -71,6 +73,7 @@ export class AddwarehouseComponent implements OnInit {
     this.getwarehouse();
     this.getAllBI();
     this.getAllSupplier();
+    this.getAllProduct();
     this.config = {
       itemsPerPage: 10,
       currentPage: 1,
@@ -85,6 +88,7 @@ export class AddwarehouseComponent implements OnInit {
       this.user_name =  sessionStorage.getItem('user_name');
       this.user_id =  sessionStorage.getItem('user_id');
     }
+    this.getAllProduct();
   }
   timkiem(txtKeyword){
     this.warehouseservies.search(txtKeyword).subscribe(
@@ -297,15 +301,15 @@ export class AddwarehouseComponent implements OnInit {
     }
     this.validateName();
     this.show_option_product = true;
-    const fd = new FormData();
-    fd.append('key',txtKeyword);
-    this.productService.getFromDB(fd).subscribe(res=>{
-        var r:any = res;
-        this.allProducts.next(r.products);
-    });
-    this.allProducts.subscribe(res=>{
-      this.searched_products=res;
-    });
+    // const fd = new FormData();
+    // fd.append('key',txtKeyword);
+    // 
+    this.searched_products = [];
+    for(var i = 0; i < this.allPWH.length; i++){
+      if(this.allPWH[i].product_name.includes(txtKeyword)){
+        this.searched_products.push(this.allPWH[i]);
+      }
+    }
     this.selected_entries=0;
   }
 
@@ -511,5 +515,27 @@ export class AddwarehouseComponent implements OnInit {
   }
   mouseChooseProduct(){
     this.ip_s = this.searched_products[this.selected_entries].product_name;
+  }
+  // getAllProductInWareHouse(wh_id){
+  //   this.warehouseservies.getAllP(wh_id).subscribe(res=>{
+  //       var r:any = res;
+  //       this.allProducts2.next(r.hts);
+  //       if(this.allProducts2!=null){
+  //         this.allProducts2.subscribe(res=>{
+  //           this.allPWH=res;
+  //         });
+  //       }
+  //   });
+  // }
+  getAllProduct(){
+    this.productService.getAllProduct().subscribe(res=>{
+      var r:any = res;
+      this.allProducts2.next(r.products);
+      if(this.allProducts2!=null){
+        this.allProducts2.subscribe(res=>{
+          this.allPWH=res;
+        });
+      }
+    });
   }
 }

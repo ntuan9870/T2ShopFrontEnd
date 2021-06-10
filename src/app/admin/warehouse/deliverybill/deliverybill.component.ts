@@ -45,7 +45,7 @@ export class DeliverybillComponent implements OnInit {
   public user_id = "";
   public ip_s = "";
   public selected_entries = 0;
-  public allProducts = new BehaviorSubject<Product[]>(null);
+  public allProducts2 = new BehaviorSubject<Product[]>(null);
   public searched_products : Product[];
   public show_option_product = false;
   public warehouses = [];
@@ -81,6 +81,7 @@ export class DeliverybillComponent implements OnInit {
   public allDBIByProductID = new BehaviorSubject<Detailballotimport[]>(null);
   public dbibyproductids:Detailballotimport[];
   public current_WH = '';
+  public allPWH:Product[] = [];
   
   constructor( private warehouseservies:WarehouseService, private storeService:StoreService) { }
 
@@ -377,16 +378,22 @@ export class DeliverybillComponent implements OnInit {
     }
     this.validateName();
     this.show_option_product = true;
-    const fd = new FormData();
-    fd.append('key',txtKeyword);
-    fd.append('warehouse_id',this.selectedWH.toString());
-    this.warehouseservies.search2(fd).subscribe(res=>{
-        var r:any = res;
-        this.allProducts.next(r.products);
-    });
-    this.allProducts.subscribe(res=>{
-      this.searched_products=res;
-    });
+    // const fd = new FormData();
+    // fd.append('key',txtKeyword);
+    // fd.append('warehouse_id',this.selectedWH.toString());
+    // this.warehouseservies.search2(fd).subscribe(res=>{
+    //     var r:any = res;s
+    //     this.allProducts.next(r.products);
+    // });
+    // this.allProducts.subscribe(res=>{
+    //   this.searched_products=res;
+    // });
+    this.searched_products = [];
+    for(var i = 0; i < this.allPWH.length; i++){
+      if(this.allPWH[i].product_name.includes(txtKeyword)){
+        this.searched_products.push(this.allPWH[i]);
+      }
+    }
     this.selected_entries=0;
   }
   getwarehouse(){
@@ -395,11 +402,23 @@ export class DeliverybillComponent implements OnInit {
         this.warehouses=res['warehouses'];
         this.selectedWH = this.warehouses[0].warehouse_id;
         this.current_WH = this.selectedWH;
+        this.getAllProductInWareHouse('K01');
       },
       error=>{
         showSwal('auto-close','Có lỗi trong quá trình xử lý thông tin!');
       }
     );
+  }
+  getAllProductInWareHouse(wh_id){
+    this.warehouseservies.getAllP(wh_id).subscribe(res=>{
+        var r:any = res;
+        this.allProducts2.next(r.hts);
+        if(this.allProducts2!=null){
+          this.allProducts2.subscribe(res=>{
+            this.allPWH=res;
+          });
+        }
+    });
   }
   validateName(){
     if(this.searched_products!=null){
@@ -666,7 +685,7 @@ export class DeliverybillComponent implements OnInit {
       this.current_WH = previousState;
       return;
     }
-    if (confirm('Nếu bạn đổi kho thì các sản phẩm hiện tại được sẽ bị xóa')) {
+    if (confirm('Bạn chỉ có thể lập phiếu xuất hàng trên cùng một kho!')) {
       this.selectedWH = state;
       this.ip_s = '';
       this.price_product = 0;
@@ -674,6 +693,7 @@ export class DeliverybillComponent implements OnInit {
       this.show_option_product = false;
       this.removeAll();
       this.current_WH = previousState;
+      this.getAllProductInWareHouse(this.current_WH);
     } else {
       var kk = 0;
       for(var i = 0; i < this.warehouses.length; i++){

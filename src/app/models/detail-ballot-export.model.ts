@@ -5,6 +5,7 @@ export class DetailBallotExport {
     public be_id:any="";
     public product_id:any="";
     public product_img:any="";
+    public product_name:any="";
     public amount:any="";
     public price:any="";
     public ctpx_ln:CtpxLn[] = [];

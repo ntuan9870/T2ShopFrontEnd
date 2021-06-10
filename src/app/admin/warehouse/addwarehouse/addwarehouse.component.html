@@ -190,6 +190,8 @@
                                 <th scope="col">Mã CTPN</th>
                                 <th scope="col">Mã PN</th>
                                 <th scope="col">Mã SP</th>
+                                <th scope="col">HA</th>
+                                <th scope="col">Tên SP</th>
                                 <th scope="col">SL</th>
                                 <td scope="col">Đã xuất</td>
                                 <th scope="col">Giá</th>
@@ -201,6 +203,8 @@
                                 <td>{{d.dbi_id}}</td>
                                 <td>{{d.bi_id}}</td>
                                 <td>{{d.product_id}}</td>
+                                <td width="5%"><img src={{d.product_img}} class="img-fluid img-thumbnail"></td>
+                                <td>{{d.product_name}}</td>
                                 <td>{{d.amount}}</td>
                                 <td>{{d.exported}}</td>
                                 <td>{{d.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>

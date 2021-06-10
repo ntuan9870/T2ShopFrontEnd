@@ -99,7 +99,7 @@
                             <tr id="tbl-first-row">
                                 <td>STT</td>
                                 <td>Mã hàng</td>
-                                <td>Thành tiền</td>
+                                <td>Hình ảnh</td>
                                 <td>Tên hàng</td>
                                 <td>Số lượng</td>
                                 <td>Đơn giá</td>
@@ -108,7 +108,7 @@
                             </tr>
                             <tr *ngFor="let h of ps|paginate: config; trackBy: trackByFn;let i = index">
                                 <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
-                                <td>{{h.product_id}}</td>
+                                <td width="6%">{{h.product_id}}</td>
                                 <td width="6%"><img src={{h.product_img}} class="img-fluid img-thumbnail"></td>
                                 <td>{{h.product_name}}</td>
                                 <td>{{h.amount}}</td>

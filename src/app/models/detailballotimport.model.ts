@@ -5,6 +5,8 @@ export class Detailballotimport {
     public amount:any="";
     public price:any="";
     public product_id:any="";
+    public product_img:any="";
+    public product_name:any="";
     public bi_id:any="";
     public exported:any="";
     public created_at:any="";

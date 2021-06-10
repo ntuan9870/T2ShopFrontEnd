@@ -105,4 +105,7 @@ export class ProductService {
   public getHistoryPrice(product_id){
     return this.http.post(this.baseUrl+"getHistoryPrice?product_id="+product_id,null);
   }
+  public getAllProduct(){
+    return this.http.post(this.baseUrl+"getAllProduct",null);
+  }
 }
