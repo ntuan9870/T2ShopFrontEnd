@@ -71,10 +71,10 @@ export class EditComponent implements OnInit {
     fd.append('product_id',this.form.product_id);
     fd.append('product_name',this.form.product_name);
     fd.append('product_price',this.form.product_price.toString());
-    if(this.oldPrice==this.form.product_price){
-      this.productService.changeMessage('Hello from Sibling');
-      console.log(this.message);
-    }
+    // if(this.oldPrice==this.form.product_price){
+    //   this.productService.changeMessage('Hello from Sibling');
+    //   console.log(this.message);
+    // }
     if(this.SelectedImage!=null){
       fd.append('product_img',this.SelectedImage);
     }
@@ -88,6 +88,7 @@ export class EditComponent implements OnInit {
     // fd.append('product_amount',this.form.product_amount.toString());
     fd.append('product_featured',this.form.product_featured);
     fd.append('product_cate',this.form.product_cate);
+    fd.append('oldPrice',this.oldPrice);
     this.productService.update(fd).subscribe(
       res=>{
         this.loading = false;
