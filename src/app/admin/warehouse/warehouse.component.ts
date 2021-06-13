@@ -213,6 +213,16 @@ export class WarehouseComponent implements OnInit {
     });
     this.allDWHP.subscribe(res=>{
       this.DWHPs=res;
+      if(res!=null){
+        var tmp:DetailWHProduct[] = this.DWHPs;
+        this.DWHPs=[];
+        for(var i = 0; i < tmp.length; i++){
+          var h:DetailWHProduct = new DetailWHProduct;
+          h = tmp[i];
+          h.created_at = h.created_at.substring(0,10);
+          this.DWHPs.push(h);
+        }
+      }
     });
   }
 

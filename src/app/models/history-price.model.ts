@@ -3,5 +3,5 @@ export class HistoryPrice {
     product_id:any='';
     product_price:any='';
     created_at:any='';
-    updated_at:any='';
+    updated_at:string='';
 }

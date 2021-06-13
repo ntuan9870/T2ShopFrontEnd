@@ -26,6 +26,10 @@ export class ProductsComponent implements OnInit {
   promotions : Promotion[];
   allHPs = new BehaviorSubject<HistoryPrice[]>(null);
   hps : HistoryPrice[];
+  config: any;
+  amount:number = 0;
+  labelnext = 'Sau';
+  labelprevious = 'Trước';
   constructor(
     private productService:ProductService,
     private aR:ActivatedRoute
@@ -34,6 +38,15 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.aR.snapshot.params['id'];
     this.show();
+    this.config = {
+      itemsPerPage: 10,
+      currentPage: 1,
+      totalItems: this.amount 
+    };
+  }
+
+  pageChanged(event){
+    this.config.currentPage = event;
   }
 
   show(){
@@ -88,7 +101,16 @@ export class ProductsComponent implements OnInit {
     );
     this.allHPs.subscribe(res=>{
       this.hps=res;
-      // if(res!=null){
+      if(res!=null){
+        var tmp:HistoryPrice[] = this.hps;
+        this.hps=[];
+        for(var i = 0; i < tmp.length; i++){
+          var h:HistoryPrice = new HistoryPrice;
+          h = tmp[i];
+          h.updated_at = h.updated_at.substring(0,10);
+          this.hps.push(h);
+        }
+      }
       //   var tmp:HistoryPrice[] = this.hps;
       //   this.hps=[];
       //   for(var i = 0; i < tmp.length; i++){

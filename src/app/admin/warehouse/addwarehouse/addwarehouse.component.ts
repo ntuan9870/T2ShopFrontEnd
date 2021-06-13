@@ -482,6 +482,16 @@ export class AddwarehouseComponent implements OnInit {
     });
     this.allBI.subscribe(res=>{
       this.ballotImports=res;
+      if(res!=null){
+        var tmp:Ballotimport[] = this.ballotImports;
+        this.ballotImports=[];
+        for(var i = 0; i < tmp.length; i++){
+          var h:Ballotimport = new Ballotimport;
+          h = tmp[i];
+          h.created_at = h.created_at.substring(0,10);
+          this.ballotImports.push(h);
+        }
+      }
     });
   }
   getAllBDIByBIID(bi_id_dt){

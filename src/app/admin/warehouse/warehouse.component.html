@@ -22,7 +22,7 @@
                             <td>Địa chỉ</td>
                             <td>Xem</td>
                             <td>Sửa</td>
-                            <td>Xóa</td>
+                            <!-- <td>Xóa</td> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                             <td>{{w.warehouse_address}}</td>
                             <td><button class="btn-add-admin btn btn-success" (click)="getAllP(w.warehouse_id)" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fas fa-eye">Xem</i></button></td>
                             <td><button class="btn-add-admin btn btn-success" (click)="getEditWH(w.warehouse_id)" data-toggle="modal" data-target=".bd-example-modal-sl"><i class="fas fa-edit">Sửa</i></button></td>
-                            <td><i style="cursor: pointer;" class="fas fa-trash-alt" (click)="remove(w.warehouse_id)"></i></td>
+                            <!-- <td><i style="cursor: pointer;" class="fas fa-trash-alt" (click)="remove(w.warehouse_id)"></i></td> -->
                         </tr>
                     </tbody>
                 </table>

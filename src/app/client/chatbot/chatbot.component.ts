@@ -38,6 +38,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
   message: string;
   subscription: Subscription;
   public favoriteProduct:Product[];
+  private display_chatbox = false;
 
   constructor(private productservice:ProductService,private router:Router,private productService:ProductService,private chatbotservice:ChatbotService,private voucherservice:VoucherService,private promorionservice:PromotionService) {
    }
@@ -294,6 +295,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     }else{
       this.chatbox.nativeElement.style.display='none';
     }
+    // this.display_chatbox != this.display_chatbox;
   }
   showchatbox2(){
      this.chatbox.nativeElement.style.display='none';

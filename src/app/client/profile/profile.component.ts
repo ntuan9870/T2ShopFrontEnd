@@ -35,7 +35,12 @@ export class ProfileComponent implements OnInit {
         var r : any = res;
         this.oldUser = r;
         this.user_name = this.oldUser.user_name;
-        this.user_phone = this.oldUser.user_phone;
+        if(this.oldUser.user_phone!='null'){
+          this.user_phone = this.oldUser.user_phone;
+        }else{
+          this.oldUser.user_phone='';
+          this.user_phone = '';
+        }
         this.user_email = this.oldUser.user_email;
         this.birthday=this.oldUser.birthday;
       },
@@ -67,12 +72,18 @@ export class ProfileComponent implements OnInit {
               sessionStorage.setItem('user_name',this.user_name);
               sessionStorage.setItem('user_email',this.user_email);
               sessionStorage.setItem('user_phone',this.user_phone);
+              // sessionStorage.setItem('birthday',this.birthday);
             }
             if(localStorage.getItem('user_id')){
               localStorage.setItem('user_name',this.user_name);
               localStorage.setItem('user_email',this.user_email);
               localStorage.setItem('user_phone',this.user_phone);
+              // localStorage.setItem('birthday',this.birthday);
             }
+            this.oldUser.user_name = this.user_name;
+            this.oldUser.user_email = this.user_email;
+            this.oldUser.user_phone = this.user_phone;
+            this.oldUser.birthday = this.birthday;
             showSwal('auto-close',res['success']);
           }
           if(res['error']!=null){

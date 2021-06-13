@@ -129,6 +129,7 @@ export class TopbarComponent implements OnInit {
       showSwal('auto-close','Giỏ hàng rỗng!');
     }
     for(var i = 0; i < this.vouchers.length; i++){
+      // console.log(this.vouchers[i].voucher_id+"-"+voucher_id);
       if(this.vouchers[i].voucher_id==voucher_id){
         if(localStorage.getItem('total')<this.vouchers[i].voucher_price){
           alert('Số tiền không áp dụng được cho voucher này, vui lòng mua thêm hàng nếu bạn muốn áp dụng voucher này (số tiền tối thiểu áp dụng là '+this.vouchers[i].voucher_price+' đồng)');

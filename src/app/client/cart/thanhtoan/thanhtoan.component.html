@@ -79,7 +79,7 @@
       </div>
       <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <label for="usr">Sử dụng Voucher:</label>
-        <select name="select_voucher" id="select_voucher" class="form-control" [(ngModel)]="form.select_voucher" (change)="getVoucher()">
+        <select #s name="select_voucher" id="select_voucher" class="form-control" [(ngModel)]="form.select_voucher" (ngModelChange)="getVoucher()">
           <option value="null">Không sử dụng Voucher</option>
           <option *ngFor="let v of vouchers" value="{{v.voucher_id}}">{{v.voucher_name}}</option>
         </select>

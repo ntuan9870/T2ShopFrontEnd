@@ -54,12 +54,12 @@ export class ThanhtoanComponent implements OnInit {
   ngOnInit(): void {
     this.checkCheckOutByVNPAY();
     this.form.store_id = localStorage.getItem('store_id');
-    this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
+    // this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
+    // this.getVoucher();
     this.activatedRoute.params.subscribe(routeParams => {
       this.form.select_voucher = this.activatedRoute.snapshot.params['id'];
-      this.getVoucher();
     });
-
+    // this.getVoucher();
     if(sessionStorage.getItem('user_phone')){
       if(sessionStorage.getItem('user_phone')!='null'){
         this.showformphone = false;
@@ -76,18 +76,18 @@ export class ThanhtoanComponent implements OnInit {
     }
     if(sessionStorage.getItem('user_id')){
       this.form.user_id = sessionStorage.getItem('user_id');
+      this.form.user_name_receive=sessionStorage.getItem('user_name');
       if(sessionStorage.getItem('user_phone')!='null'){
-        this.form.user_name_receive=sessionStorage.getItem('user_name');
         this.form.user_phone = sessionStorage.getItem('user_phone');
       }
     }
     if(localStorage.getItem('user_id')){
       this.form.user_id = localStorage.getItem('user_id');
       this.form.user_name_receive=localStorage.getItem('user_name');
-      this.form.user_phone = localStorage.getItem('user_phone');
-      // if(localStorage.getItem('user_phone')!='null'){
-      //   this.userphone = localStorage.getItem('user_phone');
-      // }
+      // this.form.user_phone = localStorage.getItem('user_phone');
+      if(localStorage.getItem('user_phone')!='null'){
+        this.form.user_phone = localStorage.getItem('user_phone');
+      }
     }
     this.getAllDistrict();
     this.ws = new Array();
@@ -100,24 +100,29 @@ export class ThanhtoanComponent implements OnInit {
       res=>{
         var r:any = res;
         this.allVouchers.next(r.vouchers);
-      }
-    );
-    this.allVouchers.subscribe(
-      res=>{
-        if(res!=null){
-          this.vouchers = res;
-          this.getVoucher();
+        if(this.allVouchers!=null){
+          this.allVouchers.subscribe(
+            res=>{
+              if(res!=null){
+                this.vouchers = res;
+                this.getVoucher();
+                return;
+              }
+            }
+          );
         }
       }
     );
   }
   getVoucher(){
-    for(var i = 0; i < this.vouchers.length; i++){
-      if(this.vouchers[i].voucher_id==this.form.select_voucher){
-        if(localStorage.getItem('total')<this.vouchers[i].voucher_price){
-          this.form.select_voucher = null;
-          alert('Số tiền không áp dụng được cho voucher này, vui lòng mua thêm hàng nếu bạn muốn áp dụng voucher này (số tiền tối thiểu áp dụng là '+this.vouchers[i].voucher_price+' đồng)');
-          return;
+    if(localStorage.getItem('total')!=null){
+      for(var i = 0; i < this.vouchers.length; i++){
+        if(this.vouchers[i].voucher_id==this.form.select_voucher){
+          if(localStorage.getItem('total')<this.vouchers[i].voucher_price){
+            this.form.select_voucher = null;
+            alert('Số tiền không áp dụng được cho voucher này, vui lòng mua thêm hàng nếu bạn muốn áp dụng voucher này (số tiền tối thiểu áp dụng là '+this.vouchers[i].voucher_price+' đồng)');
+            return;
+          }
         }
       }
     }

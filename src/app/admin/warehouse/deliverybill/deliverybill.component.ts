@@ -616,6 +616,16 @@ export class DeliverybillComponent implements OnInit {
     );
     this.allBES.subscribe(res=>{
       this.bes=res;
+      if(res!=null){
+        var tmp:Ballotexport[] = this.bes;
+        this.bes=[];
+        for(var i = 0; i < tmp.length; i++){
+          var h:Ballotexport = new Ballotexport;
+          h = tmp[i];
+          h.created_at = h.created_at.substring(0,10);
+          this.bes.push(h);
+        }
+      }
     });
   }
   getAllDBEByBEID(id){

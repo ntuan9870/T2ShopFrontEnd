@@ -32,15 +32,15 @@
                 <input type="text" name="user_phone" class="form-control" placeholder="Số điện thoại.." [(ngModel)]="user_phone" #userphonecheck='ngModel' (keyup)="checkphone()"/>
                 <span class="check-error" *ngIf="user_phone!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span>
             </div>
-            <div class="form-group" *ngIf="birthday !=null">
+            <!-- <div class="form-group" *ngIf="birthday !=null">
               <label>Ngày sinh nhật </label>
                 <input type="date" name="birthday" class="form-control" disabled [(ngModel)]="birthday" #userphonecheck='ngModel' (keyup)="checkphone()"/>
-            </div>
-            <div class="form-group" *ngIf="birthday == null">
+            </div> -->
+            <div class="form-group">
               <label>Ngày sinh nhật </label>
-              <label style="color: red; margin-left: 10px;">(Bạn nên cập nhật ngày sinh nhật để có thể hưởng ưu đãi ) </label>
+              <label style="color: red; margin-left: 10px;" *ngIf="birthday == null">(Bạn nên cập nhật ngày sinh nhật để có thể hưởng ưu đãi, 1 năm bạn sẽ nhận được quà sinh nhật 1 lần) </label>
                 <input type="date" name="birthday" class="form-control"  [(ngModel)]="birthday" #userphonecheck='ngModel' (keyup)="checkphone()"/>
-                <span class="check-error" *ngIf="birthday!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span>
+                <!-- <span class="check-error" *ngIf="birthday!=''&&checkerrorp==true">Số điện thoại phải có từ 10->12 số!</span> -->
             </div>
             <input [disabled]="!editUserForm.valid||checksameu=='same'||checksamee=='same'||checkerrorp==true" type="submit" name="submit" value="Sửa" class="btn btn-primary" (click)="postEditUser()"/>
         </form>
