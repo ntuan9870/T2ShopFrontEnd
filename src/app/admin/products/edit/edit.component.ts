@@ -80,8 +80,10 @@ export class EditComponent implements OnInit {
     }
     fd.append('product_accessories',this.form.product_accessories);
     fd.append('product_warranty',this.form.product_warranty);
-    if(this.form.product_promotion!=null){
+    if(this.selectedOption!='null'){
       fd.append('product_promotion',this.selectedOption);
+    }else{
+      fd.append('product_promotion', '0');
     }
     fd.append('product_condition',this.form.product_condition);
     fd.append('product_description',this.form.product_description);
@@ -121,6 +123,9 @@ export class EditComponent implements OnInit {
         this.form.product_featured=this.product.product_featured;
         this.form.product_cate=this.product.product_cate;
         $("#avatar").fadeIn("fast").attr('src',this.oldImage);
+        if(this.product.product_promotion == 0){
+          this.selectedOption = null;
+        }
       },
       error=>{
         showSwal('auto-close','Có lỗi trong quá trình xử lý dữ liệu!!');
