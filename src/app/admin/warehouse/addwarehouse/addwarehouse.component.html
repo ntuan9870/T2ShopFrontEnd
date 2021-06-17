@@ -120,6 +120,7 @@
                                         <th scope="col">Tên</th>
                                         <th scope="col">SL</th>
                                         <th scope="col">Đơn giá nhập</th>
+                                        <th scope="col">Xóa</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -130,6 +131,7 @@
                                         <td width="44%">{{p.product.product_name}}</td>
                                         <td width="10%"><input [(ngModel)]="product_selected[i].amount" name = "product_selected[{{i}}].amount" type="number" value="{{p.amount}}" (keyup)="changeAmount(p.product.product_id)" (change)="ca(p.product.product_id)"></td>
                                         <td width="30%"><input [(ngModel)]="product_selected[i].price" name = "product_selected[{{i}}].price" type="number" value="{{p.price}}" (keyup)="changePrice(p.product.product_id)" (change)="cp(p.product.product_id)"></td>
+                                        <td><a (click)="removeBIElement(i)" [routerLink]="['#']">Xóa</a></td>
                                       </tr>
                                     </tbody>
                                   </table>

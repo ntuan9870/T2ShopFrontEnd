@@ -564,7 +564,7 @@ export class DeliverybillComponent implements OnInit {
     } 
     this.total_price = 0;
     for(var i = 0; i < this.dbes.length; i++){
-      // this.total_price+=this.dbes[i].price;
+      this.total_price+=this.dbes[i].price;
     }
   }
   checkPrice(){

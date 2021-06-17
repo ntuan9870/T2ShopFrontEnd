@@ -548,4 +548,17 @@ export class AddwarehouseComponent implements OnInit {
       }
     });
   }
+  removeBIElement(id){
+    var tmpArr: Detailballotimport[] = this.product_selected;
+    this.product_selected = [];
+    for (let i = 0; i < tmpArr.length; i++) {
+      if(i!=id){
+        this.product_selected.push(tmpArr[i]);
+      }
+    } 
+    this.am = 0;
+    for(var i = 0; i < this.product_selected.length; i++){
+      this.am+=this.product_selected[i].price;
+    }
+  }
 }
