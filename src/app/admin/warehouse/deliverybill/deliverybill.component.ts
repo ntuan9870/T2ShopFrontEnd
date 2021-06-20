@@ -390,7 +390,7 @@ export class DeliverybillComponent implements OnInit {
     // });
     this.searched_products = [];
     for(var i = 0; i < this.allPWH.length; i++){
-      if(this.allPWH[i].product_name.includes(txtKeyword)){
+      if(this.allPWH[i].product_name.includes(txtKeyword)&&this.allPWH[i].product_amount!=0){
         this.searched_products.push(this.allPWH[i]);
       }
     }
@@ -693,6 +693,7 @@ export class DeliverybillComponent implements OnInit {
       this.amount_product = 1;
       this.show_option_product = false;
       this.current_WH = previousState;
+      this.getAllProductInWareHouse(this.current_WH);
       return;
     }
     if (confirm('Bạn chỉ có thể lập phiếu xuất hàng trên cùng một kho!')) {
