@@ -111,10 +111,12 @@ export class DeliverybillComponent implements OnInit {
     for(var i = 0; i < this.dbibyproductids.length; i++){
       tmp+=this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
       if(tmp <= this.amount_product){
-        var c = new CtpxLn;
-        c.bi_id = this.dbibyproductids[i].bi_id;
-        c.amount = this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
-        this.ctpx_lns.push(c);
+        if(tmp!=0){
+          var c = new CtpxLn;
+          c.bi_id = this.dbibyproductids[i].bi_id;
+          c.amount = this.dbibyproductids[i].amount-this.dbibyproductids[i].exported;
+          this.ctpx_lns.push(c);
+        }
       }else{
         var c = new CtpxLn;
         c.bi_id = this.dbibyproductids[i].bi_id;

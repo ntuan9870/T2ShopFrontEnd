@@ -87,14 +87,14 @@
             </div>
         </div>
     
-        <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
+        <div class="modal fade bd-example-modal-sm" id="myModal" style="margin-top: 10px;" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" style="margin-top: 0px; height: 40em;">
+                <div class="modal-content" style="margin-top: 0px; height: 40em;">
                     <div class="modal-header">
                     <h4 class="modal-title">Xem hàng tồn trong kho</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow: scroll;">
                         <table class="table">
                             <tr id="tbl-first-row">
                                 <td>STT</td>
@@ -161,7 +161,7 @@
         </div>
 
         <!-- Xem chi tiết tồn kho -->
-        <div class="modal fade bd-example-modal-lg"  id="detailModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+        <div class="modal fade bd-example-modal-lg" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
             <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -187,7 +187,7 @@
                             <td>{{d.amount}}</td>
                             <td>{{d.exported}}</td>
                             <td>{{d.amount - d.exported}}</td>
-                            <td>{{d.price}}</td>
+                            <td>{{d.price | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</td>
                             <td>{{d.created_at}} </td>
                             <td>{{d.user_id}} </td>
                             <td>{{d.supplier_id}} </td>

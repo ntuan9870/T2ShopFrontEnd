@@ -34,7 +34,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
+                <!-- <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls> -->
             </div>
         </div>
 
@@ -67,14 +67,14 @@
             </div>
         </div>
     <!-- Xem tồn kho -->
-        <div class="modal fade bd-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
+        <div class="modal fade bd-example-modal-sm" style="margin-top: 10px;" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" style="margin-top: 0px; height: 40em; ">
+                <div class="modal-content" style="height: 40em;">
                     <div class="modal-header">
                     <h4 class="modal-title">Xem hàng tồn trong kho</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow: scroll;">
                         <table class="table">
                             <tr id="tbl-first-row">
                                 <td>Mã TK</td>
@@ -85,7 +85,7 @@
                                 <td>Đơn giá</td>
                                 
                             </tr>
-                            <tr *ngFor="let h of ps;let i = index">
+                            <tr *ngFor="let h of ps | paginate: config;let i = index">
                                 <td>{{h.store_wh_inventory_id}}</td>
                                 <td>{{h.product_id}}</td>
                                 <td width="6%"><img src={{h.product_img}} class="img-fluid img-thumbnail"></td>
