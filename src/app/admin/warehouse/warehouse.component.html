@@ -26,8 +26,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let w of warehouse|paginate: config; trackBy: trackByFn;let i = index">
-                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                        <tr *ngFor="let w of warehouse; let i = index">
+                            <td>{{i}}</td>
                             <td>{{w.warehouse_id}}</td>
                             <td>{{w.warehouse_name}}</td>
                             <td>{{w.unit}}</td>
@@ -40,7 +40,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
             </div>
         </div>
         <div class="modal fade bd-example-modal-sl" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -181,8 +180,8 @@
                             <td>Mã NV</td>
                             <td>Mã NCC</td>
                         </tr>
-                        <tr *ngFor="let d of DWHPs|paginate: config; trackBy: trackByFn;let i = index">
-                            <td>{{1+i+(this.config['currentPage']-1)*this.config['itemsPerPage']}}</td>
+                        <tr *ngFor="let d of DWHPs;let i = index">
+                            <td>{{i}}</td>
                             <td>{{d.bi_id}}</td>
                             <td>{{d.amount}}</td>
                             <td>{{d.exported}}</td>
@@ -193,7 +192,6 @@
                             <td>{{d.supplier_id}} </td>
                         </tr>
                     </table>
-                    <pagination-controls [nextLabel]="labelnext" [previousLabel]="labelprevious" (pageChange)="pageChanged($event)"></pagination-controls>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

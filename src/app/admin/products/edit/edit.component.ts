@@ -80,8 +80,12 @@ export class EditComponent implements OnInit {
     }
     fd.append('product_accessories',this.form.product_accessories);
     fd.append('product_warranty',this.form.product_warranty);
-    if(this.selectedOption!='null'){
-      fd.append('product_promotion',this.selectedOption);
+    if(this.selectedOption!=null){
+      if(this.selectedOption=='null'){
+        fd.append('product_promotion', '0');
+      }else{
+        fd.append('product_promotion',this.selectedOption);
+      }
     }else{
       fd.append('product_promotion', '0');
     }
