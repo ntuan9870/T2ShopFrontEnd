@@ -6,4 +6,6 @@ export class Order {
   total:any='';
   ready:any='';
   status:any='';
+  store_id:any='';
+  store_name:any='';
 }

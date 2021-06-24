@@ -20,6 +20,7 @@
               <th>Mã ND</th>
               <th>Mã ĐH</th>
               <th>Ngày đặt hàng</th>
+              <th>Cửa hàng</th>
               <th>Tổng tiền</th>
               <th>Sẵn sàng</th>
               <th>Trạng thái</th>
@@ -33,6 +34,7 @@
               <th>{{o.user_id}}</th>
               <th>{{o.order_id}}</th>
               <th>{{o.created_at}}</th>
+              <th>{{o.store_name}}</th>
               <th>{{o.total| currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
               <th>
                 <span *ngIf="o?.ready=='0'"> <img style="width: 27px; height: 27px; " src="./assets/not_ready.png" alt="" srcset=""></span>

@@ -16,6 +16,7 @@
             <tr>
               <th scope="col">STT</th>
               <th>Ngày đặt hàng</th>
+              <th>Cửa hàng</th>
               <th>Tổng tiền</th>
               <th>Sẵn sàng</th>
               <th>Trạng thái</th>
@@ -27,6 +28,7 @@
             <tr *ngFor='let o of orders | paginate: config; let i = index'>
               <th scope="row">{{i}}</th>
               <th>{{o.created_at}}</th>
+              <th>{{o.store_name}}</th>
               <th>{{o.total | currency:'VND':'symbol':'1.0-0':'vi-VN'}}</th>
               <th>
                 <span *ngIf="o?.ready=='0'">Đang xử lý</span>
